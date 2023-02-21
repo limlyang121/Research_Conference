@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+    <title>ReadProfile</title>
+</head>
+<body>
+  <div class="container">
+    <h2>User Details</h2>
+
+    <hr />
+
+    <label for="name">Full Name</label>
+    <input class="form-control" id="name" th:value="${user.userdetails.firstName}">
+
+    <label for="role">Role</label>
+    <input class="form-control" id="role" th:value="${user.role.role}">
+
+    <label for="weight">Weight</label>
+    <input class="form-control" id="weight" th:value="${user.userdetails.weight}">
+
+    <label for="height">Height</label>
+    <input class="form-control" id="height" th:value="${user.userdetails.height}">
+
+
+    <br /> <br />
+    <div th:switch="${user.active}">
+
+      <form th:action="@{deactivation(userID=${user.id})}" method="post" th:case="${1}">
+        <button type="submit" class="btn btn-danger"
+                onclick="return confirmationBox('are you sure to Deactivate this Account');">Deactivate Account</button>
+      </form>
+
+      <form th:action="@{activation(userID=${user.id})}" method="post" th:case="${0}">
+        <button type="submit" class="btn btn-primary"
+                onclick="return confirmationBox('are you sure to Activate this Account');">Activate Account</button>
+      </form>
+
+    </div>
+
+
+    <br />
+
+    <h2>
+      <a th:href="@{/admin/list}" >Back to view</a>
+    </h2>
+
+  </div>
+</body>
+</html>
