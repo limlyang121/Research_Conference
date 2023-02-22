@@ -59,11 +59,13 @@ public class UserRest {
 
     @PostMapping("users")
     public User add(@RequestBody User user){
+        System.out.println(user.getRole());
         return userRestService.save(user);
     }
 
     @PutMapping("users")
     public User update(@RequestBody User user){
+        System.out.println(user.getRole());
         return userRestService.save(user);
     }
 

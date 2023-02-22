@@ -78,6 +78,8 @@ public class UserRepoImpl implements UserRepo {
         Session session = entityManager.unwrap(Session.class);
         try{
             if (user.getId() == 0){
+                Role role = findRoleByName(user.getRole().getRole());
+                user.setRole(role);
                 session.persist(user);
             }else{
                 session.merge(user);

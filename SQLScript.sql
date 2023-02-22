@@ -40,9 +40,9 @@ create table `user` (
 
 insert into `roles` values
 ("ADMIN", "Admin desc"),
-("Reviewer", "Reviewer desc"),
-("Author", "Author desc"),
-("Conference", "Conference desc");
+("REVIEWER", "Reviewer desc"),
+("AUTHOR", "Author desc"),
+("CONFERENCE", "Conference desc");
 
 
 

@@ -17,7 +17,7 @@ public class User  {
     private String password;
 
     @ManyToOne (cascade =
-            {CascadeType.DETACH,CascadeType.MERGE, CascadeType.REFRESH})
+            {CascadeType.DETACH,CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REFRESH})
     @JoinColumn(name = "roles")
     private Role role;
     @Column(name = "active")

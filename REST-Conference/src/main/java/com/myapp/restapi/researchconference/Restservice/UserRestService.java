@@ -1,12 +1,13 @@
 package com.myapp.restapi.researchconference.Restservice;
 
 import com.myapp.restapi.researchconference.entity.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public interface UserRestService {
+public interface UserRestService extends UserDetailsService {
     List<User> findAll();
     List<User> findUserByRole(String roleName);
 

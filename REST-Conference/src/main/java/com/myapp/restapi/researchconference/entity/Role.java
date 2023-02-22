@@ -18,11 +18,11 @@ public class Role {
     }
 
     public String getRole() {
-        return role;
+        return role.toUpperCase();
     }
 
     public void setRole(String role) {
-        this.role = role;
+        this.role = role.toUpperCase();
     }
 
     public String getDesc() {
