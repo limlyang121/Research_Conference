@@ -21,23 +21,33 @@ const UserEdit = () => {
             weight: ''
         },
     }
+
+
     const [user, setUser] = useState(initialFormState);
     const [myRole, setRole] = useState([]);
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
     const { id } = useParams();
 
     useEffect(() => {
-        const fecthData = async () => {
-            if (id !== 'new') {
-                let response = await getUserByID(id)
-                setUser(response)
+        const fecthData = async() => {
+            try{
+                if (id !== 'new') {
+                    let response =  await getUserByID(id)
+                    setUser(response)
+                }
+                
+                let data =  await getAllRoles()
+                setRole(data)
+
+            } catch (error) {
+                console.error(error)
+            }finally{
+                setLoading(true)
             }
-
-            let response = await getAllRoles()
-            setRole(response)
         }
+        setLoading(false)
         fecthData();
-
 
     }, [id, setUser]);
 
@@ -70,14 +80,29 @@ const UserEdit = () => {
         }
     };
 
+    const displayRole = () => {
+        if (id === 'new') {
+            return (
+                <option selected>Select</option>
+            )
+        }else{
+            return (
+                <option selected>Select</option>
+            )
+        }
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (id === 'new') {
-            let response = await addUser(user)
+            addUser(user)
+            alert(JSON.stringify(user.role))
+
         } else {
-            alert("A")
-            await updateUser(user)
+            updateUser(user)
+            alert(JSON.stringify(user.role))
+
         }
 
         setUser(initialFormState);
@@ -85,7 +110,20 @@ const UserEdit = () => {
 
     }
 
+    const list = myRole.map((role, index) => {
+        return (
+            <option key={index} value={JSON.stringify(role)}>{role.role}</option>
+        )
+    })
+
+    if (!loading){
+        return (
+            <p>Loading...</p>
+        )
+    }
+
     const title = <h2>{user.id ? 'Edit User' : 'Add User'}</h2>;
+
 
     return (
         <div>
@@ -99,7 +137,6 @@ const UserEdit = () => {
                         <Input type="hidden" name="id" id="id" value={user.id}
                             onChange={handleChange} autoComplete="id" />
                     </FormGroup>
-
                     <FormGroup>
                         <Label for="userName">User Name</Label>
                         <Input type="text" name="userName" id="userName" value={user.userName}
@@ -108,18 +145,17 @@ const UserEdit = () => {
 
                     {displayPassword()}
 
-
                     <FormGroup>
                         <Label for="role">Role</Label>
-                        <Input type="select" name="role.role" id="role.role" value={user.role.role} onChange={handleChange}>
-                            {myRole.map((role) => (
-                                <option key={role.role} value={role.role}>
+                        <Input type="select" name="role.role" value={user.role.role} id="role.role" onChange={handleChange}>
+                            <option value="">Select</option>
+                            {myRole.map((role, index) => (
+                                <option key={index} value={role.role}>
                                     {role.role}
                                 </option>
                             ))}
                         </Input>
                     </FormGroup>
-
 
                     <FormGroup hidden>
                         <Label for="active"></Label>

@@ -35,3 +35,11 @@ export const getUserByID = async (id) => {
 export const getAllRoles = async () => {
     return (await api.get(`roles`)).data
 }
+
+export const activateAccount = async (id) => {
+    return (await api.patch(`users/activation/${id}`)).data
+}
+
+export const deactivationAccount = async (id) => {
+    return (await api.patch(`users/deactivation/${id}`)).data
+}

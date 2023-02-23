@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
+import { activateAccount,deactivationAccount } from './adminAxios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const UserRead = () => {
@@ -43,27 +44,14 @@ const UserRead = () => {
         if (window.confirm("Are you sure ? ")) {
 
             if (user.active === 1) {
-                await fetch(`/api/users/deactivation/${id}`, {
-                    credentials: "include",
-                    method: "PATCH",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                }).then(() => {
+                await deactivationAccount(user.id)
+                .then(() => {
                     setUser({ ...user, active: 0 })
                 })
 
             } else {
-
-                await fetch(`/api/users/activation/${id}`, {
-                    credentials: "include",
-                    method: "PATCH",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                }).then(() => {
+                await activateAccount(user.id)
+                .then(() => {
                     setUser({ ...user, active: 1 })
                 })
             }
