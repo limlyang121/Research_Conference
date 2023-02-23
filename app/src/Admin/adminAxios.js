@@ -13,7 +13,25 @@ export const getAllUsers = async () => {
     return response.data;
 }
 
-export const removeUser = async () => {
-    let response = await api.delete("users")
+export const removeUser = async (id) => {
+    let response = await api.delete(`users/${id}`)
     return response.data;
+}
+
+export const addUser = async (data) => {
+    let response = await api.post("users", data)
+    return response.data;
+}
+
+export const updateUser = async (data) => {
+    let response = await api.put(`users/${data.id}`, data)
+    return response.data
+}
+
+export const getUserByID = async (id) => {
+    return (await api.get(`users/userID/${id}`)).data
+}
+
+export const getAllRoles = async () => {
+    return (await api.get(`roles`)).data
 }

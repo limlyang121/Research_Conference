@@ -17,28 +17,13 @@ const UserList = () => {
     
     fecthData();
     setLoading(false)
+    
   }, []);
-
-  const remove2 = async (id) => {
-    if (window.confirm("Delete? ")) {
-      await removeUser(id)
-      .then(() => {
-        let updatedGroups = [...users].filter(i => i.id !== id);
-        setUsers(updatedGroups);
-      });
-    }
-  }
 
   const remove = async (id) => {
     if (window.confirm("Delete? ")) {
-
-      await fetch(`/api/users/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }).then(() => {
+      await removeUser(id)
+      .then(() => {
         let updatedGroups = [...users].filter(i => i.id !== id);
         setUsers(updatedGroups);
       });

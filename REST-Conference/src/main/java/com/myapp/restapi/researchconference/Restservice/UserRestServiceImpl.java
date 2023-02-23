@@ -67,12 +67,21 @@ public class UserRestServiceImpl implements UserRestService{
     @Transactional
     public User save(User user) {
         boolean success = false;
-        if (user.getId() == 0){
-            user.setActive(1);
-        }
+        user.setActive(1);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
         return userRepo.save(user);
+    }
+
+    @Override
+    @Transactional
+    public User update(User user, int userID) {
+        User tempUser = userRepo.findByID(userID);
+        tempUser.setUserName(user.getUserName());
+        tempUser.setRole(user.getRole());
+        tempUser.setActive(user.getActive());
+        tempUser.setUserdetails(user.getUserdetails());
+        tempUser.setPassword(user.getPassword());
+        return userRepo.save(tempUser);
     }
 
     @Override

@@ -21,6 +21,8 @@ public interface UserRestService extends UserDetailsService {
 
     User save(User user);
 
+    User update(User user, int userID);
+
     void delete(int userID);
 
     void deactivation(int userID);

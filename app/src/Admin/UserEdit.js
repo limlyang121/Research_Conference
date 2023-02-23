@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
+import { updateUser, addUser, getUserByID, getAllRoles } from './adminAxios';
 
 
 const UserEdit = () => {
@@ -28,16 +29,15 @@ const UserEdit = () => {
     useEffect(() => {
         const fecthData = async () => {
             if (id !== 'new') {
-                fetch(`/api/users/userID/${id}`, { credentials: "include" })
-                    .then(response => response.json())
-                    .then(data => setUser(data));
+                let response = await getUserByID(id)
+                setUser(response)
             }
 
-            fetch("/api/roles")
-                .then(response => response.json())
-                .then(roleData => setRole(roleData));
+            let response = await getAllRoles()
+            setRole(response)
         }
         fecthData();
+
 
     }, [id, setUser]);
 
@@ -73,17 +73,16 @@ const UserEdit = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await fetch(`/api/users`, {
-            credentials: "include",
-            method: (user.id) ? 'PUT' : 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        });
+        if (id === 'new') {
+            let response = await addUser(user)
+        } else {
+            alert("A")
+            await updateUser(user)
+        }
+
         setUser(initialFormState);
         navigate('/users');
+
     }
 
     const title = <h2>{user.id ? 'Edit User' : 'Add User'}</h2>;

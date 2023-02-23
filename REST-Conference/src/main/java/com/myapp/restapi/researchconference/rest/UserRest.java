@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api")
 public class UserRest {
 
@@ -58,15 +59,14 @@ public class UserRest {
     }
 
     @PostMapping("users")
-    public User add(@RequestBody User user){
-        System.out.println(user.getRole());
-        return userRestService.save(user);
+    public ResponseEntity<String > add(@RequestBody User user){
+        userRestService.save(user);
+        return ResponseEntity.ok("Successfully Add");
     }
 
-    @PutMapping("users")
-    public User update(@RequestBody User user){
-        System.out.println(user.getRole());
-        return userRestService.save(user);
+    @PutMapping("users/{userID}")
+    public User update(@RequestBody User user,@PathVariable int userID){
+        return userRestService.update(user, userID);
     }
 
     @PatchMapping("users/activation/{userID}")
