@@ -3,7 +3,7 @@
 
 Current
 ---------------------------------------------------------
-REST-conference is my REST API
+REST-conference is my REST API.
 App is my react.js for the front-end
 Database is using MySQL
 
