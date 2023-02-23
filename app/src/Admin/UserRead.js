@@ -34,32 +34,42 @@ const UserRead = () => {
 
     }, [id, setUser]);
 
-    const accountUpdate = async (event) => {
-        if (user.active === 1) {
-            await fetch('/api/deactivation/${id}}', {
-                credentials: "include",
-                method: "PATCH",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    active: 0
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        accountUpdate(user.id);
+    }
+
+    const accountUpdate = async (id) => {
+        if (window.confirm("Are you sure ? ")) {
+
+            if (user.active === 1) {
+                await fetch(`/api/users/deactivation/${id}`, {
+                    credentials: "include",
+                    method: "PATCH",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(() => {
+                    setUser({ ...user, active: 0 })
                 })
-            })
-        } else {
-            await fetch('/api/deactivation/${id}}', {
-                credentials: "include",
-                method: "PATCH",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    active: 0
+
+            } else {
+
+                await fetch(`/api/users/activation/${id}`, {
+                    credentials: "include",
+                    method: "PATCH",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(() => {
+                    setUser({ ...user, active: 1 })
                 })
-            })
+            }
         }
+
+
     }
 
     const displayButton = () => {
@@ -73,7 +83,7 @@ const UserRead = () => {
             return (
                 <FormGroup>
 
-                    <Button size='sm' color='prmary' type='submit'>Activate Account</Button>
+                    <Button size='sm' color='primary' type='submit'>Activate Account</Button>
                 </FormGroup>
             )
         }
@@ -84,7 +94,7 @@ const UserRead = () => {
         <div>
             <AppNavbar />
             <Container>
-                <Form onSubmit={accountUpdate}>
+                <Form onSubmit={handleSubmit}>
                     {displayButton()}
                 </Form>
             </Container>

@@ -2,22 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
+import { getAllUsers, removeUser } from './adminAxios';
 
 const UserList = () => {
-
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-
-    fetch('api/users', { credentials: "include" })
-      .then(response => response.json())
-      .then(data => {
-        setUsers(data);
-        setLoading(false);
-      })
+    const fecthData = async () => {
+      let response = await getAllUsers();
+      setUsers(response)
+    }
+    
+    fecthData();
+    setLoading(false)
   }, []);
+
+  const remove2 = async (id) => {
+    if (window.confirm("Delete? ")) {
+      await removeUser(id)
+      .then(() => {
+        let updatedGroups = [...users].filter(i => i.id !== id);
+        setUsers(updatedGroups);
+      });
+    }
+  }
 
   const remove = async (id) => {
     if (window.confirm("Delete? ")) {
