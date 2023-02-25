@@ -42,15 +42,16 @@ const UserRead = () => {
 
     const accountUpdate = async (id) => {
         if (window.confirm("Are you sure ? ")) {
+            alert(user.active)
 
             if (user.active === 1) {
-                await deactivationAccount(user.id)
+                await deactivationAccount(id)
                 .then(() => {
                     setUser({ ...user, active: 0 })
                 })
 
             } else {
-                await activateAccount(user.id)
+                await activateAccount(id)
                 .then(() => {
                     setUser({ ...user, active: 1 })
                 })
