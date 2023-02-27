@@ -1,6 +1,8 @@
 
 package com.myapp.restapi.researchconference.Security;
 
+import com.myapp.restapi.researchconference.Filter.JwtRequestFilter;
+import com.myapp.restapi.researchconference.Restservice.MyUserDetails;
 import com.myapp.restapi.researchconference.Restservice.UserRestService;
 import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,36 +30,53 @@ import java.util.List;
 @Configuration
 public class WebSecurityConfig {
 
-    UserRestService userRestService;
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    MyUserDetails userRestService;
+    JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public WebSecurityConfig(UserRestService userRestService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurityConfig(MyUserDetails userRestService, JwtRequestFilter jwtRequestFilter) {
         this.userRestService = userRestService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests((request) ->
-                        request.requestMatchers("/**").permitAll()
+                        request.requestMatchers("/api/auth/**").permitAll()
                                 .anyRequest().authenticated())
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
-                .formLogin()
-                .loginProcessingUrl("/processLogin")
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
-    @Bean
-    AuthenticationManager authenticationManager(){
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userRestService);
-        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.authorizeHttpRequests((request) ->
+//                        request.requestMatchers("/**").authenticated())
+//                .cors().configurationSource(corsConfigurationSource())
+//                .and()
+//                .csrf().disable()
+//                .formLogin()
+//                .loginProcessingUrl("/processLogin")
+//        ;
+//        return httpSecurity.build();
+//    }
 
-        return new ProviderManager(authenticationProvider);
+//    @Bean
+//    AuthenticationManager authenticationManager(){
+//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//        authenticationProvider.setUserDetailsService(userRestService);
+//        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
+//
+//        return new ProviderManager(authenticationProvider);
+//    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean

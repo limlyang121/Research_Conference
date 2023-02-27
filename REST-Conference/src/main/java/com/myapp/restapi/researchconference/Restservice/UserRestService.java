@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface UserRestService extends UserDetailsService {
+public interface UserRestService {
     List<User> findAll();
     List<User> findUserByRole(String roleName);
 

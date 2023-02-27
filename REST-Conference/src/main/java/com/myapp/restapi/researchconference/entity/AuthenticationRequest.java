@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.Auth;
+package com.myapp.restapi.researchconference.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RefreshTokenRequest {
-    private String refreshToken;
+public class AuthenticationRequest {
     private String username;
+    private String password;
 }

@@ -104,19 +104,4 @@ public class UserRestServiceImpl implements UserRestService{
     public void delete(int userID) {
         userRepo.delete(userID);
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUserName(username);
-        if (user == null){
-            throw new UsernameNotFoundException("Invalid Username or password");
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
-                getAuthorities(user));
-
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        return List.of(new SimpleGrantedAuthority((user.getRole().getRole()).toUpperCase()));
-    }
 }
