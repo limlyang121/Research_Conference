@@ -19,7 +19,7 @@ public class Userdetails {
     private int weight;
 
     @OneToOne (mappedBy = "userdetails", cascade = {
-            CascadeType.ALL
+            CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE
     })
     @JsonBackReference
     private User user;

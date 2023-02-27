@@ -1,6 +1,7 @@
-
 package com.myapp.restapi.researchconference.Security;
 
+import com.myapp.restapi.researchconference.Auth.JwtConfigurer;
+import com.myapp.restapi.researchconference.Auth.JwtTokenProvider;
 import com.myapp.restapi.researchconference.Restservice.UserRestService;
 import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -21,40 +23,46 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
-@EnableWebSecurity
-@Configuration
-public class WebSecurityConfig {
+public class BackUpJIC  {
 
-    UserRestService userRestService;
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public WebSecurityConfig(UserRestService userRestService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRestService = userRestService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    public BackUpJIC(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests((request) ->
-                        request.requestMatchers("/**").permitAll()
-                                .anyRequest().authenticated())
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
+        httpSecurity.httpBasic().disable()
                 .csrf().disable()
-                .formLogin()
-                .loginProcessingUrl("/processLogin")
-        ;
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/**").permitAll()
+                .requestMatchers("/api/users/**").hasAuthority("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .apply(new JwtConfigurer(jwtTokenProvider));
         return httpSecurity.build();
     }
 
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.authorizeHttpRequests((request) ->
+//                        request.requestMatchers("/**").permitAll()
+//                                .anyRequest().authenticated())
+//                .cors().configurationSource(corsConfigurationSource())
+//                .and()
+//                .csrf().disable()
+//                .formLogin()
+//                .loginProcessingUrl("api/auth/processLogin");
+//        return httpSecurity.build();
+//    }
+
     @Bean
     AuthenticationManager authenticationManager(){
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userRestService);
-        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
-
-        return new ProviderManager(authenticationProvider);
+        return authenticationManager();
     }
 
     @Bean

@@ -1,7 +1,9 @@
 package com.myapp.restapi.researchconference.Restservice;
 
 import com.myapp.restapi.researchconference.DAO.UserRepo;
+import com.myapp.restapi.researchconference.entity.Role;
 import com.myapp.restapi.researchconference.entity.User;
+import com.myapp.restapi.researchconference.rest.RoleRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -75,9 +77,10 @@ public class UserRestServiceImpl implements UserRestService{
     @Override
     @Transactional
     public User update(User user, int userID) {
+        Role tempRole = userRepo.findRoleByName(user.getRole().getRole());
         User tempUser = userRepo.findByID(userID);
         tempUser.setUserName(user.getUserName());
-        tempUser.setRole(user.getRole());
+        tempUser.setRole(tempRole);
         tempUser.setActive(user.getActive());
         tempUser.setUserdetails(user.getUserdetails());
         tempUser.setPassword(user.getPassword());

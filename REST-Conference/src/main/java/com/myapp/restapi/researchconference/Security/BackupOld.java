@@ -21,15 +21,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
-@EnableWebSecurity
-@Configuration
-public class WebSecurityConfig {
+public class BackupOld {
 
     UserRestService userRestService;
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public WebSecurityConfig(UserRestService userRestService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public BackupOld(UserRestService userRestService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRestService = userRestService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }

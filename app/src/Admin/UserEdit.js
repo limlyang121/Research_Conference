@@ -110,12 +110,6 @@ const UserEdit = () => {
 
     }
 
-    const list = myRole.map((role, index) => {
-        return (
-            <option key={index} value={JSON.stringify(role)}>{role.role}</option>
-        )
-    })
-
     if (!loading){
         return (
             <p>Loading...</p>

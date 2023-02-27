@@ -14,19 +14,19 @@ const UserList = () => {
       let response = await getAllUsers();
       setUsers(response)
     }
-    
+
     fecthData();
     setLoading(false)
-    
+
   }, []);
 
   const remove = async (id) => {
     if (window.confirm("Delete? ")) {
       await removeUser(id)
-      .then(() => {
-        let updatedGroups = [...users].filter(i => i.id !== id);
-        setUsers(updatedGroups);
-      });
+        .then(() => {
+          let updatedGroups = [...users].filter(i => i.id !== id);
+          setUsers(updatedGroups);
+        });
     }
   }
 
@@ -35,19 +35,29 @@ const UserList = () => {
   }
 
   const groupList = users.map(user => {
-    return <tr key={user.id}>
-      <td style={{ whiteSpace: 'nowrap' }}>{user.userdetails.firstName}</td>
-      <td style={{ whiteSpace: 'nowrap' }}>{user.userdetails.lastName}</td>
-      <td style={{ whiteSpace: 'nowrap' }}>{user.userName}</td>
-      <td>
-        <ButtonGroup>
-          <Button size="sm" color="info" tag={Link} to={"/users/read/" + user.id}>Read</Button>
-          <Button size="sm" color="primary" tag={Link} to={"/users/form/" + user.id}>Edit</Button>
-          <Button size="sm" color="danger" onClick={() => remove(user.id)}>Delete</Button>
-        </ButtonGroup>
-      </td>
-    </tr>
+    return (
+      <tr key={user.id}>
+        {/* Current no session yet, Hard code for now */}
+        {user.id === 1 ? (
+          <></>
+        ) : (
+          <>
+          <td style={{ whiteSpace: 'nowrap' }}>{user.userdetails.firstName}</td>
+          <td style={{ whiteSpace: 'nowrap' }}>{user.userdetails.lastName}</td>
+          <td style={{ whiteSpace: 'nowrap' }}>{user.userName}</td>
+          <td>
+            <ButtonGroup>
+              <Button size="sm" color="info" tag={Link} to={"/users/read/" + user.id}>Read</Button>
+              <Button size="sm" color="primary" tag={Link} to={"/users/form/" + user.id}>Edit</Button>
+              <Button size="sm" color="danger" onClick={() => remove(user.id)}>Delete</Button>
+            </ButtonGroup>
+          </td>
+          </>
+        )}
+      </tr>
+    )
   });
+
 
   return (
     <div>
