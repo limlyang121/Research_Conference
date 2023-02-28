@@ -6,17 +6,17 @@ import { getAllUsers, removeUser } from './adminAxios';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     const fecthData = async () => {
-      let response = await getAllUsers();
-      setUsers(response)
+        let response = await getAllUsers();
+        setUsers(response)
+
     }
 
-    fecthData();
     setLoading(false)
+    fecthData();
 
   }, []);
 
@@ -30,9 +30,7 @@ const UserList = () => {
     }
   }
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+
 
   const groupList = users.map(user => {
     return (
@@ -57,6 +55,10 @@ const UserList = () => {
       </tr>
     )
   });
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
 
   return (

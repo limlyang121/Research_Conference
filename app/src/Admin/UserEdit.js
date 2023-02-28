@@ -80,28 +80,14 @@ const UserEdit = () => {
         }
     };
 
-    const displayRole = () => {
-        if (id === 'new') {
-            return (
-                <option selected>Select</option>
-            )
-        }else{
-            return (
-                <option selected>Select</option>
-            )
-        }
-    }
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (id === 'new') {
-            addUser(user)
-            alert(JSON.stringify(user.role))
+            await addUser(user)
 
         } else {
-            updateUser(user)
-            alert(JSON.stringify(user.role))
+            await updateUser(user)
 
         }
 
@@ -142,7 +128,7 @@ const UserEdit = () => {
                     <FormGroup>
                         <Label for="role">Role</Label>
                         <Input type="select" name="role.role" value={user.role.role} id="role.role" onChange={handleChange}>
-                            <option value="">Select</option>
+                            <option defaultValue="">Select</option>
                             {myRole.map((role, index) => (
                                 <option key={index} value={role.role}>
                                     {role.role}

@@ -4,7 +4,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -14,30 +19,4 @@ public class Role {
     @Column(name = "Description")
     private String desc;
 
-    public Role() {
-    }
-
-    public String getRole() {
-        return role.toUpperCase();
-    }
-
-    public void setRole(String role) {
-        this.role = role.toUpperCase();
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "role='" + role + '\'' +
-                ", desc='" + desc + '\'' +
-                '}';
-    }
 }

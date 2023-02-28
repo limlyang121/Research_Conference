@@ -21,7 +21,7 @@ const UserRead = () => {
         },
     }
     const [user, setUser] = useState(initialFormState);
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(true)
     const { id } = useParams();
 
     useEffect(() => {
@@ -30,6 +30,7 @@ const UserRead = () => {
             setUser(response)
         }
         fecthData();
+        setLoading(false)
 
     }, [id, setUser]);
 
@@ -73,6 +74,12 @@ const UserRead = () => {
                 </FormGroup>
             )
         }
+    }
+
+    if (loading) {
+        return (
+            <p>Loading Data...</p>
+        )
     }
 
 

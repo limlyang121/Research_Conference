@@ -42,6 +42,7 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests((request) ->
                         request.requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/").permitAll()
                                 .anyRequest().authenticated())
                 .cors().configurationSource(corsConfigurationSource())
                 .and()

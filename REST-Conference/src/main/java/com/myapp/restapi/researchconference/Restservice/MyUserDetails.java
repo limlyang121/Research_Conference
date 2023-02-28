@@ -28,6 +28,7 @@ public class MyUserDetails implements UserDetailsService {
         if (user == null){
             throw new UsernameNotFoundException("Invalid Username or password");
         }
+
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
                 getAuthorities(user));
 
