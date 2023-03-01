@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import { LoginUser } from "./Axios";
+import { storeTokenData } from "./Axios";
+
 
 import "./Login.css";
 
@@ -34,10 +36,10 @@ function Login() {
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData.entries())
     
-    let token = await LoginUser(data)   
-    alert("In Login  " + token.jwt) 
-    sessionStorage.setItem("token", JSON.stringify(token))
-    navigate("/users")
+    let tokenData = await LoginUser(data)   
+
+    storeTokenData(tokenData)
+    navigate("/home")
 
   };
 

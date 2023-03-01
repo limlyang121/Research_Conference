@@ -3,6 +3,7 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
 import { getAllUsers, removeUser } from './adminAxios';
+import jwt_decode from "jwt-decode"
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -17,6 +18,18 @@ const UserList = () => {
 
     setLoading(false)
     fecthData();
+
+    const tokenString = sessionStorage.getItem("token");
+    const token = JSON.parse(tokenString)
+
+    // const base64Url  = (token.jwt).split(".")[1]
+    
+    // const base64 = base64Url.replace('-', '+').replace('_', '/');
+    // alert( JSON.parse(window.atob(base64)).Role );
+    const decode = jwt_decode(token.jwt)
+    alert ("Test : " + JSON.stringify (decode))
+    const roles = decode.role.map((r) => r.role)
+    alert("my Roles : " + roles)
 
   }, []);
 

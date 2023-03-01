@@ -10,8 +10,28 @@ const api = axios.create({
 
 });
 
+export const storeTokenData = (tokenString) => {
+    const token = JSON.stringify(tokenString)
+    const decode = jwt_decode(tokenString.jwt)
+    const username = decode.sub;
+    const role = (decode.role.map((role) => role.role))
+
+    sessionStorage.setItem("token", token)
+    sessionStorage.setItem("username", username)
+    sessionStorage.setItem("myRole", role)
+
+}
+
 export const LoginUser = async (formData) => {
     let response = await api.post("login", formData)
     return response.data
+}
+
+export const logout = () => {
+    sessionStorage.removeItem("token")
+    sessionStorage.removeItem("username")
+    sessionStorage.removeItem("myRole")
 
 }
+
+

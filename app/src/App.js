@@ -6,6 +6,7 @@ import UserList from './Admin/UserList';
 import UserEdit from './Admin/UserEdit';
 import UserRead from './Admin/UserRead';
 import Login from "./General/Login"
+import LandingPage from './LandingPage';
 
 
 
@@ -13,7 +14,8 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home/>}/>
+        <Route exact path="/" element={<LandingPage/>}/>
+        <Route path='/home' exact={true} element={<Home/>}/>
         <Route path='/users' exact={true} element={<UserList/>}/>
         <Route path='/users/form/:id' element={<UserEdit/>}/>
         <Route path='/users/read/:id' element={<UserRead/>}/>

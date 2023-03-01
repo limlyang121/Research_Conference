@@ -5,21 +5,18 @@ import { Link } from 'react-router-dom';
 import { Button, Container } from 'reactstrap';
 
 
-const Home = () => {
-  const [user, setUser] = useState();
-  useEffect(() => {
-    let username = sessionStorage.getItem("username")
-    setUser(username)
-  },[])
+const LandingPage = () => {
 
   return (
     <div>
-      <AppNavbar/>
       <Container fluid>
-      {user}
+        <br />
+        <h2>My Landing Page</h2>
+        <hr />
+        <Button color="link"><Link to="/login">Login</Link></Button>
       </Container>
     </div>
   );
 }
 
-export default Home;
+export default LandingPage;
