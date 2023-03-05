@@ -1,5 +1,6 @@
 # MyProject
  Practicing Coding (Full Stack)
+ Preparing interview, will not update for a while
 
 Current
 ---------------------------------------------------------
