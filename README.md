@@ -16,7 +16,6 @@ Database is using MySQL.
 
 
 
-=========================================================================
 Abadoned
 -----------------------------------------------------------------------------
 Research Conference is pure java with thymelaf (With spring security) 
