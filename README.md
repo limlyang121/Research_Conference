@@ -10,9 +10,9 @@ Database is using MySQL.
 
 
 The project still missing a lot of stuff
-But the JWT token and stuff is done
+But the JWT token and other stuff is done
 To do:
-Add role-based 
+Add role-based security
 Add Author
 Add CC
 Add Reviewer
