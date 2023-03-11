@@ -33,6 +33,7 @@ function Login() {
     //Prevent page reload
     event.preventDefault();
 
+
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData.entries())
     

@@ -44,10 +44,23 @@ const AppNavbar = () => {
       <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
       <Collapse isOpen={isOpen} navbar>
 
+        <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
+          <NavItem>
+            <Button>
+              <Link to={"/users"} style={{ textDecoration: "none" }}>
+                <NavbarText>View All Users</NavbarText>
+              </Link>
+            </Button>
+          </NavItem>
+          <NavItem>
+            <Button>ETC</Button>
+          </NavItem>
+        </Nav>
+
         <Nav className="justify-content-end" style={{ width: "100%" }} navbar>
           <NavItem>
             <Button>
-              <Link to={"/users"} style={{textDecoration:"none"}}>
+              <Link to={"/users"} style={{ textDecoration: "none" }}>
                 <NavbarText>My Profile</NavbarText>
               </Link>
             </Button>

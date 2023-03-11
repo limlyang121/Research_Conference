@@ -27,9 +27,7 @@ const UserList = () => {
     // const base64 = base64Url.replace('-', '+').replace('_', '/');
     // alert( JSON.parse(window.atob(base64)).Role );
     const decode = jwt_decode(token.jwt)
-    alert ("Test : " + JSON.stringify (decode))
     const roles = decode.role.map((r) => r.role)
-    alert("my Roles : " + roles)
 
   }, []);
 
