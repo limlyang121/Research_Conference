@@ -38,7 +38,6 @@ function Login() {
     const data = Object.fromEntries(formData.entries())
     
     let tokenData = await LoginUser(data)   
-
     storeTokenData(tokenData)
     navigate("/home")
 

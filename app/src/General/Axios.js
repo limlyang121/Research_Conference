@@ -14,11 +14,13 @@ export const storeTokenData = (tokenString) => {
     const token = JSON.stringify(tokenString)
     const decode = jwt_decode(tokenString.jwt)
     const username = decode.sub;
+    const id = decode.id
     const role = (decode.role.map((role) => role.role))
 
     sessionStorage.setItem("token", token)
     sessionStorage.setItem("username", username)
     sessionStorage.setItem("myRole", role)
+    sessionStorage.setItem("id", id)
 
 }
 

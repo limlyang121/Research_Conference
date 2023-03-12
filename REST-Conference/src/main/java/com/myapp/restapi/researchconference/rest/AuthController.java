@@ -6,6 +6,7 @@ import com.myapp.restapi.researchconference.Restservice.UserRestService;
 import com.myapp.restapi.researchconference.Util.JwtUtil;
 import com.myapp.restapi.researchconference.entity.AuthenticationRequest;
 import com.myapp.restapi.researchconference.entity.AuthenticationResponse;
+import com.myapp.restapi.researchconference.entity.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +45,7 @@ public class AuthController {
             throw new Exception("Incorrect username or password", e);
         }
 
-        final UserDetails userDetails = MyUserDetails.loadUserByUsername(request.getUsername());
+        final CustomUserDetails userDetails = MyUserDetails.loadUserByUsername(request.getUsername());
 
         final String jwt = jwtUtil.generateToken(userDetails);
 

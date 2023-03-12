@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.entity;
+package com.myapp.restapi.researchconference.entity.Admin;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

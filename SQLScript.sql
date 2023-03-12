@@ -59,7 +59,41 @@ insert into `user` values
 (3, "reviewer", "$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu", "REVIEWER", 1,3),
 (4, "conference", "$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu", "CONFERENCE", 1,4);
 
+create table `paper_info` (
+    `paperID` int(11) not null auto_increment primary key,
+    `title` varchar(50) ,
+    `filename` varchar(50),
+    `upload` Date,
+    `authorID` int(11),
+    `description` varchar(50),
+    constraint `fk_authorID` foreign key (`authorID`)
+    references `user` (`id`)
+)ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
 
+create table `paper` (
+    `paperID` int(11) not null auto_increment primary key,
+    `file` blob ,
+    `status` tinyint(1) default 1,
+    `paper_info_ID` int(11) ,
+    constraint `fk_paperID` foreign key (`paper_info_ID`)
+    references `paper_info` (`paperID`)
+)ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
+create table `review` (
+    `reviewID` int(11) not null auto_increment primary key,
+    `reviewerID` int(11),
+    `rate` int(11),
+    `comment` Varchar(50) ,
+    `reviewDate` Date,
+    constraint `fk_reviewerID` foreign key (`reviewerID`)
+    references `user` (`id`)
+)ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
+CREATE TABLE `review_paper` (
+  `review_id` INT(11) NOT NULL,
+  `paper_id` INT(11) NOT NULL,
+  PRIMARY KEY (`review_id`, `paper_id`),
+  CONSTRAINT `fk_review_id` FOREIGN KEY (`review_id`) REFERENCES `review` (`reviewID`),
+  CONSTRAINT `fk_paper_id` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`paperID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

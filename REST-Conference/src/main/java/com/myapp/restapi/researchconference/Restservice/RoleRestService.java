@@ -1,7 +1,7 @@
 package com.myapp.restapi.researchconference.Restservice;
 
 import com.myapp.restapi.researchconference.DAO.UserRepo;
-import com.myapp.restapi.researchconference.entity.Role;
+import com.myapp.restapi.researchconference.entity.Admin.Role;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

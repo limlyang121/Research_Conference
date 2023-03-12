@@ -1,15 +1,16 @@
 package com.myapp.restapi.researchconference.DAO;
 
-import com.myapp.restapi.researchconference.entity.Role;
-import com.myapp.restapi.researchconference.entity.User;
+import com.myapp.restapi.researchconference.entity.Admin.Role;
+import com.myapp.restapi.researchconference.entity.Admin.User;
 import jakarta.persistence.EntityManager;
-import org.hibernate.ObjectNotFoundException;
+import jakarta.persistence.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepoImpl implements UserRepo {
@@ -24,12 +25,13 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public User findByUserName(String userName) {
         Session session = entityManager.unwrap(Session.class);
-
         Query<User> query = session.createQuery("from User where userName = :username", User.class);
         query.setParameter("username", userName);
-
-        return query.getSingleResult();
-
+        Optional<User> result = query.uniqueResultOptional();
+        if (result.isPresent()){
+            return result.get();
+        }else
+            return null;
     }
 
     @Override
@@ -86,7 +88,7 @@ public class UserRepoImpl implements UserRepo {
             }
             return user;
 
-        }catch (ObjectNotFoundException e){
+        }catch (NoResultException e){
             return null;
         }
 
@@ -106,9 +108,13 @@ public class UserRepoImpl implements UserRepo {
     public List<User> searchByUsername(String username) {
         Session session = entityManager.unwrap(Session.class);
 
+
         Query<User> query = session.createQuery("From User where userName = :username", User.class);
         query.setParameter("username", username);
-        return query.getResultList();
+        List<User> users = query.getResultList();
+
+        return users;
+
     }
 
     @Override

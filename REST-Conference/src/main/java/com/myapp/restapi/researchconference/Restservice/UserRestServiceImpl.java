@@ -1,19 +1,13 @@
 package com.myapp.restapi.researchconference.Restservice;
 
 import com.myapp.restapi.researchconference.DAO.UserRepo;
-import com.myapp.restapi.researchconference.entity.Role;
-import com.myapp.restapi.researchconference.entity.User;
-import com.myapp.restapi.researchconference.rest.RoleRest;
+import com.myapp.restapi.researchconference.entity.Admin.Role;
+import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -68,6 +62,9 @@ public class UserRestServiceImpl implements UserRestService{
     @Override
     @Transactional
     public User save(User user) {
+        User tempUser = userRepo.findByUserName(user.getUserName());
+        if (tempUser != null)
+            return null;
         boolean success = false;
         user.setActive(1);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -77,6 +74,10 @@ public class UserRestServiceImpl implements UserRestService{
     @Override
     @Transactional
     public User update(User user, int userID) {
+        User checkIfUserExisted = userRepo.findByUserName(user.getUserName());
+        if (checkIfUserExisted != null && checkIfUserExisted.getId() != userID){
+            return null;
+        }
         Role tempRole = userRepo.findRoleByName(user.getRole().getRole());
         User tempUser = userRepo.findByID(userID);
         tempUser.setUserName(user.getUserName());

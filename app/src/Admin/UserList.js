@@ -3,10 +3,10 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
 import { getAllUsers, removeUser } from './adminAxios';
-import jwt_decode from "jwt-decode"
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [myID, setID] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,15 +19,8 @@ const UserList = () => {
     setLoading(false)
     fecthData();
 
-    const tokenString = sessionStorage.getItem("token");
-    const token = JSON.parse(tokenString)
+    setID(sessionStorage.getItem("id"))
 
-    // const base64Url  = (token.jwt).split(".")[1]
-    
-    // const base64 = base64Url.replace('-', '+').replace('_', '/');
-    // alert( JSON.parse(window.atob(base64)).Role );
-    const decode = jwt_decode(token.jwt)
-    const roles = decode.role.map((r) => r.role)
 
   }, []);
 
@@ -47,7 +40,7 @@ const UserList = () => {
     return (
       <tr key={user.id}>
         {/* Current no session yet, Hard code for now */}
-        {user.id === 1 ? (
+        {user.id == myID ? (
           <></>
         ) : (
           <>

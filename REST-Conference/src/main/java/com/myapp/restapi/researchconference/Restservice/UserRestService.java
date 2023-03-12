@@ -1,7 +1,6 @@
 package com.myapp.restapi.researchconference.Restservice;
 
-import com.myapp.restapi.researchconference.entity.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.myapp.restapi.researchconference.rest;
 
 import com.myapp.restapi.researchconference.Restservice.UserRestService;
-import com.myapp.restapi.researchconference.entity.User;
+import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,13 +61,20 @@ public class UserRest {
 
     @PostMapping("users")
     public ResponseEntity<String > add(@RequestBody User user){
-        userRestService.save(user);
+        User userData = userRestService.save(user);
+        if (userData == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Username existed in DB");
+        }
         return ResponseEntity.ok("Successfully Add");
     }
 
     @PutMapping("users/{userID}")
-    public User update(@RequestBody User user,@PathVariable int userID){
-        return userRestService.update(user, userID);
+    public ResponseEntity<String > update(@RequestBody User user,@PathVariable int userID){
+        User userData = userRestService.update(user, userID);
+        if (userData == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Username existed in DB");
+        }
+        return ResponseEntity.ok("Successfully Add");
     }
 
     @PatchMapping("users/activation/{userID}")

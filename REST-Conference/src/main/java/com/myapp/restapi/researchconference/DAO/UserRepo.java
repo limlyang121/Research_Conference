@@ -1,7 +1,7 @@
 package com.myapp.restapi.researchconference.DAO;
 
-import com.myapp.restapi.researchconference.entity.Role;
-import com.myapp.restapi.researchconference.entity.User;
+import com.myapp.restapi.researchconference.entity.Admin.Role;
+import com.myapp.restapi.researchconference.entity.Admin.User;
 
 import java.util.List;
 

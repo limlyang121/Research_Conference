@@ -82,17 +82,22 @@ const UserEdit = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        try{
+            if (id === 'new') {
+                await addUser(user)
 
-        if (id === 'new') {
-            await addUser(user)
+            } else {
+                await updateUser(user)
 
-        } else {
-            await updateUser(user)
+            }
 
+            setUser(initialFormState);
+            navigate('/users');
+        }catch{
+            alert("Username existed")
         }
 
-        setUser(initialFormState);
-        navigate('/users');
+
 
     }
 
@@ -118,7 +123,7 @@ const UserEdit = () => {
                             onChange={handleChange} autoComplete="id" />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="userName">User Name</Label>
+                        <Label for="userName">Username</Label>
                         <Input type="text" name="userName" id="userName" value={user.userName}
                             onChange={handleChange} autoComplete="userName" />
                     </FormGroup>
@@ -140,8 +145,7 @@ const UserEdit = () => {
                     <FormGroup hidden>
                         <Label for="active"></Label>
                         <Input type="text" name="active" id="active"
-                            onChange={handleChange} autoComplete="active" value={user.active}
-                            defaultValue={1} />
+                            onChange={handleChange} autoComplete="active" value={user.active} />
                     </FormGroup>
 
 

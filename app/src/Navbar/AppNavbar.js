@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Collapse, FormGroup, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Form, Button, NavbarText } from 'reactstrap';
+import { Collapse, FormGroup, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Form, Button, NavbarText, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { logout } from '../General/Axios';
 import { useNavigate, BrowserRouter } from 'react-router-dom';
 import UserList from '../Admin/UserList';
+import SessionCheck from '../Security/SessionCheck';
+
 
 const AppNavbar = () => {
 
@@ -37,47 +39,84 @@ const AppNavbar = () => {
   }
 
   return (
-    <Navbar color="dark" dark expand="md">
-      <NavbarBrand tag={Link} to="/home"><h2>Home,</h2></NavbarBrand>
-      <NavbarBrand >{myRole}</NavbarBrand>
+    <>
+      <SessionCheck />
 
-      <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
-      <Collapse isOpen={isOpen} navbar>
+      <Navbar color="dark" dark expand="md">
+        <Container fluid>
 
-        <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
-          <NavItem>
-            <Button>
-              <Link to={"/users"} style={{ textDecoration: "none" }}>
-                <NavbarText>View All Users</NavbarText>
-              </Link>
-            </Button>
-          </NavItem>
-          <NavItem>
-            <Button>ETC</Button>
-          </NavItem>
-        </Nav>
+          <NavbarBrand tag={Link} to="/home"><h2>Home</h2></NavbarBrand>
 
-        <Nav className="justify-content-end" style={{ width: "100%" }} navbar>
-          <NavItem>
-            <Button>
-              <Link to={"/users"} style={{ textDecoration: "none" }}>
-                <NavbarText>My Profile</NavbarText>
-              </Link>
-            </Button>
-          </NavItem>
+          <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
+          <Collapse isOpen={isOpen} navbar>
+            {myRole.includes("ADMIN") && (
 
-          <NavItem>
-            <Form onSubmit={logoutButton} method="post">
-              <FormGroup>
-                <Button type='submit'>
-                  <NavbarText>Log out</NavbarText>
+              <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
+                <NavItem>
+                  <Button>
+                    <Link to={"/users"} style={{ textDecoration: "none", color: "white" }}>
+                      User Accounts
+                    </Link>
+                  </Button>
+                </NavItem>
+
+                <NavItem>
+                <Button>
+                    <Link to={"/role"} style={{ textDecoration: "none", color: "white" }}>
+                      User Profile
+                    </Link>
+                  </Button>
+                </NavItem>
+              </Nav>
+            )}
+
+            {myRole.includes("AUTHOR") && (
+
+              <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
+                <NavItem>
+                  <Button>
+                    <Link to={"/users"} style={{ textDecoration: "none", color: "white" }}>
+                      My Papers
+                    </Link>
+                  </Button>
+                </NavItem>
+                <NavItem>
+                  <Button>Something new</Button>
+                </NavItem>
+              </Nav>
+            )}
+
+
+
+
+            <Nav className="justify-content-end" style={{ width: "100%", gap: "10px" }} navbar>
+              <NavItem>
+                <Button>
+                  <Link to={"/users"} style={{ textDecoration: "none" }}>
+                    <NavbarText>My Profile</NavbarText>
+                  </Link>
                 </Button>
-              </FormGroup>
-            </Form>
-          </NavItem>
-        </Nav>
-      </Collapse>
-    </Navbar>
+              </NavItem>
+
+              <NavItem>
+                <Form onSubmit={logoutButton} method="post">
+                  <FormGroup>
+                    <Button type='submit'>
+                      <NavbarText>Log out</NavbarText>
+                    </Button>
+                  </FormGroup>
+                </Form>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Container>
+
+      </Navbar>
+
+
+
+    </>
+
 
   );
 };

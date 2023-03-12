@@ -7,7 +7,7 @@ import UserEdit from './Admin/UserEdit';
 import UserRead from './Admin/UserRead';
 import Login from "./General/Login"
 import LandingPage from './LandingPage';
-
+import RoleList from "./Admin/ProfileList"
 
 
 const App = () => {
@@ -20,6 +20,8 @@ const App = () => {
         <Route path='/users/form/:id' element={<UserEdit/>}/>
         <Route path='/users/read/:id' element={<UserRead/>}/>
         <Route path='/login' element={<Login/>} />
+        <Route path='/role' element={<RoleList/>} />
+        
 
       </Routes>
     </Router>

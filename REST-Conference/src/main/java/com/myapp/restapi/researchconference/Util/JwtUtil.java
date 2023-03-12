@@ -1,12 +1,12 @@
 package com.myapp.restapi.researchconference.Util;
 
+import com.myapp.restapi.researchconference.entity.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import com.myapp.restapi.researchconference.entity.Userdetails;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -38,9 +38,11 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(CustomUserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", userDetails.getAuthorities());
+        claims.put("id",  userDetails.getId());
+
         return createToken(claims, userDetails.getUsername());
 
     }
