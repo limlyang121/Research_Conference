@@ -1,16 +1,13 @@
-package com.myapp.restapi.researchconference.DAO;
+package com.myapp.restapi.researchconference.Restservice;
 
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface PaperDAO {
+public interface PapersRestService {
     List<Paper> findAll();
 
     List<Paper> findMyPaper(int userID);
 
     Paper add(Paper paper);
-
-
 }

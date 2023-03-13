@@ -32,7 +32,6 @@ public class Paper {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn (name = "paper_info_ID")
-    @JsonManagedReference
     private PaperInfo paperInfo;
 
     @ManyToMany

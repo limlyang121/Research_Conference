@@ -80,8 +80,14 @@ const AppNavbar = () => {
                     </Link>
                   </Button>
                 </NavItem>
+
+
                 <NavItem>
-                  <Button>Something new</Button>
+                <Button>
+                    <Link tag={Link} to={"/papers/form/new"} style={{ textDecoration: "none", color: "white" }}>
+                      Add Paper
+                    </Link>
+                  </Button>
                 </NavItem>
               </Nav>
             )}

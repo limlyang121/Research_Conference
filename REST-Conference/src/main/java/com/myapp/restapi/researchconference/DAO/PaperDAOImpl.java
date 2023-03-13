@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,5 +38,22 @@ public class PaperDAOImpl implements PaperDAO{
         paperQuery.setParameter("userID", userID);
 
         return paperQuery.getResultList();
+    }
+
+    @Override
+    public Paper add(Paper paper) {
+        Session session = entityManager.unwrap(Session.class);
+
+        try{
+            if (paper.getPaperID() == 0){
+                session.persist(paper);
+            }else
+                session.merge(paper);
+
+            return paper;
+        }catch (Exception e){
+            System.err.println(e);
+            return null;
+        }
     }
 }
