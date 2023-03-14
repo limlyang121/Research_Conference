@@ -1,5 +1,6 @@
 package com.myapp.restapi.researchconference.Restservice;
 
+import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public interface PapersRestService {
     List<Paper> findMyPaper(int userID);
 
     Paper add(Paper paper);
+
+    DownloadFileWrapper downloadPdf(int paperID);
 }

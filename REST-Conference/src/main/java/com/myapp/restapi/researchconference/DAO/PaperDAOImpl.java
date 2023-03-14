@@ -1,15 +1,16 @@
 package com.myapp.restapi.researchconference.DAO;
 
+import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class PaperDAOImpl implements PaperDAO{
@@ -24,20 +25,25 @@ public class PaperDAOImpl implements PaperDAO{
     public List<Paper> findAll() {
         Session session = entityManager.unwrap(Session.class);
 
-        Query<Paper> paperQuery = session.createQuery("From Paper");
+        Query<Paper> paperQuery = session.createQuery("From Paper", Paper.class);
         return paperQuery.getResultList();
     }
 
     @Override
     public List<Paper> findMyPaper(int userID) {
         Session session = entityManager.unwrap(Session.class);
+        try{
+            Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperID = pi.paperID" +
+                    " where pi .authorID = :userID", Paper.class);
+            paperQuery.setParameter("userID", userID);
+            List<Paper> a = paperQuery.getResultList();
 
-        Query<Paper> paperQuery = session.createQuery("From Paper inner join PaperInfo on " +
-                "Paper .id = PaperInfo .id where PaperInfo .authorID = :userID");
+            return paperQuery.getResultList();
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
+        }
 
-        paperQuery.setParameter("userID", userID);
-
-        return paperQuery.getResultList();
     }
 
     @Override
@@ -47,13 +53,23 @@ public class PaperDAOImpl implements PaperDAO{
         try{
             if (paper.getPaperID() == 0){
                 session.persist(paper);
-            }else
+            }else{
                 session.merge(paper);
+
+            }
 
             return paper;
         }catch (Exception e){
             System.err.println(e);
             return null;
         }
+    }
+
+    @Override
+    public DownloadFileWrapper downloadPaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        Paper paper = session.get(Paper.class, paperID);
+        byte[] pdfBytes = paper.getFile().getFileData();
+        return new DownloadFileWrapper(pdfBytes, paper.getFile().getFileType(), paper.getPaperInfo().getFilename());
     }
 }

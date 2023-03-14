@@ -37,3 +37,13 @@ export const updateUser = async (data) => {
     let response = await api.put(`users/${data.id}`, data)
     return response.data
 }
+
+export const deletePapers = async (data) => {
+    let response = await api.delete(`papers/${data.id}`, data)
+    return response.data
+}
+
+export const downloadPapers = async (id) => {
+    let response = await api.get(`papers/download/${id}`)
+    return response.data
+}

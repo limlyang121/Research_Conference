@@ -70,15 +70,26 @@ create table `paper_info` (
     references `user` (`id`)
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
+create table `file` (
+    `fileID` int(11) not null auto_increment primary key,
+    `file_data` blob ,
+    `file_type` varchar(50)
+)ENGINE=InnoDB auto_increment=1 default charset=latin1;
+
 
 create table `paper` (
     `paperID` int(11) not null auto_increment primary key,
-    `file` blob ,
-    `status` tinyint(1) default 1,
+    `file_info_ID` int(11) ,
+    `status` varchar(50),
     `paper_info_ID` int(11) ,
     constraint `fk_paperID` foreign key (`paper_info_ID`)
-    references `paper_info` (`paperID`)
+    references `paper_info` (`paperID`),
+    constraint `fk_fileID`  foreign key (`file_info_ID`)
+    references `file` (`fileID`)
+    
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
+
+
 
 create table `review` (
     `reviewID` int(11) not null auto_increment primary key,
@@ -91,9 +102,9 @@ create table `review` (
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
 CREATE TABLE `review_paper` (
-  `review_id` INT(11) NOT NULL,
-  `paper_id` INT(11) NOT NULL,
-  PRIMARY KEY (`review_id`, `paper_id`),
-  CONSTRAINT `fk_review_id` FOREIGN KEY (`review_id`) REFERENCES `review` (`reviewID`),
-  CONSTRAINT `fk_paper_id` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`paperID`)
+  `reviewID` INT(11) NOT NULL,
+  `paperID` INT(11) NOT NULL,
+  PRIMARY KEY (`reviewID`, `paperID`),
+  CONSTRAINT `fk_review_id` FOREIGN KEY (`reviewID`) REFERENCES `review` (`reviewID`),
+  CONSTRAINT `fk_paper_id` FOREIGN KEY (`paperID`) REFERENCES `paper` (`paperID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -19,7 +19,7 @@ const AppNavbar = () => {
 
   useEffect(() => {
     const fetchMyData = async () => {
-      let username = sessionStorage.getItem("username")
+      let username = sessionStorage.getItem("id")
       let roleName = sessionStorage.getItem("myRole")
       setUser(username)
       setRoles(roleName)
@@ -75,7 +75,7 @@ const AppNavbar = () => {
               <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
                 <NavItem>
                   <Button>
-                    <Link to={"/users"} style={{ textDecoration: "none", color: "white" }}>
+                    <Link tag={Link} to={"/papers/mypapers/"+user} style={{ textDecoration: "none", color: "white" }}>
                       My Papers
                     </Link>
                   </Button>

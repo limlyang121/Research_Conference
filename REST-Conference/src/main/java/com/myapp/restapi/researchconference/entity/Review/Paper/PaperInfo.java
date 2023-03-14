@@ -19,7 +19,7 @@ public class PaperInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "paperID")
-    private int id;
+    private int paperID;
     private String title;
     private String filename;
     private Date upload;
@@ -27,5 +27,14 @@ public class PaperInfo {
     private int authorID;
     private String description;
 
-
+    @Override
+    public String toString() {
+        return "PaperInfo{" +
+                "title='" + title + '\'' +
+                ", filename='" + filename + '\'' +
+                ", upload=" + upload +
+                ", authorID=" + authorID +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

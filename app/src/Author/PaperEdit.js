@@ -10,8 +10,11 @@ import { addPapers } from './FileSubmitAxios';
 function PaperEdit() {
     const paperFormState = {
         paperID: "",
-        file:null,
-        status: null,
+        file:{
+            fileData:null,
+            fileType:""
+        },
+        status: "",
         paperInfo: {
             title: "",
             filename: "",

@@ -37,9 +37,19 @@ public class Review {
     @ManyToMany
     @JoinTable(
             name = "review_paper",
-            joinColumns = @JoinColumn(name = "reviewiD"),
+            joinColumns = @JoinColumn(name = "reviewID"),
             inverseJoinColumns = @JoinColumn(name = "paperID")
     )
     private List<Paper> reviewedPaper;
 
+    @Override
+    public String toString() {
+        return "Review{" +
+                "reviewID=" + reviewID +
+                ", reviewerID=" + reviewerID +
+                ", rate=" + rate +
+                ", comment='" + comment + '\'' +
+                ", reviewDate=" + reviewDate +
+                '}';
+    }
 }

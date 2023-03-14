@@ -2,12 +2,10 @@ package com.myapp.restapi.researchconference.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.restapi.researchconference.Restservice.PapersRestService;
+import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
-import com.myapp.restapi.researchconference.entity.Review.Paper.PaperFileWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +33,7 @@ public class PaperRest {
 
     @GetMapping("papers/mypapers/{myID}")
     public List<Paper> findMyPapers(@PathVariable int myID){
+        List<Paper> test = papersRestService.findMyPaper(myID);
         return papersRestService.findMyPaper(myID);
     }
 
@@ -44,14 +43,33 @@ public class PaperRest {
         System.out.println(file.getOriginalFilename());
         System.out.println(file.getResource());
         Paper paper = objectMapper.readValue(paperData, Paper.class);
-        Blob blob = new SerialBlob(file.getBytes());
-        paper.setFile(blob);
+        paper.getFile().setFileData(file.getBytes());
+        paper.getFile().setFileType(file.getContentType());
 
-//        Paper tempPaper = papersRestService.add(paper);
-        if (paper != null)
+        Paper tempPaper = papersRestService.add(paper);
+        if (tempPaper != null)
             return ResponseEntity.ok("Successfully Added the Paper");
         else
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error have occur");
+
+    }
+
+    @GetMapping ("papers/download/{paperID}")
+    public ResponseEntity<byte[]> downloadPaper(@PathVariable int paperID) {
+        DownloadFileWrapper temp = papersRestService.downloadPdf(paperID);
+
+        if (temp == null){
+            return null;
+        }
+
+        String fileType = temp.getApplicationType().split("/")[1];
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(temp.getFileName()+"."+fileType).build());
+
+        return ResponseEntity.ok().headers(headers).body(temp.getBlob());
 
     }
 

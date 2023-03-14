@@ -1,19 +1,19 @@
 package com.myapp.restapi.researchconference.Restservice;
 
 import com.myapp.restapi.researchconference.DAO.PaperDAO;
+import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class PapersRestServiceImpl implements PapersRestService{
-    private PaperDAO paperDAO;
+    private final PaperDAO paperDAO;
 
     @Autowired
     public PapersRestServiceImpl(PaperDAO paperDAO) {
@@ -37,8 +37,18 @@ public class PapersRestServiceImpl implements PapersRestService{
     public Paper add(Paper paper) {
         Date currentTime = new Date();
         paper.getPaperInfo().setUpload(currentTime);
-        paper.setStatus(false);
+        paper.setStatus("Pending");
 
         return paperDAO.add(paper);
+    }
+
+    @Override
+    @Transactional
+    public DownloadFileWrapper downloadPdf(int paperID) {
+        try{
+            return paperDAO.downloadPaper(paperID);
+        }catch (SQLException e){
+            return null;
+        }
     }
 }
