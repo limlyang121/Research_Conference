@@ -1,7 +1,9 @@
-package com.myapp.restapi.researchconference.Restservice;
+package com.myapp.restapi.researchconference.Restservice.Impl;
 
-import com.myapp.restapi.researchconference.DAO.PaperDAO;
-import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
+import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
+import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
+import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
+import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import com.myapp.restapi.researchconference.entity.Review.Paper.File;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PapersRestServiceImpl implements PapersRestService{
+public class PapersRestServiceImpl implements PapersRestService {
     private final PaperDAO paperDAO;
+    private final UserRepo userRepo;
 
     @Autowired
-    public PapersRestServiceImpl(PaperDAO paperDAO) {
+    public PapersRestServiceImpl(PaperDAO paperDAO, UserRepo userRepo) {
         this.paperDAO = paperDAO;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -35,8 +39,15 @@ public class PapersRestServiceImpl implements PapersRestService{
     }
 
     @Override
+    @Transactional
     public Optional<Paper> findPaperByID(int paperID)    {
         return paperDAO.findPaperByID(paperID);
+    }
+
+    @Override
+    @Transactional
+    public List<Paper> findBidPapers() {
+        return paperDAO.findBidPapers();
     }
 
     @Override
@@ -45,6 +56,8 @@ public class PapersRestServiceImpl implements PapersRestService{
         Date currentTime = new Date();
         paper.getPaperInfo().setUpload(currentTime);
         paper.setStatus("Pending");
+        Userdetails userdetails= userRepo.findByID(paper.getPaperInfo().getAuthorID().getId()).getUserdetails();
+        paper.getPaperInfo().setAuthorID(userdetails);
 
         return paperDAO.add(paper);
     }

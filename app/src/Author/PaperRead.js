@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, CardBody, CardHeader, CardImg, CardText, CardTitle, Container, Label } from 'reactstrap';
+import { Card, CardBody, CardHeader, CardText, CardTitle, Container, Label } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getPaperByID } from './Axios';
@@ -14,13 +14,13 @@ function PaperRead() {
     const { id } = useParams()
 
     React.useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (id) => {
             let response = await getPaperByID(id)
 
             setPaper(response)
         }
 
-        fetchData();
+        fetchData(id);
         setLoading(false)
 
 
@@ -74,6 +74,19 @@ function PaperRead() {
 
                     </CardBody>
                 </Card>
+
+                <Card>
+                    <CardHeader tag={"h3"}>Review</CardHeader>
+                    <CardBody>
+                        <CardText tag={"h6"}>
+                            {myPaper?.status}
+                        </CardText>
+
+                    </CardBody>
+                    <br />
+                </Card>
+
+
             </Container>
 
         </div>

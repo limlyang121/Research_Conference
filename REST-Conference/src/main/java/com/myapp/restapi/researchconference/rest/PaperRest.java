@@ -1,7 +1,7 @@
 package com.myapp.restapi.researchconference.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myapp.restapi.researchconference.Restservice.PapersRestService;
+import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Review.Paper.File;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,7 @@ public class PaperRest {
 
     @GetMapping("papers/mypapers/{myID}")
     public List<Paper> findMyPapers(@PathVariable int myID){
+        List<Paper> a = papersRestService.findMyPaper(myID);
         return papersRestService.findMyPaper(myID);
     }
 
@@ -41,6 +42,10 @@ public class PaperRest {
             return paper.get();
         }else
             return null;
+    }
+    @GetMapping("papers/bid")
+    public List<Paper> findBidPapers(){
+        return papersRestService.findBidPapers();
     }
 
     @PostMapping(value = "papers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -73,7 +78,7 @@ public class PaperRest {
     @GetMapping ("papers/download/{paperID}")
     public ResponseEntity<byte[]> downloadPaper(@PathVariable int paperID) {
         File temp = papersRestService.downloadPdf(paperID);
-
+        byte[] encodedBytes = java.util.Base64.getEncoder().encode(temp.getFileData());
         if (temp == null){
             return null;
         }
@@ -81,7 +86,7 @@ public class PaperRest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Test"+"."+temp.getFileType()).build());
-
+        headers.setContentLength(encodedBytes.length);
         return ResponseEntity.ok().headers(headers).body(temp.getFileData());
 
     }

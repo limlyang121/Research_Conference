@@ -10,7 +10,7 @@
 //@Component
 //public class Pointcut {
 //
-//    @org.aspectj.lang.annotation.Pointcut("execution(* com.myapp.restapi.researchconference.DAO.PaperDAOImpl.downloadPaper(..))")
+//    @org.aspectj.lang.annotation.Pointcut("execution(* com.myapp.restapi.researchconference.DAO.Impl.PaperDAOImpl.downloadPaper(..))")
 //    public void downloadAndUpload(){}
 //
 //    @AfterReturning(

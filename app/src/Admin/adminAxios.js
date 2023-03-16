@@ -48,6 +48,22 @@ export const getAllRoles = async () => {
     return response.data
 }
 
+export const getRoleByName = async (name) => {
+    let response = await api.get(`roles/${name}`)
+    return response.data
+}
+
+export const addRole = async (data) => {
+    let response = await api.post(`roles`, data)
+    return response.data
+}
+
+export const deleteRole = async (name) => {
+    let response = await api.delete(`roles/${name}`)
+    return response.data
+}
+
+
 export const activateAccount = async (id) => {
     let response = await api.patch(`users/activation/${id}`)
     return response.data

@@ -1,13 +1,12 @@
-package com.myapp.restapi.researchconference.Restservice;
+package com.myapp.restapi.researchconference.Restservice.Impl;
 
-import com.myapp.restapi.researchconference.DAO.UserRepo;
+import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
 import com.myapp.restapi.researchconference.entity.Admin.User;
 
 import com.myapp.restapi.researchconference.entity.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

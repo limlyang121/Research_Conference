@@ -1,6 +1,6 @@
-package com.myapp.restapi.researchconference.DAO;
+package com.myapp.restapi.researchconference.DAO.Impl;
 
-import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
+import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
 import com.myapp.restapi.researchconference.entity.Review.Paper.File;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 import jakarta.persistence.EntityManager;
@@ -9,13 +9,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PaperDAOImpl implements PaperDAO{
+public class PaperDAOImpl implements PaperDAO {
     private final EntityManager entityManager;
 
     @Autowired
@@ -32,11 +30,19 @@ public class PaperDAOImpl implements PaperDAO{
     }
 
     @Override
+    public List<Paper> findBidPapers() {
+        Session session = entityManager.unwrap(Session.class);
+        Query<Paper> paperQuery = session.createQuery("From Paper where status = 'Pending'", Paper.class);
+
+        return paperQuery.getResultList();
+    }
+
+    @Override
     public List<Paper> findMyPaper(int userID) {
         Session session = entityManager.unwrap(Session.class);
         try{
             Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperID = pi.paperID" +
-                    " where pi .authorID = :userID", Paper.class);
+                    " where pi .authorID.id = :userID", Paper.class);
             paperQuery.setParameter("userID", userID);
             List<Paper> a = paperQuery.getResultList();
 

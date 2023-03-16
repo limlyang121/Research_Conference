@@ -1,8 +1,6 @@
 package com.myapp.restapi.researchconference.rest;
 
-import com.myapp.restapi.researchconference.DAO.UserRepo;
-import com.myapp.restapi.researchconference.Restservice.MyUserDetails;
-import com.myapp.restapi.researchconference.Restservice.UserRestService;
+import com.myapp.restapi.researchconference.Restservice.Impl.MyUserDetails;
 import com.myapp.restapi.researchconference.Util.JwtUtil;
 import com.myapp.restapi.researchconference.entity.AuthenticationRequest;
 import com.myapp.restapi.researchconference.entity.AuthenticationResponse;
@@ -12,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

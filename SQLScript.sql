@@ -98,7 +98,7 @@ create table `review` (
     `comment` Varchar(50) ,
     `review_date` Date,
     constraint `fk_reviewerID` foreign key (`reviewerID`)
-    references `user` (`id`)
+    references `user_details` (`id`)
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
 CREATE TABLE `review_paper` (

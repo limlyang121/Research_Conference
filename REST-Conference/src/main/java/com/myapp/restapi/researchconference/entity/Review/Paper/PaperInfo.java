@@ -1,5 +1,6 @@
 package com.myapp.restapi.researchconference.entity.Review.Paper;
 
+import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +24,13 @@ public class PaperInfo {
     private String title;
     private String filename;
     private Date upload;
-    @Column(name = "authorID")
-    private int authorID;
+
+    @OneToOne(fetch = FetchType.EAGER,
+    cascade = {
+            CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}
+    )
+    @JoinColumn(name = "authorID")
+    private Userdetails authorID;
     private String description;
 
     @Override

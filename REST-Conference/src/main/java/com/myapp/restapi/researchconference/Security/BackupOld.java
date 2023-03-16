@@ -1,7 +1,7 @@
 //
 //package com.myapp.restapi.researchconference.Security;
 //
-//import com.myapp.restapi.researchconference.Restservice.UserRestService;
+//import com.myapp.restapi.researchconference.Restservice.Interface.UserRestService;
 //import org.apache.catalina.filters.CorsFilter;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.web.servlet.FilterRegistrationBean;

@@ -1,6 +1,7 @@
-package com.myapp.restapi.researchconference.Restservice;
+package com.myapp.restapi.researchconference.Restservice.Impl;
 
-import com.myapp.restapi.researchconference.DAO.UserRepo;
+import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
+import com.myapp.restapi.researchconference.Restservice.Interface.UserRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Role;
 import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class UserRestServiceImpl implements UserRestService{
+public class UserRestServiceImpl implements UserRestService {
 
     private final UserRepo userRepo;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

@@ -21,7 +21,13 @@ function PaperEdit() {
             title: "",
             filename: "",
             upload: "",
-            authorID: "",
+            authorID: {
+                id:"",
+                firstName:"",
+                lastName:"",
+                height:"",
+                weight:""
+            },
             description: ""
         },
 
@@ -52,7 +58,7 @@ function PaperEdit() {
         }
 
         const myID = sessionStorage.getItem("id")
-        myPaper.paperInfo.authorID = myID;
+        myPaper.paperInfo.authorID.id = myID;
 
     }, [])
 

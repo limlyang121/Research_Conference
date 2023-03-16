@@ -1,6 +1,6 @@
 package com.myapp.restapi.researchconference.Filter;
 
-import com.myapp.restapi.researchconference.Restservice.MyUserDetails;
+import com.myapp.restapi.researchconference.Restservice.Impl.MyUserDetails;
 import com.myapp.restapi.researchconference.Util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

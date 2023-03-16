@@ -1,5 +1,6 @@
-package com.myapp.restapi.researchconference.DAO;
+package com.myapp.restapi.researchconference.DAO.Impl;
 
+import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
 import com.myapp.restapi.researchconference.entity.Admin.Role;
 import com.myapp.restapi.researchconference.entity.Admin.User;
 import jakarta.persistence.EntityManager;
@@ -91,7 +92,6 @@ public class UserRepoImpl implements UserRepo {
         }catch (NoResultException e){
             return null;
         }
-
     }
 
     @Override

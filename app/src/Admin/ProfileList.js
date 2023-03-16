@@ -1,7 +1,7 @@
 // @flow strict
 
 import * as React from 'react';
-import { getAllRoles } from '../Admin/adminAxios'
+import { deleteRole, getAllRoles } from '../Admin/adminAxios'
 import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
@@ -19,16 +19,16 @@ function ProfileList() {
 
         setLoading(false)
         fetchRole()
-    }, [])
+    }, [setRoles])
 
-    const remove = async (id) => {
-        // if (window.confirm("Delete? ")) {
-        //   await removeUser(id)
-        //     .then(() => {
-        //       let updatedGroups = [...users].filter(i => i.id !== id);
-        //       setUsers(updatedGroups);
-        //     });
-        // }
+    const remove = async (name) => {
+        if (window.confirm("Delete? ")) {
+          await deleteRole(name)
+            .then(() => {
+              let updatedGroups = [...role].filter(i => i.role !== name);
+              setRoles(updatedGroups);
+            });
+        }
       }
 
     const roleList = role.map(role => {
@@ -39,8 +39,8 @@ function ProfileList() {
                 <td>
                     <ButtonGroup>
                         <Button size="sm" color="info" tag={Link} to={"#"}>Read</Button>
-                        <Button size="sm" color="primary" tag={Link} to={"#"}>Edit</Button>
-                        <Button size="sm" color="danger" onClick={() => remove(3)}>Delete</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/admin/roles/form/"+role.role}>Edit</Button>
+                        <Button size="sm" color="danger" onClick={() => remove(role.role)}>Delete</Button>
                     </ButtonGroup>
                 </td>
             </tr>
@@ -53,7 +53,7 @@ function ProfileList() {
             <AppNavbar />
             <Container fluid>
                 <div className="float-end">
-                    <Button color="success" tag={Link} to="/users/form/new">Add Profile</Button>
+                    <Button color="success" tag={Link} to="/admin/roles/form/new">Add Profile</Button>
                 </div>
                 <h3>My Profile</h3>
                 <Table className="mt-4">

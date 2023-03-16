@@ -25,7 +25,7 @@ public class Paper {
     private int paperID;
 
     @OneToOne(fetch = FetchType.EAGER,cascade = {
-        CascadeType.REMOVE
+        CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE
     })
     @JsonIgnore
     @JoinColumn(name = "file_info_ID")
@@ -53,5 +53,6 @@ public class Paper {
         file  = new File();
         paperInfo = new PaperInfo();
         reviewList = new ArrayList<>();
+        paperInfo = new PaperInfo();
     }
 }

@@ -1,6 +1,6 @@
 package com.myapp.restapi.researchconference.rest;
 
-import com.myapp.restapi.researchconference.Restservice.UserRestService;
+import com.myapp.restapi.researchconference.Restservice.Interface.UserRestService;
 import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

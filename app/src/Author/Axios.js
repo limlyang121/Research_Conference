@@ -8,6 +8,13 @@ const api = axios.create({
     }
 });
 
+const download = axios.create({
+    baseURL: "http://localhost:8080/api/",
+    headers: {
+        "Content-type": "application/json",
+    }
+});
+
 api.interceptors.request.use(async (config) => {
     const tokenString = sessionStorage.getItem("token");
     const token = JSON.parse(tokenString)

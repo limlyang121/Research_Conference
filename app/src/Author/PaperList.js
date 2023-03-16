@@ -16,20 +16,25 @@ function PaperList() {
     const myID = sessionStorage.getItem("id")
 
     React.useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (myID) => {
             let response = await getMyPapers(myID)
             setPapers(response)
         }
 
-        fetchData();
+        fetchData(myID);
 
     }, [])
 
     const downloadFile = async (id) => {
-        let response = await downloadPapers(parseInt(id))
-        const blob = new Blob([response], { type: "application/pdf" })
+        try{
 
-        saveAs(blob, response)
+            let response = await downloadPapers(parseInt(id))
+            const blob = new Blob([response], { type: "application/pdf" })
+            saveAs(blob, response)
+            
+        }catch(error){
+
+        }
     }
 
     const remove = async (id) => {
