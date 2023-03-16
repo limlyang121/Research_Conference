@@ -4,7 +4,9 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { getMyPapers, deletePapers, downloadPapers } from './Axios';
+import { getMyPapers, deletePapers, downloadPapers, getPaperByID } from './Axios';
+import { saveAs } from "file-saver"
+
 
 
 function PaperList() {
@@ -24,19 +26,21 @@ function PaperList() {
     }, [])
 
     const downloadFile = async (id) => {
-        let response = await downloadPapers(parseInt(id) )
-        alert (response.name)
+        let response = await downloadPapers(parseInt(id))
+        const blob = new Blob([response], { type: "application/pdf" })
+
+        saveAs(blob, response)
     }
 
     const remove = async (id) => {
         if (window.confirm("Delete? ")) {
-          await deletePapers(id)
-            .then(() => {
-              let updatedGroups = [...myPapers].filter(i => i.paperID !== id);
-              setPapers(updatedGroups);
-            });
+            await deletePapers(parseInt(id))
+                .then(() => {
+                    let updatedGroups = [...myPapers].filter(i => i.paperID !== id);
+                    setPapers(updatedGroups);
+                });
         }
-      }
+    }
 
     const myPapersData = myPapers.map(paper => {
         return (
@@ -45,10 +49,10 @@ function PaperList() {
                 <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.filename}  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.upload}  </td>
                 <td>
-                    <ButtonGroup style={{gap : "10px"}}>
-                        <Button size="sm" color="info" tag={Link} to={"#"}>Read</Button>
-                        <Button size="sm" color="primary" tag={Link} to={"#"}>Edit</Button>
-                        <Button size="sm" color="danger" onClick={() => remove("")}>Delete</Button>
+                    <ButtonGroup style={{ gap: "10px" }}>
+                        <Button size="sm" color="info" tag={Link} to={"/author/papers/read/"+paper.paperID}>Read</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/author/papers/form/"+paper.paperID}>Edit</Button>
+                        <Button size="sm" color="danger" onClick={() => remove(paper.paperID)}>Delete</Button>
                         <Button size="sm" color="primary" onClick={async () => await downloadFile(paper.paperID)} >Download</Button>
 
                     </ButtonGroup>
@@ -62,7 +66,7 @@ function PaperList() {
             <AppNavbar />
             <Container fluid>
                 <div className='float-end'>
-                    <Button color='success' tag={Link} to="#">Add Paper</Button>
+                    <Button color='success' tag={Link} to={"/author/papers/form/new"}>Add Paper</Button>
                 </div>
 
                 <h3>My Papers</h3>

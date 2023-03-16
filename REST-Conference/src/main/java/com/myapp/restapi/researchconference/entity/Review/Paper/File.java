@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Blob;
+import java.util.Arrays;
 
 @Data
 @Builder
@@ -25,4 +26,13 @@ public class File {
 
     @Column(name = "file_type")
     private String fileType;
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "fileID=" + fileID +
+                ", fileData=" + Arrays.toString(fileData) +
+                ", fileType='" + fileType + '\'' +
+                '}';
+    }
 }

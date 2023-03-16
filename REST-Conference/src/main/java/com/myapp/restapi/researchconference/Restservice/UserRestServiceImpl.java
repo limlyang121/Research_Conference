@@ -78,6 +78,7 @@ public class UserRestServiceImpl implements UserRestService{
         if (checkIfUserExisted != null && checkIfUserExisted.getId() != userID){
             return null;
         }
+
         Role tempRole = userRepo.findRoleByName(user.getRole().getRole());
         User tempUser = userRepo.findByID(userID);
         tempUser.setUserName(user.getUserName());

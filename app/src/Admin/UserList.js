@@ -49,8 +49,8 @@ const UserList = () => {
           <td style={{ whiteSpace: 'nowrap' }}>{user.userName}</td>
           <td>
             <ButtonGroup>
-              <Button size="sm" color="info" tag={Link} to={"/users/read/" + user.id}>Read</Button>
-              <Button size="sm" color="primary" tag={Link} to={"/users/form/" + user.id}>Edit</Button>
+              <Button size="sm" color="info" tag={Link} to={"/admin/users/read/" + user.id}>Read</Button>
+              <Button size="sm" color="primary" tag={Link} to={"/admin/users/form/" + user.id}>Edit</Button>
               <Button size="sm" color="danger" onClick={() => remove(user.id)}>Delete</Button>
             </ButtonGroup>
           </td>
@@ -70,7 +70,7 @@ const UserList = () => {
       <AppNavbar />
       <Container fluid>
         <div className="float-end">
-          <Button color="success" tag={Link} to="/users/form/new">Add User</Button>
+          <Button color="success" tag={Link} to="/admin/users/form/new">Add User</Button>
         </div>
         <h3>My Users</h3>
         <Table className="mt-4">

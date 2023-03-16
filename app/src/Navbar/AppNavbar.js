@@ -54,7 +54,7 @@ const AppNavbar = () => {
               <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
                 <NavItem>
                   <Button>
-                    <Link to={"/users"} style={{ textDecoration: "none", color: "white" }}>
+                    <Link to={"/admin/users"} style={{ textDecoration: "none", color: "white" }}>
                       User Accounts
                     </Link>
                   </Button>
@@ -62,7 +62,7 @@ const AppNavbar = () => {
 
                 <NavItem>
                 <Button>
-                    <Link to={"/role"} style={{ textDecoration: "none", color: "white" }}>
+                    <Link to={"/admin/role"} style={{ textDecoration: "none", color: "white" }}>
                       User Profile
                     </Link>
                   </Button>
@@ -75,7 +75,7 @@ const AppNavbar = () => {
               <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
                 <NavItem>
                   <Button>
-                    <Link tag={Link} to={"/papers/mypapers/"+user} style={{ textDecoration: "none", color: "white" }}>
+                    <Link tag={Link} to={"/author/papers/mypapers/"+user} style={{ textDecoration: "none", color: "white" }}>
                       My Papers
                     </Link>
                   </Button>
@@ -84,7 +84,7 @@ const AppNavbar = () => {
 
                 <NavItem>
                 <Button>
-                    <Link tag={Link} to={"/papers/form/new"} style={{ textDecoration: "none", color: "white" }}>
+                    <Link tag={Link} to={"/author/papers/form/new"} style={{ textDecoration: "none", color: "white" }}>
                       Add Paper
                     </Link>
                   </Button>

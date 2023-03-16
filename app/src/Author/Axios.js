@@ -28,18 +28,23 @@ export const getMyPapers = async (id) => {
     return response.data;
 }
 
+export const getPaperByID = async (id) => {
+    let response = await api.get(`papers/${id}`)
+    return response.data;
+}
+
 export const addPapers = async (data) => {
     let response = await api.post("papers", data)
     return response.data;
 }
 
-export const updateUser = async (data) => {
-    let response = await api.put(`users/${data.id}`, data)
+export const updatePaper = async (data) => {
+    let response = await api.put(`papers/${ data.paperID}`, data)
     return response.data
 }
 
-export const deletePapers = async (data) => {
-    let response = await api.delete(`papers/${data.id}`, data)
+export const deletePapers = async (id) => {
+    let response = await api.delete(`papers/delete/${id}`)
     return response.data
 }
 
@@ -47,3 +52,4 @@ export const downloadPapers = async (id) => {
     let response = await api.get(`papers/download/${id}`)
     return response.data
 }
+

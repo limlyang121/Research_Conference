@@ -9,13 +9,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Table
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class Paper {
 
@@ -24,8 +24,8 @@ public class Paper {
     @Column(name = "paperID")
     private int paperID;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = {
-        CascadeType.ALL
+    @OneToOne(fetch = FetchType.EAGER,cascade = {
+        CascadeType.REMOVE
     })
     @JsonIgnore
     @JoinColumn(name = "file_info_ID")
@@ -37,10 +37,9 @@ public class Paper {
     @JoinColumn (name = "paper_info_ID")
     private PaperInfo paperInfo;
 
-
     @ManyToMany (cascade = {
             CascadeType.ALL
-    })
+    }, fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "review_paper",
@@ -49,4 +48,10 @@ public class Paper {
     )
     private List<Review> reviewList;
 
+
+    public Paper() {
+        file  = new File();
+        paperInfo = new PaperInfo();
+        reviewList = new ArrayList<>();
+    }
 }

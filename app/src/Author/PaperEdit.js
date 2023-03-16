@@ -5,14 +5,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AppNavbar from '../Navbar/AppNavbar';
 import { Container, Input, Label, FormGroup, Button, Form } from 'reactstrap';
 import { addPapers } from './FileSubmitAxios';
+import { getPaperByID, updatePaper } from './Axios';
+import { data } from 'autoprefixer';
 
 
 function PaperEdit() {
     const paperFormState = {
         paperID: "",
-        file:{
-            fileData:null,
-            fileType:""
+        file: {
+            fileData: null,
+            fileType: ""
         },
         status: "",
         paperInfo: {
@@ -22,7 +24,7 @@ function PaperEdit() {
             authorID: "",
             description: ""
         },
-    
+
     }
 
     const [myFile, setFile] = React.useState(null);
@@ -34,7 +36,8 @@ function PaperEdit() {
     React.useEffect(() => {
         const loadData = async () => {
             //Get Data
-            alert("Load Data")
+            let response = await getPaperByID(id)
+            setPaper(response)
 
             //Check
             // if (response.paperInfo.authorID != myID){
@@ -46,13 +49,12 @@ function PaperEdit() {
         }
         if (id !== 'new') {
             loadData()
-
         }
 
         const myID = sessionStorage.getItem("id")
         myPaper.paperInfo.authorID = myID;
 
-    }, [id, myPaper])
+    }, [])
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -72,11 +74,11 @@ function PaperEdit() {
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         setPaper((prevMyPaper) => ({
-          ...prevMyPaper,
-          paperInfo: {
-            ...prevMyPaper.paperInfo,
-            filename: file.name,
-          },
+            ...prevMyPaper,
+            paperInfo: {
+                ...prevMyPaper.paperInfo,
+                filename: file.name,
+            },
         }));
 
         setFile(file)
@@ -85,22 +87,27 @@ function PaperEdit() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const formData = new FormData()
-        const json = JSON.stringify(myPaper)
-        formData.append("file", myFile)
-        formData.append("paperData",   json)
-
-        try {
-            if (id === "new") {
-                let response = await addPapers(formData)
-                alert(response)
-            }
-
+        if (id !== "new") {
+            let response = await updatePaper(myPaper);
+            alert(response)
 
             navigate("/home")
-        } catch (error) {
-            alert(error)
+        } else {
+            const formData = new FormData()
+            const json = JSON.stringify(myPaper)
+            formData.append("file", myFile)
+            formData.append("paperData", json)
+
+            try {
+                let response = await addPapers(formData)
+                alert(response)
+
+                navigate("/home")
+            } catch (error) {
+                alert(error)
+            }
         }
+
 
     }
 
@@ -132,18 +139,19 @@ function PaperEdit() {
 
                     <br />
 
+                    {id === "new" &&
+                        <Input type='file' name='file' id='file' accept='application/pdf' onChange={handleFileUpload} />
 
-                    <Input type='file' name='file' id='file' accept='application/pdf' onChange={handleFileUpload} />
+                    }
 
                     <br /> <br />
 
                     <Input type='Date' name='upload' id='upload' hidden />
 
-                    <br />
 
 
                     <Input type='textarea' placeholder='description ' style={{ height: "250px" }} name="paperInfo.description" id='paperInfo.description'
-                        onChange={handleChange} />
+                        onChange={handleChange} value={myPaper.paperInfo.description} />
 
                     <br />
 

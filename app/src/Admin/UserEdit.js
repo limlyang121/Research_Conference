@@ -92,7 +92,7 @@ const UserEdit = () => {
             }
 
             setUser(initialFormState);
-            navigate('/users');
+            navigate('/admin/users');
         }catch{
             alert("Username existed")
         }

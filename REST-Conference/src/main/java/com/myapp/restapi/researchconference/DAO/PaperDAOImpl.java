@@ -1,6 +1,7 @@
 package com.myapp.restapi.researchconference.DAO;
 
 import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
+import com.myapp.restapi.researchconference.entity.Review.Paper.File;
 import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PaperDAOImpl implements PaperDAO{
@@ -43,7 +45,18 @@ public class PaperDAOImpl implements PaperDAO{
             System.out.println(e);
             return null;
         }
+    }
 
+    @Override
+    public Optional<Paper> findPaperByID(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Paper> query = session.createQuery("from Paper where paperID = :paperID", Paper.class);
+        query.setParameter("paperID", paperID);
+        Optional<Paper> paper = query.uniqueResultOptional();
+
+
+        return paper;
     }
 
     @Override
@@ -66,10 +79,28 @@ public class PaperDAOImpl implements PaperDAO{
     }
 
     @Override
-    public DownloadFileWrapper downloadPaper(int paperID) {
+    public File downloadPaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Paper paper = session.get(Paper.class, paperID);
+        File file = paper.getFile();
+        return file;
+    }
+
+    @Override
+    public boolean deletePaper(int paperID) {
         Session session = entityManager.unwrap(Session.class);
         Paper paper = session.get(Paper.class, paperID);
-        byte[] pdfBytes = paper.getFile().getFileData();
-        return new DownloadFileWrapper(pdfBytes, paper.getFile().getFileType(), paper.getPaperInfo().getFilename());
+        if (paper != null){
+            session.remove(paper);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Paper updatePaper(Paper paper){
+        Session session = entityManager.unwrap(Session.class);
+        return session.merge(paper);
     }
 }
