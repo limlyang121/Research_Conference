@@ -6,6 +6,8 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getMyPapers, deletePapers, downloadPapers, getPaperByID } from './Axios';
 import { saveAs } from "file-saver"
+import { format } from "date-fns"
+
 
 
 
@@ -25,14 +27,24 @@ function PaperList() {
 
     }, [])
 
+    const dateFormat = (date) => {
+        const dateType = new Date(date)
+
+        return (format(dateType, "dd/MM/yyyy"))
+    }
+
     const downloadFile = async (id) => {
         try{
 
             let response = await downloadPapers(parseInt(id))
+            alert("AAAA")
+
+            console.log(response)
             const blob = new Blob([response], { type: "application/pdf" })
             saveAs(blob, response)
             
         }catch(error){
+            alert("AAAA")
 
         }
     }
@@ -52,13 +64,13 @@ function PaperList() {
             <tr key={paper.paperID}>
                 <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.title}  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.filename}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.upload}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {dateFormat (paper.paperInfo.upload)}  </td>
                 <td>
                     <ButtonGroup style={{ gap: "10px" }}>
                         <Button size="sm" color="info" tag={Link} to={"/author/papers/read/"+paper.paperID}>Read</Button>
                         <Button size="sm" color="primary" tag={Link} to={"/author/papers/form/"+paper.paperID}>Edit</Button>
                         <Button size="sm" color="danger" onClick={() => remove(paper.paperID)}>Delete</Button>
-                        <Button size="sm" color="primary" onClick={async () => await downloadFile(paper.paperID)} >Download</Button>
+                        <Button size="sm" color="primary" onClick={async () => downloadFile(paper.paperID)} >Download</Button>
 
                     </ButtonGroup>
                 </td>

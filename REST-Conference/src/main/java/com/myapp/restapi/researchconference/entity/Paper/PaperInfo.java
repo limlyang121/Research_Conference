@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.entity.Review.Paper;
+package com.myapp.restapi.researchconference.entity.Paper;
 
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import jakarta.persistence.*;

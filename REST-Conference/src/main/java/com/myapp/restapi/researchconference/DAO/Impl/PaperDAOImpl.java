@@ -1,8 +1,8 @@
 package com.myapp.restapi.researchconference.DAO.Impl;
 
 import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
-import com.myapp.restapi.researchconference.entity.Review.Paper.File;
-import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
+import com.myapp.restapi.researchconference.entity.Paper.File;
+import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -30,11 +30,29 @@ public class PaperDAOImpl implements PaperDAO {
     }
 
     @Override
-    public List<Paper> findBidPapers() {
+    public List<Paper> findBidPapers(int reviewerID) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Paper> paperQuery = session.createQuery("From Paper where status = 'Pending'", Paper.class);
+        Query query = session.createQuery("SELECT p FROM Paper p WHERE p.status = :status AND p.paperID " +
+                "NOT IN (SELECT bp.paper.paperID FROM BlacklistPaper bp WHERE bp.reviewer.reviewerID = :reviewerID)" +
+                "AND p.paperID NOT IN (SELECT b.paper.paperID FROM Bid b WHERE b.reviewer.reviewerID = :reviewerID) ");
 
-        return paperQuery.getResultList();
+        query.setParameter("status", "Pending");
+        query.setParameter("reviewerID", reviewerID);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Paper> findBanPapers(int reviewerID){
+        Session session = entityManager.unwrap(Session.class);
+        Query query = session.createQuery("SELECT p FROM Paper p WHERE p.status = :status AND p.paperID " +
+                "IN (SELECT bp.paper.paperID FROM BlacklistPaper bp WHERE bp.reviewer.reviewerID = :reviewerID)" +
+                "AND p.paperID NOT IN (SELECT b.paper.paperID FROM Bid b WHERE b.reviewer.reviewerID = :reviewerID) ");
+
+        query.setParameter("status", "Pending");
+        query.setParameter("reviewerID", reviewerID);
+
+        return query.getResultList();
     }
 
     @Override

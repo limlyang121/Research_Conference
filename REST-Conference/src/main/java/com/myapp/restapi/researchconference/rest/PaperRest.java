@@ -1,9 +1,10 @@
 package com.myapp.restapi.researchconference.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
-import com.myapp.restapi.researchconference.entity.Review.Paper.File;
-import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
+import com.myapp.restapi.researchconference.entity.Paper.File;
+import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api")
@@ -25,28 +25,30 @@ public class PaperRest {
     }
 
     @GetMapping("papers")
-    public List<Paper> findAll(){
+    public List<PaperDTO> findAll(){
         return papersRestService.findAll();
     }
 
     @GetMapping("papers/mypapers/{myID}")
-    public List<Paper> findMyPapers(@PathVariable int myID){
-        List<Paper> a = papersRestService.findMyPaper(myID);
+    public List<PaperDTO> findMyPapers(@PathVariable int myID){
         return papersRestService.findMyPaper(myID);
     }
 
     @GetMapping("papers/{paperID}")
-    public Paper findPaperByID(@PathVariable int paperID){
-        Optional<Paper> paper = papersRestService.findPaperByID(paperID);
-        if (paper.isPresent()){
-            return paper.get();
-        }else
-            return null;
+    public PaperDTO findPaperByID(@PathVariable int paperID){
+        PaperDTO paperDTO = papersRestService.findPaperByID(paperID);
+        return  paperDTO;
     }
-    @GetMapping("papers/bid")
-    public List<Paper> findBidPapers(){
-        return papersRestService.findBidPapers();
+    @GetMapping("papers/bid/{reviewerID}")
+    public List<PaperDTO> findBidPapers(@PathVariable int reviewerID){
+        return papersRestService.findBidPapers(reviewerID);
     }
+
+    @GetMapping("papers/ban/{reviewerID}")
+    public List<PaperDTO> findBanPapers(@PathVariable int reviewerID){
+        return papersRestService.findBanPapers(reviewerID);
+    }
+
 
     @PostMapping(value = "papers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> add(@RequestParam MultipartFile file, @RequestParam String paperData) throws IOException {
@@ -87,6 +89,7 @@ public class PaperRest {
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Test"+"."+temp.getFileType()).build());
         headers.setContentLength(encodedBytes.length);
+
         return ResponseEntity.ok().headers(headers).body(temp.getFileData());
 
     }

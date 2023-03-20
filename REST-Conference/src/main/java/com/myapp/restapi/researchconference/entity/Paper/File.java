@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.entity.Review.Paper;
+package com.myapp.restapi.researchconference.entity.Paper;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

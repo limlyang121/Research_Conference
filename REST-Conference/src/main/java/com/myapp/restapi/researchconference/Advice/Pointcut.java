@@ -1,6 +1,6 @@
 //package com.myapp.restapi.researchconference.Advice;
 //
-//import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
+//import com.myapp.restapi.researchconference.entity.Paper.Paper;
 //import org.aspectj.lang.JoinPoint;
 //import org.aspectj.lang.annotation.AfterReturning;
 //import org.aspectj.lang.annotation.Aspect;

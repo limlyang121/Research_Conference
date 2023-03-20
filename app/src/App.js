@@ -42,7 +42,7 @@ const App = () => {
 
 
         {/* Reviewer */}
-        <Route path='/reviewer/bid' exact={true} element={<ReviewerBid />} />
+        <Route path='/reviewer/bid/:id' exact={true} element={<ReviewerBid />} />
 
       </Routes>
     </Router>

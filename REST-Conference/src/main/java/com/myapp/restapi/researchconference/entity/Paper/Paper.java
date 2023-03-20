@@ -1,13 +1,11 @@
-package com.myapp.restapi.researchconference.entity.Review.Paper;
+package com.myapp.restapi.researchconference.entity.Paper;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.myapp.restapi.researchconference.entity.Review.FileData.FileData;
-import com.myapp.restapi.researchconference.entity.Review.Reviews.Review;
+import com.myapp.restapi.researchconference.entity.Review.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class Paper {
     @Column(name = "paperID")
     private int paperID;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = {
+    @OneToOne(fetch = FetchType.LAZY,cascade = {
         CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE
     })
     @JsonIgnore
@@ -37,22 +35,15 @@ public class Paper {
     @JoinColumn (name = "paper_info_ID")
     private PaperInfo paperInfo;
 
-    @ManyToMany (cascade = {
+    @OneToMany (mappedBy = "paper", cascade = {
             CascadeType.ALL
     }, fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinTable(
-            name = "review_paper",
-            joinColumns = @JoinColumn(name = "paperID"),
-            inverseJoinColumns = @JoinColumn(name = "reviewID")
-    )
     private List<Review> reviewList;
-
 
     public Paper() {
         file  = new File();
         paperInfo = new PaperInfo();
         reviewList = new ArrayList<>();
-        paperInfo = new PaperInfo();
     }
 }

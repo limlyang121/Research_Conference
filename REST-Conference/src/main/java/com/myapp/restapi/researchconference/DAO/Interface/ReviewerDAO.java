@@ -1,0 +1,12 @@
+package com.myapp.restapi.researchconference.DAO.Interface;
+
+
+import com.myapp.restapi.researchconference.entity.Review.Reviewer;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface ReviewerDAO {
+    List<Reviewer> findAll();
+    Optional<Reviewer> findByID(int reviewerID);
+}

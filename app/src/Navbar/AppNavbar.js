@@ -105,7 +105,7 @@ const AppNavbar = () => {
 
                 <NavItem>
                   <Button>
-                    <Link to={"/reviewer/bid"} style={{ textDecoration: "none", color: "white" }}>
+                    <Link to={"/reviewer/bid/"+parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
                       Bid Paper
                     </Link>
                   </Button>

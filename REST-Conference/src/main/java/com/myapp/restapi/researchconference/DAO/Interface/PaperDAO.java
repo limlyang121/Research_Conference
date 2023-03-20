@@ -1,8 +1,7 @@
 package com.myapp.restapi.researchconference.DAO.Interface;
 
-import com.myapp.restapi.researchconference.entity.Review.Paper.DownloadFileWrapper;
-import com.myapp.restapi.researchconference.entity.Review.Paper.File;
-import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
+import com.myapp.restapi.researchconference.entity.Paper.File;
+import com.myapp.restapi.researchconference.entity.Paper.Paper;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,6 +14,10 @@ public interface PaperDAO {
 
     Optional<Paper> findPaperByID(int userID);
 
+    List<Paper> findBidPapers(int reviewerID);
+
+    List<Paper> findBanPapers(int reviewerID);
+
     Paper add(Paper paper);
 
     File downloadPaper(int paperID) throws SQLException;
@@ -23,6 +26,6 @@ public interface PaperDAO {
 
     Paper updatePaper(Paper paper);
 
-    List<Paper> findBidPapers();
+
 
 }

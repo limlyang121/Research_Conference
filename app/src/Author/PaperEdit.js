@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppNavbar from '../Navbar/AppNavbar';
 import { Container, Input, Label, FormGroup, Button, Form } from 'reactstrap';
-import { addPapers } from './FileSubmitAxios';
+import { addPapers } from './Axios';
 import { getPaperByID, updatePaper } from './Axios';
 import { data } from 'autoprefixer';
 

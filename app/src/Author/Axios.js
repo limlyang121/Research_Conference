@@ -8,21 +8,30 @@ const api = axios.create({
     }
 });
 
-const download = axios.create({
+const upload = axios.create({
     baseURL: "http://localhost:8080/api/",
     headers: {
-        "Content-type": "application/json",
+        "Content-type": "multipart/form-data",
     }
 });
 
-api.interceptors.request.use(async (config) => {
+const download = axios.create({
+    baseURL: "http://localhost:8080/api/",
+    responseType: "arraybuffer",
+});
+
+const interceptor = async (config) => {
     const tokenString = sessionStorage.getItem("token");
-    const token = JSON.parse(tokenString)
+    const token = JSON.parse(tokenString);
     if (token) {
         config.headers.Authorization = `Bearer ${token.jwt}`
     }
     return config
-})
+}
+
+upload.interceptors.request.use(interceptor);
+api.interceptors.request.use(interceptor);
+download.interceptors.request.use(interceptor);
 
 export const getAllPapers = async () => {
     let response = await api.get("papers")
@@ -41,7 +50,7 @@ export const getPaperByID = async (id) => {
 }
 
 export const addPapers = async (data) => {
-    let response = await api.post("papers", data)
+    let response = await upload.post("papers", data)
     return response.data;
 }
 
@@ -56,7 +65,7 @@ export const deletePapers = async (id) => {
 }
 
 export const downloadPapers = async (id) => {
-    let response = await api.get(`papers/download/${id}`)
+    let response = await download.get(`papers/download/${id}`)
     return response.data
 }
 

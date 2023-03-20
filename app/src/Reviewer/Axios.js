@@ -17,8 +17,31 @@ api.interceptors.request.use(async (config) => {
     return config
 })
 
-export const getPendingPapers = async () => {
-    let response = await api.get("papers/bid")
+export const getPendingPapers = async (id) => {
+    let response = await api.get(`papers/bid/${id}`)
     return response.data;
-
 }
+
+export const getBanPapers = async (id) => {
+    let response = await api.get(`papers/ban/${id}`)
+    return response.data;
+}
+
+export const addToBlackListAPI = async (data) => {
+    let response = await api.post(`blacklist`,data)
+    return response.data;
+}
+
+export const DeleteFromBlackListAPI = async (data) => {
+    let response = await api.delete(`blacklist`,{data})
+    return response.data;
+}
+
+
+
+// Bid Part
+export const addToBidAPI = async (data) => {
+    let response = await api.post(`bids`,data)
+    return response.data;
+}
+

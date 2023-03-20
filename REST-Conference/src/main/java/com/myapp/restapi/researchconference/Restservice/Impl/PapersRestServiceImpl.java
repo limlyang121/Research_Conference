@@ -2,15 +2,17 @@ package com.myapp.restapi.researchconference.Restservice.Impl;
 
 import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
+import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
-import com.myapp.restapi.researchconference.entity.Review.Paper.File;
-import com.myapp.restapi.researchconference.entity.Review.Paper.Paper;
+import com.myapp.restapi.researchconference.entity.Paper.File;
+import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,26 +30,67 @@ public class PapersRestServiceImpl implements PapersRestService {
 
     @Override
     @Transactional
-    public List<Paper> findAll() {
-        return paperDAO.findAll();
+    public List<PaperDTO> findAll() {
+        List<PaperDTO> paperDTO = convertToDTO(paperDAO.findAll());
+        return paperDTO;
     }
 
     @Override
     @Transactional
-    public List<Paper> findMyPaper(int userID) {
-        return paperDAO.findMyPaper(userID);
+    public List<PaperDTO> findMyPaper(int userID) {
+        List<Paper> paper = paperDAO.findMyPaper(userID);
+        return convertToDTO(paper);
+
+    }
+    public List<PaperDTO> convertToDTO(List<Paper> paperList){
+        List<PaperDTO> paperDTOList = new ArrayList<>(paperList.size());
+        for (Paper paper : paperList){
+            PaperDTO  paperDTO = new PaperDTO();
+            paperDTO.setPaperID(paper.getPaperID());
+            paperDTO.setStatus(paper.getStatus());
+            paperDTO.setPaperInfo(paper.getPaperInfo());
+            paperDTOList.add(paperDTO);
+        }
+        return paperDTOList;
+    }
+
+    public PaperDTO convertToDTOSingle(Paper paper){
+        PaperDTO paperDTO = new PaperDTO();
+        paperDTO.setPaperID(paper.getPaperID());
+        paperDTO.setStatus(paper.getStatus());
+        paperDTO.setPaperInfo(paper.getPaperInfo());
+        return paperDTO;
+    }
+
+    public PaperDTO convertToDTODownload(Paper paper){
+        PaperDTO paperDTO = new PaperDTO();
+        paperDTO.setFile(paper.getFile());
+        paperDTO.setPaperInfo(paper.getPaperInfo());
+        return paperDTO;
     }
 
     @Override
     @Transactional
-    public Optional<Paper> findPaperByID(int paperID)    {
-        return paperDAO.findPaperByID(paperID);
+    public PaperDTO findPaperByID(int paperID)    {
+        Optional<Paper>  paper = paperDAO.findPaperByID(paperID);
+        if (paper.isPresent()){
+            return convertToDTOSingle(paper.get());
+        }else
+            return null;
     }
 
     @Override
     @Transactional
-    public List<Paper> findBidPapers() {
-        return paperDAO.findBidPapers();
+    public List<PaperDTO> findBidPapers(int reviewerID) {
+        List<Paper> paperList = paperDAO.findBidPapers(reviewerID);
+        return convertToDTO(paperList);
+    }
+
+    @Override
+    @Transactional
+    public List<PaperDTO> findBanPapers(int reviewerID) {
+        List<Paper> paperList = paperDAO.findBanPapers(reviewerID);
+        return convertToDTO(paperList);
     }
 
     @Override

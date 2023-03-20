@@ -89,22 +89,45 @@ create table `paper` (
     
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
+CREATE TABLE `reviewer` (
+  `reviewerID` INT(11) NOT NULL,
+  `is_active` tinyint(1) NOT NULL default 1 ,
+  PRIMARY KEY (`reviewerID`),
+  CONSTRAINT `fk_reviewer_id` FOREIGN KEY (`reviewerID`) REFERENCES `user_details` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+insert into `reviewer` values
+(3, 1);
+
+create table `blacklist_paper` (
+    `reviewerID` int(11) not null,
+    `paperID` int(11) not null,
+    PRIMARY KEY (`reviewerID`, `paperID`),
+    CONSTRAINT `fk_blacklist_reviewer` FOREIGN KEY (`reviewerID`) REFERENCES `reviewer` (`reviewerID`),
+    CONSTRAINT `fk_blacklist_paper` FOREIGN KEY (`paperID`) REFERENCES `paper` (`paperID`)
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+CREATE TABLE `bid` (
+  `bidID` int(11) not null auto_increment primary key,
+  `paperID` INT(11) NOT NULL,
+  `reviewerID` INT(11) NOT NULL,
+  `status` varchar(50) default "Pending",
+  CONSTRAINT `fk_reviewer_idx` FOREIGN KEY (`reviewerID`) REFERENCES `reviewer` (`reviewerID`),
+  CONSTRAINT `fk_paper_idx` FOREIGN KEY (`paperID`) REFERENCES `paper` (`paperID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 create table `review` (
     `reviewID` int(11) not null auto_increment primary key,
-    `reviewerID` int(11),
+    `bidID` int(11),
     `rate` int(11),
     `comment` Varchar(50) ,
     `review_date` Date,
-    constraint `fk_reviewerID` foreign key (`reviewerID`)
-    references `user_details` (`id`)
+    constraint `fk_bidID` foreign key (`bidID`)
+    references `bid` (`bidID`)
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
-CREATE TABLE `review_paper` (
-  `reviewID` INT(11) NOT NULL,
-  `paperID` INT(11) NOT NULL,
-  PRIMARY KEY (`reviewID`, `paperID`),
-  CONSTRAINT `fk_review_id` FOREIGN KEY (`reviewID`) REFERENCES `review` (`reviewID`),
-  CONSTRAINT `fk_paper_id` FOREIGN KEY (`paperID`) REFERENCES `paper` (`paperID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+

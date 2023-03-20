@@ -16,7 +16,6 @@ function PaperRead() {
     React.useEffect(() => {
         const fetchData = async (id) => {
             let response = await getPaperByID(id)
-
             setPaper(response)
         }
 
@@ -70,9 +69,6 @@ function PaperRead() {
 
                     </CardBody>
 
-                    <CardBody>
-
-                    </CardBody>
                 </Card>
 
                 <Card>
