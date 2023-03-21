@@ -1,6 +1,7 @@
 package com.myapp.restapi.researchconference.DAO.Impl;
 
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
+import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import com.myapp.restapi.researchconference.entity.Review.Reviewer;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
@@ -33,5 +34,45 @@ public class ReviewerDAOImpl implements ReviewerDAO {
         Query<Reviewer> reviewerQuery = session.createQuery("From Reviewer where reviewerID = :reviewerID", Reviewer.class);
         reviewerQuery.setParameter("reviewerID", reviewerID);
         return reviewerQuery.uniqueResultOptional() ;
+    }
+
+    @Override
+    public Optional<Reviewer> findByUserID(int userID) {
+        Session session = entityManager.unwrap(Session.class);
+        Query<Reviewer> reviewerQuery = session.createQuery("From Reviewer where userdetails.id = :userID", Reviewer.class);
+        reviewerQuery.setParameter("userID", userID);
+        return reviewerQuery.uniqueResultOptional() ;
+    }
+
+    @Override
+    public Reviewer addReviewer(Reviewer reviewer) {
+        Session session = entityManager.unwrap(Session.class);
+
+        try{
+            session.persist(reviewer);
+            return reviewer;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public boolean isActive(int reviewerID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Reviewer reviewer = session.get(Reviewer.class, reviewerID);
+        reviewer.setIsActive(1);
+        session.merge(reviewer);
+        return true;
+    }
+
+    @Override
+    public boolean isNotActive(int reviewerID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Reviewer reviewer = session.get(Reviewer.class, reviewerID);
+        reviewer.setIsActive(0);
+        session.merge(reviewer);
+        return true;
     }
 }

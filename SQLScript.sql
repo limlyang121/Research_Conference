@@ -93,7 +93,7 @@ CREATE TABLE `reviewer` (
   `reviewerID` INT(11) NOT NULL,
   `is_active` tinyint(1) NOT NULL default 1 ,
   PRIMARY KEY (`reviewerID`),
-  CONSTRAINT `fk_reviewer_id` FOREIGN KEY (`reviewerID`) REFERENCES `user_details` (`id`)
+  CONSTRAINT `fk_reviewer_idxx` FOREIGN KEY (`reviewerID`) REFERENCES `user_details` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into `reviewer` values
@@ -122,12 +122,13 @@ CREATE TABLE `bid` (
 
 create table `review` (
     `reviewID` int(11) not null auto_increment primary key,
-    `bidID` int(11),
+    `reviewerID` int(11),
+    `paperID` int(11),
     `rate` int(11),
     `comment` Varchar(50) ,
     `review_date` Date,
-    constraint `fk_bidID` foreign key (`bidID`)
-    references `bid` (`bidID`)
+    CONSTRAINT `fk_reviewer_ida` FOREIGN KEY (`reviewerID`) REFERENCES `reviewer` (`reviewerID`),
+    CONSTRAINT `fk_paper_ida` FOREIGN KEY (`paperID`) REFERENCES `paper` (`paperID`)
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
 

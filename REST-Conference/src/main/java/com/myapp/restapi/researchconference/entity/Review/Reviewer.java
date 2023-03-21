@@ -1,6 +1,7 @@
 package com.myapp.restapi.researchconference.entity.Review;
 
 
+import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,10 @@ public class Reviewer {
     @Column(name = "is_active")
     private int isActive;
 
-    @OneToMany(mappedBy = "reviewer")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "reviewer", cascade = {
+            CascadeType.PERSIST, CascadeType.DETACH
+    })
     private List<Review> reviewList;
+
+
 }

@@ -62,7 +62,6 @@ public class PaperDAOImpl implements PaperDAO {
             Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperID = pi.paperID" +
                     " where pi .authorID.id = :userID", Paper.class);
             paperQuery.setParameter("userID", userID);
-            List<Paper> a = paperQuery.getResultList();
 
             return paperQuery.getResultList();
         }catch (Exception e){
@@ -75,7 +74,8 @@ public class PaperDAOImpl implements PaperDAO {
     public Optional<Paper> findPaperByID(int paperID) {
         Session session = entityManager.unwrap(Session.class);
 
-        Query<Paper> query = session.createQuery("from Paper where paperID = :paperID", Paper.class);
+        Query<Paper> query = session.createQuery("select p from Paper p left join fetch p.reviewList r " +
+                "where p.paperID = :paperID", Paper.class);
         query.setParameter("paperID", paperID);
         Optional<Paper> paper = query.uniqueResultOptional();
 

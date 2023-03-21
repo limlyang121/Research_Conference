@@ -3,6 +3,7 @@ package com.myapp.restapi.researchconference.Restservice.Impl;
 import com.myapp.restapi.researchconference.DAO.Interface.BidDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
+import com.myapp.restapi.researchconference.DTO.BidDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.BidRestService;
 import com.myapp.restapi.researchconference.entity.Bid.Bid;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
@@ -34,16 +35,29 @@ public class BidRestServiceImpl implements BidRestService {
     }
 
     @Override
+    public List<BidDTO> findMyBidByStatus(int reviewerID, String status) {
+        List<Bid> bid = bidDAO.findMyBidByStatus(reviewerID, status);
+        return BidDTO.DTOList(bid);
+    }
+
+    @Override
     @Transactional
-    public Bid addBid(Bid bid) {
+    public BidDTO addBid(Bid bid) {
         Optional<Paper> paperOptional = paperDAO.findPaperByID(bid.getPaper().getPaperID());
         Optional<Reviewer> reviewerOptional = reviewerDAO.findByID(bid.getReviewer().getReviewerID());
         if (paperOptional.isPresent() && reviewerOptional.isPresent()){
             bid.setPaper(paperOptional.get());
             bid.setReviewer(reviewerOptional.get());
             bid.setStatus("Pending");
-            return bidDAO.addBid(bid);
+            BidDTO bidDTO = BidDTO.DTOSingle(bidDAO.addBid(bid));
+            return bidDTO ;
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteBid(int bidID) {
+        return bidDAO.deleteBid(bidID);
     }
 }

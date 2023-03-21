@@ -29,6 +29,19 @@ public class BidDAOImpl implements BidDAO {
     }
 
     @Override
+    public List<Bid> findMyBidByStatus(int reviewerID, String status) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Bid> query = session.createQuery("From Bid where reviewer.reviewerID = :reviewerID " +
+                "and status = :status");
+
+        query.setParameter("reviewerID", reviewerID);
+        query.setParameter("status", status);
+
+        return query.getResultList();
+    }
+
+    @Override
     public boolean hideBid(int bidID) {
         return false;
     }
@@ -46,6 +59,13 @@ public class BidDAOImpl implements BidDAO {
 
     @Override
     public boolean deleteBid(int bidID) {
-        return false;
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Bid bid = session.get(Bid.class, bidID);
+            session.remove(bid);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

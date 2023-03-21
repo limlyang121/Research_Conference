@@ -7,6 +7,8 @@ import java.util.List;
 public interface BidDAO {
     List<Bid> findAll();
 
+    List<Bid> findMyBidByStatus(int reviewerID, String status);
+
     boolean hideBid(int bidID);
     Bid addBid(Bid bid);
 

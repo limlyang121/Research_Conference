@@ -17,10 +17,13 @@ public class Bid {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bidID;
 
-    @OneToOne
+    @OneToOne (cascade = {
+            CascadeType.PERSIST, CascadeType.DETACH
+    })
     @JoinColumn(name = "paperID")
     private Paper paper;
-    @OneToOne
+    @OneToOne (cascade = {
+            CascadeType.PERSIST, CascadeType.DETACH})
     @JoinColumn(name = "reviewerID")
     private Reviewer reviewer;
     private String status;

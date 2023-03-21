@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.myapp.restapi.researchconference.DTO.PaperDTO.convertToDTO;
+
 @Service
 public class PapersRestServiceImpl implements PapersRestService {
     private final PaperDAO paperDAO;
@@ -31,7 +33,7 @@ public class PapersRestServiceImpl implements PapersRestService {
     @Override
     @Transactional
     public List<PaperDTO> findAll() {
-        List<PaperDTO> paperDTO = convertToDTO(paperDAO.findAll());
+        List<PaperDTO> paperDTO = PaperDTO.convertToDTO(paperDAO.findAll());
         return paperDTO;
     }
 
@@ -39,34 +41,8 @@ public class PapersRestServiceImpl implements PapersRestService {
     @Transactional
     public List<PaperDTO> findMyPaper(int userID) {
         List<Paper> paper = paperDAO.findMyPaper(userID);
-        return convertToDTO(paper);
+        return PaperDTO.convertToDTO(paper);
 
-    }
-    public List<PaperDTO> convertToDTO(List<Paper> paperList){
-        List<PaperDTO> paperDTOList = new ArrayList<>(paperList.size());
-        for (Paper paper : paperList){
-            PaperDTO  paperDTO = new PaperDTO();
-            paperDTO.setPaperID(paper.getPaperID());
-            paperDTO.setStatus(paper.getStatus());
-            paperDTO.setPaperInfo(paper.getPaperInfo());
-            paperDTOList.add(paperDTO);
-        }
-        return paperDTOList;
-    }
-
-    public PaperDTO convertToDTOSingle(Paper paper){
-        PaperDTO paperDTO = new PaperDTO();
-        paperDTO.setPaperID(paper.getPaperID());
-        paperDTO.setStatus(paper.getStatus());
-        paperDTO.setPaperInfo(paper.getPaperInfo());
-        return paperDTO;
-    }
-
-    public PaperDTO convertToDTODownload(Paper paper){
-        PaperDTO paperDTO = new PaperDTO();
-        paperDTO.setFile(paper.getFile());
-        paperDTO.setPaperInfo(paper.getPaperInfo());
-        return paperDTO;
     }
 
     @Override
@@ -74,7 +50,7 @@ public class PapersRestServiceImpl implements PapersRestService {
     public PaperDTO findPaperByID(int paperID)    {
         Optional<Paper>  paper = paperDAO.findPaperByID(paperID);
         if (paper.isPresent()){
-            return convertToDTOSingle(paper.get());
+            return PaperDTO.convertToDTOSingle(paper.get());
         }else
             return null;
     }
@@ -83,14 +59,14 @@ public class PapersRestServiceImpl implements PapersRestService {
     @Transactional
     public List<PaperDTO> findBidPapers(int reviewerID) {
         List<Paper> paperList = paperDAO.findBidPapers(reviewerID);
-        return convertToDTO(paperList);
+        return PaperDTO.convertToDTO(paperList);
     }
 
     @Override
     @Transactional
     public List<PaperDTO> findBanPapers(int reviewerID) {
         List<Paper> paperList = paperDAO.findBanPapers(reviewerID);
-        return convertToDTO(paperList);
+        return PaperDTO.convertToDTO(paperList);
     }
 
     @Override

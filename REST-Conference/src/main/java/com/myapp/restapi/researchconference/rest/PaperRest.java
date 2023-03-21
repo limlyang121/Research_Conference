@@ -31,6 +31,7 @@ public class PaperRest {
 
     @GetMapping("papers/mypapers/{myID}")
     public List<PaperDTO> findMyPapers(@PathVariable int myID){
+        List<PaperDTO> a = papersRestService.findMyPaper(myID);
         return papersRestService.findMyPaper(myID);
     }
 

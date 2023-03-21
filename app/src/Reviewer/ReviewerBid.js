@@ -70,7 +70,7 @@ function ReviewerBid() {
     }
 
     const addToBid = async (event) => {
-        if (window.confirm("Hide the paper?")) {
+        if (window.confirm("Bid the papers?")) {
             event.preventDefault();
 
             const form = event.target;
@@ -85,7 +85,8 @@ function ReviewerBid() {
                 status: ""
             }
 
-            await addToBidAPI(bid).then(() => {
+            await addToBidAPI(bid).then((response) => {
+                alert(response)
                 let updatedPapers = [...displayPapers].filter(i => parseInt (i.paperID) !== parseInt (bid.paper.paperID));
                 setDisplayPaper(updatedPapers)
             })

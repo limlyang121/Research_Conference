@@ -14,6 +14,7 @@ import PaperEdit from "./Author/PaperEdit"
 import PaperList from './Author/PaperList';
 import PaperRead from './Author/PaperRead';
 import ReviewerBid from './Reviewer/ReviewerBid';
+import ReviewerBidStatus from './Reviewer/ReviewerBidStatus';
 
 
 const App = () => {
@@ -43,6 +44,8 @@ const App = () => {
 
         {/* Reviewer */}
         <Route path='/reviewer/bid/:id' exact={true} element={<ReviewerBid />} />
+        <Route path='/reviewer/mybids/:id' exact={true} element={<ReviewerBidStatus />} />
+
 
       </Routes>
     </Router>

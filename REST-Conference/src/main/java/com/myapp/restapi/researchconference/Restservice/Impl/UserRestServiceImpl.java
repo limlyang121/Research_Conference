@@ -1,9 +1,11 @@
 package com.myapp.restapi.researchconference.Restservice.Impl;
 
+import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
 import com.myapp.restapi.researchconference.Restservice.Interface.UserRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Role;
 import com.myapp.restapi.researchconference.entity.Admin.User;
+import com.myapp.restapi.researchconference.entity.Review.Reviewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,13 @@ import java.util.List;
 public class UserRestServiceImpl implements UserRestService {
 
     private final UserRepo userRepo;
+    private final ReviewerDAO reviewerDAO;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserRestServiceImpl(UserRepo userRepo, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserRestServiceImpl(UserRepo userRepo, ReviewerDAO reviewerDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepo = userRepo;
+        this.reviewerDAO = reviewerDAO;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -66,15 +70,25 @@ public class UserRestServiceImpl implements UserRestService {
         User tempUser = userRepo.findByUserName(user.getUserName());
         if (tempUser != null)
             return null;
-        boolean success = false;
         user.setActive(1);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepo.save(user);
+        User user1 =  userRepo.save(user);
+        if (user1 != null && user1.getRole().getRole().equalsIgnoreCase("Reviewer")){
+            Reviewer reviewer = new Reviewer();
+            reviewer.setIsActive(1);
+            reviewer.setReviewerID(user1.getId());
+            reviewerDAO.addReviewer(reviewer);
+        }
+
+        return user1;
     }
 
     @Override
     @Transactional
     public User update(User user, int userID) {
+        boolean isReviewer = false;
+        boolean wasReviewer = false;
+
         User checkIfUserExisted = userRepo.findByUserName(user.getUserName());
         if (checkIfUserExisted != null && checkIfUserExisted.getId() != userID){
             return null;
@@ -82,12 +96,33 @@ public class UserRestServiceImpl implements UserRestService {
 
         Role tempRole = userRepo.findRoleByName(user.getRole().getRole());
         User tempUser = userRepo.findByID(userID);
+        if (tempUser.getRole().getRole().equalsIgnoreCase("Reviewer") &&
+                (!user.getRole().getRole().equalsIgnoreCase("Reviewer"))) {
+            wasReviewer = true;
+        }
+
+        if (!tempUser.getRole().getRole().equalsIgnoreCase("Reviewer") &&
+                (user.getRole().getRole().equalsIgnoreCase("Reviewer"))) {
+            isReviewer = true;
+        }
+
         tempUser.setUserName(user.getUserName());
         tempUser.setRole(tempRole);
         tempUser.setActive(user.getActive());
         tempUser.setUserdetails(user.getUserdetails());
         tempUser.setPassword(user.getPassword());
+        boolean success = false;
+
+        if (isReviewer){
+            success = reviewerDAO.isActive(tempUser.getId());
+        }else if (wasReviewer)
+            success = reviewerDAO.isNotActive(tempUser.getId());
+        else if (!(isReviewer && wasReviewer)){
+            success = true;
+        }
+
         return userRepo.save(tempUser);
+
     }
 
     @Override

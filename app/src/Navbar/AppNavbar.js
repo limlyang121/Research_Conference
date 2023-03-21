@@ -105,7 +105,44 @@ const AppNavbar = () => {
 
                 <NavItem>
                   <Button>
-                    <Link to={"/reviewer/bid/"+parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
+                    <Link to={"/reviewer/mybids/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
+                      Bid Status
+                    </Link>
+                  </Button>
+                </NavItem>
+
+                <NavItem>
+                  <Button>
+                    <Link to={"/reviewer/bid/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
+                      Bid Paper
+                    </Link>
+                  </Button>
+                </NavItem>
+              </Nav>
+            )}
+
+            {myRole.includes("ConferenceChair") && (
+
+              <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
+                <NavItem>
+                  <Button>
+                    <Link to={"/admin/users"} style={{ textDecoration: "none", color: "white" }}>
+                      Bid 
+                    </Link>
+                  </Button>
+                </NavItem>
+
+                <NavItem>
+                  <Button>
+                    <Link to={"/reviewer/mybids/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
+                      Bid Status
+                    </Link>
+                  </Button>
+                </NavItem>
+
+                <NavItem>
+                  <Button>
+                    <Link to={"/reviewer/bid/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
                       Bid Paper
                     </Link>
                   </Button>
