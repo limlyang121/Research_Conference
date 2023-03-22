@@ -15,6 +15,8 @@ import PaperList from './Author/PaperList';
 import PaperRead from './Author/PaperRead';
 import ReviewerBid from './Reviewer/ReviewerBid';
 import ReviewerBidStatus from './Reviewer/ReviewerBidStatus';
+import AccessDenied from './Security/Access-Denied';
+import ConferenceReviewerBid from './ConferenceChair/ConferenceReviewerBid';
 
 
 const App = () => {
@@ -45,6 +47,14 @@ const App = () => {
         {/* Reviewer */}
         <Route path='/reviewer/bid/:id' exact={true} element={<ReviewerBid />} />
         <Route path='/reviewer/mybids/:id' exact={true} element={<ReviewerBidStatus />} />
+
+        {/* Conference Chaiar */}
+        <Route path='/conference/bids' exact={true} element={<ConferenceReviewerBid />} />
+
+
+        {/* Access Denied */}
+        <Route path='/denied' exact={true} element={<AccessDenied />} />
+
 
 
       </Routes>

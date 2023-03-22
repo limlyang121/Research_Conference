@@ -28,6 +28,12 @@ public class UserRest {
         return userRestService.findAll();
     }
 
+    @GetMapping("users/nonActive")
+    public List<User> findNonActive(){
+        List<User> userList = userRestService.findNonActiveAccount();
+        return userList;
+    }
+
     @GetMapping("users/{roleName}")
     public List<User> findAllByRole(@PathVariable String roleName){
         return userRestService.findUserByRole(roleName);

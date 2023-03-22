@@ -21,6 +21,11 @@ public class BidRest {
         this.bidRestService = bidRestService;
     }
 
+    @GetMapping("bids/{status}")
+    public List<BidDTO> findAllBidsByStatus(@PathVariable String status){
+        return bidRestService.findAllBidByStatus(status);
+    }
+
     @GetMapping("bids/{reviewerID}/{status}")
     public List<BidDTO> findMyBidByStatus(@PathVariable int reviewerID, @PathVariable String status){
         return bidRestService.findMyBidByStatus(reviewerID, status);

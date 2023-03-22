@@ -6,6 +6,7 @@ import { Card, CardBody, CardHeader, CardText, CardTitle, Container, Label } fro
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getPaperByID } from './Axios';
+import AuthorSecurity from './AuthorSecurity';
 
 function PaperRead() {
 
@@ -34,6 +35,8 @@ function PaperRead() {
     return (
         <div>
             <AppNavbar />
+            <AuthorSecurity />
+
             <Container>
                 <br />
                 <Card>

@@ -38,7 +38,15 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public List<User> findAll(){
         Session session = entityManager.unwrap(Session.class);
-        Query<User> query = session.createQuery("From User ", User.class);
+        Query<User> query = session.createQuery("From User where active = 1", User.class);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<User> findNonActiveAccount() {
+        Session session = entityManager.unwrap(Session.class);
+        Query<User> query = session.createQuery("From User where active = 0", User.class);
 
         return query.getResultList();
     }

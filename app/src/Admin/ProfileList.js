@@ -5,6 +5,7 @@ import { deleteRole, getAllRoles } from '../Admin/adminAxios'
 import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
+import AdminSecurity from './AdminSecurity';
 
 
 function ProfileList() {
@@ -51,6 +52,8 @@ function ProfileList() {
     return (
         <div>
             <AppNavbar />
+            <AdminSecurity />
+
             <Container fluid>
                 <div className="float-end">
                     <Button color="success" tag={Link} to="/admin/roles/form/new">Add Profile</Button>

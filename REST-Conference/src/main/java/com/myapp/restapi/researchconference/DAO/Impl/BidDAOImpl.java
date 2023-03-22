@@ -20,7 +20,7 @@ public class BidDAOImpl implements BidDAO {
     }
 
     @Override
-    public List<Bid> findAll() {
+    public List<Bid> findAllBidsByStatus(String Status) {
         Session session = entityManager.unwrap(Session.class);
 
         Query<Bid> query = session.createQuery("From Bid where status = 'Pending'", Bid.class );

@@ -23,6 +23,13 @@ export const getAllUsers = async () => {
 
 }
 
+export const getAllNonActiveUsers = async () => {
+    let response = await api.get("users/nonActive")
+    return response.data;
+
+}
+
+
 export const removeUser = async (id) => {
     let response = await api.delete(`users/${id}`)
     return response.data;
@@ -64,7 +71,7 @@ export const deleteRole = async (name) => {
 }
 
 
-export const activateAccount = async (id) => {
+export const activateAccountAPI = async (id) => {
     let response = await api.patch(`users/activation/${id}`)
     return response.data
 }

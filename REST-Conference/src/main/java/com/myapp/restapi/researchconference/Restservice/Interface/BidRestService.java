@@ -6,7 +6,7 @@ import com.myapp.restapi.researchconference.entity.Bid.Bid;
 import java.util.List;
 
 public interface BidRestService {
-    List<Bid> findAll();
+    List<BidDTO> findAllBidByStatus(String status);
 
     List<BidDTO> findMyBidByStatus(int reviewerID, String status);
 

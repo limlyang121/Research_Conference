@@ -8,6 +8,9 @@ import java.util.List;
 @Service
 public interface UserRestService {
     List<User> findAll();
+
+    List<User> findNonActiveAccount();
+
     List<User> findUserByRole(String roleName);
 
     List<User> searchByUsername(String username);

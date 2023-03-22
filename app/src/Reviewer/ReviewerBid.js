@@ -11,19 +11,31 @@ function ReviewerBid() {
 
     const [displayPapers, setDisplayPaper] = React.useState([])
     const { id } = useParams();
-    const [status, setStatus] = React.useState();
+    const [status, setStatus] = React.useState("bid");
+
+    const changeStatus = React.useCallback((stat) => {
+        setStatus(stat)
+    },[setStatus])
 
 
     React.useEffect(() => {
-        const fetchData = async (id) => {
+        const fetchBidData = async (id) => {
             let response = await getPendingPapers(id);
             setDisplayPaper(response)
         }
+        const fetchBanData = async (id) => {
+            let response = await getBanPapers(id);
+            setDisplayPaper(response)
+        }
 
-        fetchData(id)
-        setStatus("bid")
+        if (status === "bid"){
+            fetchBidData(id)
+        }else{
+            fetchBanData(id)
+        }
 
-    }, [setDisplayPaper])
+
+    }, [status, changeStatus])
 
     const addToBlackList = async (event) => {
         if (window.confirm("Hide the paper?")) {
@@ -161,18 +173,7 @@ function ReviewerBid() {
         )
     })
 
-    const BidBanSwitch = async (stat) => {
-        if (stat === "bid") {
-            let response = await getPendingPapers(id);
-            setDisplayPaper(response)
-            setStatus("bid")
-        } else if (stat === 'ban') {
-            let response = await getBanPapers(id)
-            setDisplayPaper(response)
-            setStatus("hide")
 
-        }
-    }
 
 
     return (
@@ -180,8 +181,8 @@ function ReviewerBid() {
             <AppNavbar />
             <Container fluid>
                 <h3>Bid Papers</h3>
-                <Button color='primary' onClick={async () => BidBanSwitch("bid")} >Show Bid</Button>
-                <Button color='danger' onClick={async () => BidBanSwitch("ban")} >Show Hide</Button>
+                <Button color='primary' onClick={ () => changeStatus("bid")} >Show Bid</Button>
+                <Button color='danger' onClick= { () => changeStatus("hide")} >Show Hide</Button>
                 <Table className="mt-4">
                     <thead>
                         <tr>

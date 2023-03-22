@@ -9,16 +9,31 @@ import { deleteFromBidAPI, getBidByStatus } from './Axios';
 function ReviewerBidStatus() {
 
     const [myBid, setBids] = React.useState([]);
-    const [status, setStatus] = React.useState();
+    const [status, setStatus] = React.useState("Pending");
     const { id } = useParams()
 
+    const changeList = React.useCallback((stat) => {
+        setStatus(stat);
+    })
+
     React.useEffect(() => {
-        const fetchData = async (id) => {
+        const fetchPendingData = async (id) => {
             let response = await getBidByStatus(id, "Pending")
             setBids(response)
         }
 
-        fetchData(id)
+        const fetchAcceptData = async(id) =>{
+
+        }
+
+        const fetchRejectData = async(id) =>{
+            
+        }
+
+        if (status === "Pending"){
+            fetchPendingData(id)
+        }
+
 
     }, [])
 

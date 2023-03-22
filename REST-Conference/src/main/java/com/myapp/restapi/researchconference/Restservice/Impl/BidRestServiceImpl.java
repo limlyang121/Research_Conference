@@ -30,11 +30,13 @@ public class BidRestServiceImpl implements BidRestService {
     }
 
     @Override
-    public List<Bid> findAll() {
-        return null;
+    @Transactional
+    public List<BidDTO> findAllBidByStatus(String status) {
+        return BidDTO.DTOList(bidDAO.findAllBidsByStatus(status)) ;
     }
 
     @Override
+    @Transactional
     public List<BidDTO> findMyBidByStatus(int reviewerID, String status) {
         List<Bid> bid = bidDAO.findMyBidByStatus(reviewerID, status);
         return BidDTO.DTOList(bid);

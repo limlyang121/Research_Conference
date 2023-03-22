@@ -7,6 +7,7 @@ import { Container, Input, Label, FormGroup, Button, Form } from 'reactstrap';
 import { addPapers } from './Axios';
 import { getPaperByID, updatePaper } from './Axios';
 import { data } from 'autoprefixer';
+import AuthorSecurity from './AuthorSecurity';
 
 
 function PaperEdit() {
@@ -22,11 +23,11 @@ function PaperEdit() {
             filename: "",
             upload: "",
             authorID: {
-                id:"",
-                firstName:"",
-                lastName:"",
-                height:"",
-                weight:""
+                id: "",
+                firstName: "",
+                lastName: "",
+                height: "",
+                weight: ""
             },
             description: ""
         },
@@ -40,6 +41,7 @@ function PaperEdit() {
 
 
     React.useEffect(() => {
+
         const loadData = async () => {
             //Get Data
             let response = await getPaperByID(id)
@@ -123,6 +125,8 @@ function PaperEdit() {
     return (
         <div>
             <AppNavbar />
+            <AuthorSecurity />
+
             <Container>
                 {title}
 

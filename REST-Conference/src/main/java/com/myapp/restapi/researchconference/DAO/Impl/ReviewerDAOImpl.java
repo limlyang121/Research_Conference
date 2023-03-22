@@ -37,11 +37,19 @@ public class ReviewerDAOImpl implements ReviewerDAO {
     }
 
     @Override
-    public Optional<Reviewer> findByUserID(int userID) {
+    public Optional<Reviewer> findByUserID(int reviewerID) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Reviewer> reviewerQuery = session.createQuery("From Reviewer where userdetails.id = :userID", Reviewer.class);
-        reviewerQuery.setParameter("userID", userID);
+        try{
+
+        Query<Reviewer> reviewerQuery = session.createQuery("From Reviewer where reviewerID = :reviewerID", Reviewer.class);
+        reviewerQuery.setParameter("reviewerID", reviewerID);
+        Optional<Reviewer> test = reviewerQuery.uniqueResultOptional();
         return reviewerQuery.uniqueResultOptional() ;
+        } catch (Exception e){
+            System.err.println(e);
+            return null;
+        }
+
     }
 
     @Override

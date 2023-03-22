@@ -121,13 +121,13 @@ const AppNavbar = () => {
               </Nav>
             )}
 
-            {myRole.includes("ConferenceChair") && (
+            {myRole.includes("CONFERENCE") && (
 
               <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
                 <NavItem>
                   <Button>
-                    <Link to={"/admin/users"} style={{ textDecoration: "none", color: "white" }}>
-                      Bid 
+                    <Link to={"/conference/bids"} style={{ textDecoration: "none", color: "white" }}>
+                      Reviewer Bid
                     </Link>
                   </Button>
                 </NavItem>

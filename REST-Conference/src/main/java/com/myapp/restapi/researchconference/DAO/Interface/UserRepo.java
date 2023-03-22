@@ -10,6 +10,8 @@ public interface UserRepo  {
     User findByUserName(String userName);
     List<User> findAll();
 
+    List<User> findNonActiveAccount();
+
     List<User> findUserByRole(String userName);
 
     User findByID(int userID);

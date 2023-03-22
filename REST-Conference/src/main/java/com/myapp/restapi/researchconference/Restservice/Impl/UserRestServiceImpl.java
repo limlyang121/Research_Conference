@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserRestServiceImpl implements UserRestService {
@@ -31,6 +32,12 @@ public class UserRestServiceImpl implements UserRestService {
     @Transactional
     public List<User> findAll() {
         return userRepo.findAll();
+    }
+
+    @Override
+    @Transactional
+    public List<User> findNonActiveAccount() {
+        return userRepo.findNonActiveAccount();
     }
 
     @Transactional
@@ -113,15 +120,26 @@ public class UserRestServiceImpl implements UserRestService {
         tempUser.setPassword(user.getPassword());
         boolean success = false;
 
-        if (isReviewer){
-            success = reviewerDAO.isActive(tempUser.getId());
-        }else if (wasReviewer)
+        tempUser = userRepo.save(tempUser);
+
+        if (isReviewer && !wasReviewer){
+            Optional<Reviewer> reviewerOptional = reviewerDAO.findByUserID(userID);
+            if (reviewerOptional.isPresent()){
+                success = reviewerDAO.isActive(tempUser.getId());
+            }else {
+                Reviewer reviewer = new Reviewer();
+                reviewer.setIsActive(1);
+                reviewer.setReviewerID(tempUser.getId());
+                reviewerDAO.addReviewer(reviewer);
+                success = true;
+            }
+        }else if (wasReviewer && !isReviewer)
             success = reviewerDAO.isNotActive(tempUser.getId());
         else if (!(isReviewer && wasReviewer)){
             success = true;
         }
 
-        return userRepo.save(tempUser);
+        return tempUser;
 
     }
 

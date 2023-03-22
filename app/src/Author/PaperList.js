@@ -7,6 +7,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import { getMyPapers, deletePapers, downloadPapers, getPaperByID } from './Axios';
 import { saveAs } from "file-saver"
 import { format } from "date-fns"
+import AuthorSecurity from './AuthorSecurity';
 
 
 
@@ -18,6 +19,8 @@ function PaperList() {
     const myID = sessionStorage.getItem("id")
 
     React.useEffect(() => {
+        <AuthorSecurity/>
+
         const fetchData = async (myID) => {
             let response = await getMyPapers(myID)
             setPapers(response)
@@ -81,6 +84,8 @@ function PaperList() {
     return (
         <div>
             <AppNavbar />
+            <AuthorSecurity />
+
             <Container fluid>
                 <div className='float-end'>
                     <Button color='success' tag={Link} to={"/author/papers/form/new"}>Add Paper</Button>

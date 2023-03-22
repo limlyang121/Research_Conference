@@ -19,14 +19,13 @@ import java.util.List;
 @Table
 public class Reviewer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reviewerID")
     private int reviewerID;
     @Column(name = "is_active")
     private int isActive;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "reviewer", cascade = {
-            CascadeType.PERSIST, CascadeType.DETACH
+            CascadeType.ALL
     })
     private List<Review> reviewList;
 

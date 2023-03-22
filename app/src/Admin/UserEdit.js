@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { updateUser, addUser, getUserByID, getAllRoles } from './adminAxios';
+import AdminSecurity from './AdminSecurity';
 
 
 const UserEdit = () => {
@@ -113,6 +114,8 @@ const UserEdit = () => {
     return (
         <div>
             <AppNavbar />
+            <AdminSecurity />
+
             <Container>
                 {title}
                 <Form onSubmit={handleSubmit}>
@@ -172,6 +175,8 @@ const UserEdit = () => {
                         <Input type="text" name="userdetails.weight" id="userdetails.weight" value={user.userdetails.weight}
                             onChange={handleChange} autoComplete="userdetails.weight" />
                     </FormGroup>
+
+                    <br/>
 
 
                     <FormGroup>

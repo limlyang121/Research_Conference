@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { activateAccount, deactivationAccount, getUserByID } from './adminAxios';
+import { activateAccount, activateAccountAPI, deactivationAccount, getUserByID } from './adminAxios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import AdminSecurity from './AdminSecurity';
 
 const UserRead = () => {
     const initialFormState = {
@@ -49,14 +50,12 @@ const UserRead = () => {
                     })
 
             } else {
-                await activateAccount(id)
+                await activateAccountAPI(id)
                     .then(() => {
                         setUser({ ...user, active: 1 })
                     })
             }
         }
-
-
     }
 
     const displayButton = () => {
@@ -86,6 +85,8 @@ const UserRead = () => {
     return (
         <div>
             <AppNavbar />
+            <AdminSecurity />
+
             <Container>
                 <Label for='fullname'>User Full Name : </Label>
                 <Input disabled type='text' name='fullname' id='fullname' value={user.userdetails.firstName + user.userdetails.lastName}></Input>
