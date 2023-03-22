@@ -68,4 +68,38 @@ public class BidDAOImpl implements BidDAO {
             return false;
         }
     }
+
+    @Override
+    public boolean acceptBid(int bidID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Bid bid = session.get(Bid.class, bidID);
+            if (bid != null)
+                return false;
+
+            bid.setStatus("Accept");
+            session.merge(bid);
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean rejectBid(int bidID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Bid bid = session.get(Bid.class, bidID);
+            if (bid != null)
+                return false;
+
+            bid.setStatus("Reject");
+            session.merge(bid);
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

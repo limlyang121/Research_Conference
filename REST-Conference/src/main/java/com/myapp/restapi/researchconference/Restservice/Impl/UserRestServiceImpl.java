@@ -84,6 +84,7 @@ public class UserRestServiceImpl implements UserRestService {
             Reviewer reviewer = new Reviewer();
             reviewer.setIsActive(1);
             reviewer.setReviewerID(user1.getId());
+            reviewer.setUserdetails(user1.getUserdetails());
             reviewerDAO.addReviewer(reviewer);
         }
 
@@ -130,6 +131,7 @@ public class UserRestServiceImpl implements UserRestService {
                 Reviewer reviewer = new Reviewer();
                 reviewer.setIsActive(1);
                 reviewer.setReviewerID(tempUser.getId());
+                reviewer.setUserdetails(tempUser.getUserdetails());
                 reviewerDAO.addReviewer(reviewer);
                 success = true;
             }

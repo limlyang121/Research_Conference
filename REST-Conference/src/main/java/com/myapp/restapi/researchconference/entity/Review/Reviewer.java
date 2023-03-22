@@ -24,6 +24,10 @@ public class Reviewer {
     @Column(name = "is_active")
     private int isActive;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private Userdetails userdetails;
+
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "reviewer", cascade = {
             CascadeType.ALL
     })

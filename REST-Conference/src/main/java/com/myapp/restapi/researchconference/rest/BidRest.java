@@ -49,4 +49,24 @@ public class BidRest {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fail to unbid");
     }
 
+    @PatchMapping("bids/accept/{bidID}")
+    public ResponseEntity<String> acceptBids(@PathVariable int bidID){
+        boolean success = bidRestService.acceptBid(bidID);
+        if (success)
+            return ResponseEntity.ok("Successfully Accept the bid");
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bid Can't be found");
+
+    }
+
+    @PatchMapping("bids/accept/{bidID}")
+    public ResponseEntity<String> rejectBid(@PathVariable int bidID){
+        boolean success = bidRestService.rejectBid(bidID);
+        if (success)
+            return ResponseEntity.ok("Successfully Reject the bid");
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bid Can't be found");
+
+    }
+
 }

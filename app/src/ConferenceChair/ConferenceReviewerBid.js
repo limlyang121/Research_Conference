@@ -24,15 +24,38 @@ function ConferenceReviewerBid() {
         }
 
         fetchBidsByStatus(status);
+
+        // alert(JSON.stringify(bids))
+
+
     }, [status, changeBidsStatus])
+
+    const fullNameBid = (bid) => {
+        return bid.reviewerDTO.userdetails.firstName + " " +bid.reviewerDTO.userdetails.lastName ;
+    }
+
+    const fullNamePaper = (bid) => {
+        return bid.paperDTO.paperInfo.authorID.firstName + " " +bid.paperDTO.paperInfo.authorID.lastName ;
+    }
+
+    const bidsList = bids.map(bid => {
+        return (
+            <tr key={bid.bidID}>
+                <td style={{ whiteSpace: 'nowrap' }}>{fullNamePaper(bid)}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{fullNameBid(bid)}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{bid.paperDTO.paperInfo.title}</td>
+
+            </tr>
+        )
+    })
 
     return (
         <div>
             <AppNavbar />
             <ConferenceSecurity />
             <Container fluid>
-                <h3>My Users</h3>
-                <ButtonGroup style={{gap:"10px"}}>
+                <h3>Reviewer Bid</h3>
+                <ButtonGroup style={{ gap: "10px" }}>
                     <Button color='secondary' onClick={() => changeBidsStatus("Pending")} >Show Pending</Button>
                     <Button color='success' onClick={() => changeBidsStatus("Accept")}>Show Accept</Button>
                     <Button color='danger' onClick={() => changeBidsStatus("Reject")}>Show Reject</Button>
@@ -41,13 +64,14 @@ function ConferenceReviewerBid() {
                 <Table className="mt-4">
                     <thead>
                         <tr>
-                            <th width="20%">First Name</th>
-                            <th width="20%">Last  Name</th>
-                            <th width="20%">UserName</th>
-                            <th width="10%">Actions</th>
+                            <th width="20%">Author Name</th>
+                            <th width="20%">Reviewe Name</th>
+                            <th width="20%">Title</th>
+                            <th >Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {bidsList}
                     </tbody>
                 </Table>
             </Container>

@@ -92,12 +92,13 @@ create table `paper` (
 CREATE TABLE `reviewer` (
   `reviewerID` INT(11) NOT NULL,
   `is_active` tinyint(1) NOT NULL default 1 ,
+  `user_id` int(11) not null,
   PRIMARY KEY (`reviewerID`),
-  CONSTRAINT `fk_reviewer_idxx` FOREIGN KEY (`reviewerID`) REFERENCES `user_details` (`id`)
+  CONSTRAINT `fk_reviewer_idxx` FOREIGN KEY (`user_id`) REFERENCES `user_details` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert into `reviewer` values
-(3, 1);
+(3, 1, 3);
 
 create table `blacklist_paper` (
     `reviewerID` int(11) not null,

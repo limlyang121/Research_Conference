@@ -62,4 +62,16 @@ public class BidRestServiceImpl implements BidRestService {
     public boolean deleteBid(int bidID) {
         return bidDAO.deleteBid(bidID);
     }
+
+    @Override
+    @Transactional
+    public boolean acceptBid(int bidID) {
+        return bidDAO.acceptBid(bidID);
+    }
+
+    @Override
+    @Transactional
+    public boolean rejectBid(int bidID) {
+        return bidDAO.rejectBid(bidID);
+    }
 }

@@ -1,5 +1,6 @@
 package com.myapp.restapi.researchconference.DTO;
 
+import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import com.myapp.restapi.researchconference.entity.Review.Review;
 import com.myapp.restapi.researchconference.entity.Review.Reviewer;
 import lombok.AllArgsConstructor;
@@ -14,12 +15,14 @@ import java.util.List;
 public class ReviewerDTO {
     private int reviewerID;
     private int isActive;
+    private Userdetails userdetails;
     private List<Review> reviewList;
 
     public static ReviewerDTO convertToDTO(Reviewer reviewer){
         ReviewerDTO reviewerDTO = new ReviewerDTO();
         reviewerDTO.setReviewerID(reviewer.getReviewerID());
         reviewerDTO.setIsActive(reviewer.getIsActive());
+        reviewerDTO.setUserdetails(reviewer.getUserdetails());
         reviewerDTO.setReviewList(null);
         return reviewerDTO;
     }

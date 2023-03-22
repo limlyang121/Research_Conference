@@ -12,4 +12,7 @@ public interface BidRestService {
 
     BidDTO addBid(Bid bid);
     boolean deleteBid(int bidID);
+
+    boolean acceptBid(int bidID);
+    boolean rejectBid(int bidID);
 }
