@@ -3,8 +3,12 @@
 import * as React from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { fetchPendingBidsAPI } from './Axios';
+import { AcceptBidAPI, cancelBidAPI, fetchPendingBidsAPI, RejectBidAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
+
+import { FaCheck, FaRegTimesCircle } from 'react-icons/fa';
+import { MdRestore } from 'react-icons/md';
+
 
 function ConferenceReviewerBid() {
 
@@ -31,11 +35,65 @@ function ConferenceReviewerBid() {
     }, [status, changeBidsStatus])
 
     const fullNameBid = (bid) => {
-        return bid.reviewerDTO.userdetails.firstName + " " +bid.reviewerDTO.userdetails.lastName ;
+        return bid.reviewerDTO.userdetails.firstName + " " + bid.reviewerDTO.userdetails.lastName;
     }
 
     const fullNamePaper = (bid) => {
-        return bid.paperDTO.paperInfo.authorID.firstName + " " +bid.paperDTO.paperInfo.authorID.lastName ;
+        return bid.paperDTO.paperInfo.authorID.firstName + " " + bid.paperDTO.paperInfo.authorID.lastName;
+    }
+
+    const CancelAcceptRejectPaper = async (bid, stat) => {
+        if (window.confirm("Are you sure ? ")) {
+            let response;
+            if (stat === "Accept") {
+                response = await AcceptBidAPI(bid.bidID);
+            } else if (stat === "Reject") {
+                response = await RejectBidAPI(bid.bidID);
+            } else {
+                response = await cancelBidAPI(bid.bidID);
+            }
+            alert(response);
+            let updatedBids = [...bids].filter(i => i.bidID !== bid.bidID)
+            setBids(updatedBids)
+        }
+    }
+
+    const BidActionSwitch = (bid) => {
+        let showAction;
+        switch (status) {
+            case "Pending":
+                showAction = pendingAction(bid);
+                break;
+            case "Completed":
+                break;
+            default:
+                showAction = AcceptRejectAction(bid);
+                break;
+
+        }
+        return showAction
+    }
+
+
+    const pendingAction = (bid) => {
+        return (
+            <ButtonGroup>
+                <Button size="sm" color="primary" onClick={async () => CancelAcceptRejectPaper(bid, "Accept")} ><FaCheck /></Button>
+                <Button size="sm" color="warning" onClick={async () => CancelAcceptRejectPaper(bid, "Reject")} ><FaRegTimesCircle />  </Button>
+
+
+            </ButtonGroup>
+        )
+    }
+
+    const AcceptRejectAction = (bid) => {
+        return (
+            <ButtonGroup>
+                <Button size="sm" color="primary" onClick={async () => CancelAcceptRejectPaper(bid, "Pending")} > <MdRestore /></Button>
+
+
+            </ButtonGroup>
+        )
     }
 
     const bidsList = bids.map(bid => {
@@ -44,10 +102,13 @@ function ConferenceReviewerBid() {
                 <td style={{ whiteSpace: 'nowrap' }}>{fullNamePaper(bid)}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{fullNameBid(bid)}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{bid.paperDTO.paperInfo.title}</td>
+                {BidActionSwitch(bid)}
 
             </tr>
         )
     })
+
+
 
     return (
         <div>

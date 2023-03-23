@@ -1,50 +1,59 @@
 // @flow strict
 
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { deleteFromBidAPI, getBidByStatus } from './Axios';
+import ReviewerSecurity from './ReviewerSecurity';
 
 function ReviewerBidStatus() {
 
     const [myBid, setBids] = React.useState([]);
     const [status, setStatus] = React.useState("Pending");
-    const { id } = useParams()
+    const id = sessionStorage.getItem("id")
 
     const changeList = React.useCallback((stat) => {
         setStatus(stat);
-    })
+    }, [setStatus])
 
     React.useEffect(() => {
-        const fetchPendingData = async (id) => {
-            let response = await getBidByStatus(id, "Pending")
+        const fetchBidData = async (id, stat) => {
+            let response = await getBidByStatus(id, stat)
             setBids(response)
         }
 
-        const fetchAcceptData = async(id) =>{
-
-        }
-
-        const fetchRejectData = async(id) =>{
-            
-        }
-
-        if (status === "Pending"){
-            fetchPendingData(id)
-        }
+        fetchBidData(id, status)
 
 
-    }, [])
+    }, [status, changeList])
 
     const deleteFromBid = async (id) => {
-        if (window.confirm("Unbid the paper?")){
-            let response = deleteFromBidAPI(id).then(() => {
+        if (window.confirm("Unbid the paper?")) {
+            await deleteFromBidAPI(id).then((response) => {
                 alert(response)
                 let updatedGroups = [...myBid].filter(i => parseInt(i.bidID) !== parseInt(id))
                 setBids(updatedGroups)
             })
         }
+    }
+
+
+    const PendingAction = (bid) => {
+        return (
+            <ButtonGroup style={{ gap: "10px" }} >
+                <Button color='primary'> Download</Button>
+                <Button color="warning" onClick={async () => deleteFromBid(bid.bidID)} > Unbid</Button>
+            </ButtonGroup>
+        )
+    }
+
+    const AcceptAction = (bid) => {
+        return (
+            <ButtonGroup style={{ gap: "10px" }} >
+                <Button color='primary' tag={Link} to={"/reviewer/review/" + bid.bidID + "/new"} >Review it</Button>
+            </ButtonGroup>
+        )
     }
 
     const displayBidStatus = myBid.map(bid => {
@@ -54,23 +63,24 @@ function ReviewerBidStatus() {
                 <td style={{ whiteSpace: "nowrap" }} > {bid.paperDTO.paperInfo.title}  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {bid.paperDTO.paperInfo.filename}  </td>
                 <td>
-                    <ButtonGroup style={{gap:"10px"}} >
-                        <Button color='primary'> Download</Button>
-                        <Button color="warning" onClick={async() => deleteFromBid(bid.bidID)} > Unbid</Button>
-                    </ButtonGroup>
+                    {status === "Pending" && PendingAction(bid)}
+                    {status === "Accept" && AcceptAction(bid)}
                 </td>
             </tr>
-        )   
+        )
     })
+
 
     return (
         <div>
             <AppNavbar />
+            <ReviewerSecurity />
             <Container fluid>
                 <h3>Bid Status</h3>
                 <ButtonGroup style={{ gap: "10px" }} >
-                    <Button color='primary'   >Show Pending</Button>
-                    <Button color='danger'    >Show Accept/Reject</Button>
+                    <Button color='secondary' onClick={() => changeList("Pending")}  >Show Pending</Button>
+                    <Button color='primary' onClick={() => changeList("Accept")}  >Show Accept</Button>
+                    <Button color='danger' onClick={() => changeList("Reject ")}  >Show Reject</Button>
 
                 </ButtonGroup>
                 <Table className="mt-4">

@@ -73,7 +73,7 @@ const UserEdit = () => {
             return (
                 <FormGroup>
                     <Label for="password">Password</Label>
-                    <Input type="text" name="password" id="password"
+                    <Input type="password" name="password" id="password"
                         onChange={handleChange} autoComplete="password" />
                 </FormGroup>
 
@@ -97,9 +97,6 @@ const UserEdit = () => {
         }catch{
             alert("Username existed")
         }
-
-
-
     }
 
     if (!loading){

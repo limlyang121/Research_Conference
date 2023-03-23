@@ -13,7 +13,6 @@ import java.util.Date;
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table
 public class Review {
@@ -40,4 +39,8 @@ public class Review {
     @Column(name = "review_date")
     private Date reviewDate;
 
+    public Review() {
+        reviewer = new Reviewer();
+        paper = new Paper();
+    }
 }

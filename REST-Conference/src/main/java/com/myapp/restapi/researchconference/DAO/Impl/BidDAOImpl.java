@@ -23,8 +23,8 @@ public class BidDAOImpl implements BidDAO {
     public List<Bid> findAllBidsByStatus(String Status) {
         Session session = entityManager.unwrap(Session.class);
 
-        Query<Bid> query = session.createQuery("From Bid where status = 'Pending'", Bid.class );
-
+        Query<Bid> query = session.createQuery("From Bid where status = :status", Bid.class);
+        query.setParameter("status", Status);
         return query.getResultList();
     }
 
@@ -38,6 +38,15 @@ public class BidDAOImpl implements BidDAO {
         query.setParameter("reviewerID", reviewerID);
         query.setParameter("status", status);
 
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Bid> findMyAcceptedBid(int reviewerID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Bid> query = session.createQuery("From Bid where reviewer.reviewerID = :reviewerID and status = 'Accept'", Bid.class);
+        query.setParameter("reviewerID", reviewerID);
         return query.getResultList();
     }
 
@@ -74,7 +83,7 @@ public class BidDAOImpl implements BidDAO {
         Session session = entityManager.unwrap(Session.class);
         try{
             Bid bid = session.get(Bid.class, bidID);
-            if (bid != null)
+            if (bid == null)
                 return false;
 
             bid.setStatus("Accept");
@@ -91,10 +100,44 @@ public class BidDAOImpl implements BidDAO {
         Session session = entityManager.unwrap(Session.class);
         try{
             Bid bid = session.get(Bid.class, bidID);
-            if (bid != null)
+            if (bid == null)
                 return false;
 
             bid.setStatus("Reject");
+            session.merge(bid);
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean completeBid(int bidID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Bid bid = session.get(Bid.class, bidID);
+            if (bid == null)
+                return false;
+
+            bid.setStatus("Complete");
+            session.merge(bid);
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean cancelBid(int bidID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Bid bid = session.get(Bid.class, bidID);
+            if (bid == null)
+                return false;
+
+            bid.setStatus("Pending");
             session.merge(bid);
 
             return true;

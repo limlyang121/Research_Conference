@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Home from './Home';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserList from './Admin/UserList';
 import UserEdit from './Admin/UserEdit';
 import UserRead from './Admin/UserRead';
@@ -17,6 +17,8 @@ import ReviewerBid from './Reviewer/ReviewerBid';
 import ReviewerBidStatus from './Reviewer/ReviewerBidStatus';
 import AccessDenied from './Security/Access-Denied';
 import ConferenceReviewerBid from './ConferenceChair/ConferenceReviewerBid';
+import ReviewerReview from './Reviewer/ReviewerReviewList';
+import ReviewerReviewForm from './Reviewer/ReviewerReviewForm';
 
 
 const App = () => {
@@ -45,8 +47,11 @@ const App = () => {
 
 
         {/* Reviewer */}
-        <Route path='/reviewer/bid/:id' exact={true} element={<ReviewerBid />} />
-        <Route path='/reviewer/mybids/:id' exact={true} element={<ReviewerBidStatus />} />
+        <Route path='/reviewer/bid/' exact={true} element={<ReviewerBid />} />
+        <Route path='/reviewer/mybids' exact={true} element={<ReviewerBidStatus />} />
+        <Route path='/reviewer/reviews' exact={true} element={<ReviewerReview />} />
+        <Route path='/reviewer/review/:id/:status' exact={true} element={<ReviewerReviewForm />} />
+        
 
         {/* Conference Chaiar */}
         <Route path='/conference/bids' exact={true} element={<ConferenceReviewerBid />} />

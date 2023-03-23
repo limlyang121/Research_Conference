@@ -9,6 +9,7 @@ public interface BidDAO {
 
     List<Bid> findMyBidByStatus(int reviewerID, String status);
 
+    List<Bid> findMyAcceptedBid(int reviewerID);
 
     boolean hideBid(int bidID);
     Bid addBid(Bid bid);
@@ -17,5 +18,9 @@ public interface BidDAO {
 
     boolean acceptBid(int bidID);
     boolean rejectBid(int bidID);
+
+    boolean completeBid(int bidID);
+
+    boolean cancelBid(int bidID);
 
 }

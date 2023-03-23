@@ -4,13 +4,14 @@ import * as React from 'react';
 import { getPendingPapers, addToBlackListAPI, getBanPapers, DeleteFromBlackListAPI, addToBidAPI } from './Axios';
 import { format } from "date-fns"
 import { Button, ButtonGroup, Container, Table, Label, FormGroup, Form, Input } from 'reactstrap';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AppNavbar from '../Navbar/AppNavbar';
+import ReviewerSecurity from './ReviewerSecurity';
 
 function ReviewerBid() {
 
     const [displayPapers, setDisplayPaper] = React.useState([])
-    const { id } = useParams();
+    const  id  = sessionStorage.getItem("id")
     const [status, setStatus] = React.useState("bid");
 
     const changeStatus = React.useCallback((stat) => {
@@ -179,6 +180,7 @@ function ReviewerBid() {
     return (
         <div>
             <AppNavbar />
+            <ReviewerSecurity />
             <Container fluid>
                 <h3>Bid Papers</h3>
                 <Button color='primary' onClick={ () => changeStatus("bid")} >Show Bid</Button>

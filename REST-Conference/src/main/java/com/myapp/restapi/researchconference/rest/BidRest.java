@@ -26,6 +26,11 @@ public class BidRest {
         return bidRestService.findAllBidByStatus(status);
     }
 
+    @GetMapping("bids/accepted/{reviewerID}")
+    public List<BidDTO> findMyAcceptedBids(@PathVariable int reviewerID){
+        return bidRestService.findMyAcceptedBid(reviewerID);
+    }
+
     @GetMapping("bids/{reviewerID}/{status}")
     public List<BidDTO> findMyBidByStatus(@PathVariable int reviewerID, @PathVariable String status){
         return bidRestService.findMyBidByStatus(reviewerID, status);
@@ -59,9 +64,19 @@ public class BidRest {
 
     }
 
-    @PatchMapping("bids/accept/{bidID}")
+    @PatchMapping("bids/reject/{bidID}")
     public ResponseEntity<String> rejectBid(@PathVariable int bidID){
         boolean success = bidRestService.rejectBid(bidID);
+        if (success)
+            return ResponseEntity.ok("Successfully Reject the bid");
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bid Can't be found");
+
+    }
+
+    @PatchMapping("bids/cancel/{bidID}")
+    public ResponseEntity<String> cancelBid(@PathVariable int bidID){
+        boolean success = bidRestService.cancelBid(bidID);
         if (success)
             return ResponseEntity.ok("Successfully Reject the bid");
         else

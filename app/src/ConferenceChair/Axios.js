@@ -21,3 +21,18 @@ export const fetchPendingBidsAPI = async (status) => {
     let response = await api.get(`bids/${status}`)
     return response.data;
 }
+
+export const AcceptBidAPI = async (id) => {
+    let response = await api.patch(`bids/accept/${id}`)
+    return response.data;
+}
+
+export const RejectBidAPI = async (id) => {
+    let response = await api.patch(`bids/reject/${id}`)
+    return response.data;
+}
+
+export const cancelBidAPI = async (id) => {
+    let response = await api.patch(`bids/cancel/${id}`)
+    return response.data;
+}

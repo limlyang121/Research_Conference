@@ -44,6 +44,13 @@ public class BidRestServiceImpl implements BidRestService {
 
     @Override
     @Transactional
+    public List<BidDTO> findMyAcceptedBid(int reviewerID) {
+        List<Bid> bid = bidDAO.findMyAcceptedBid(reviewerID);
+        return BidDTO.DTOList(bid);
+    }
+
+    @Override
+    @Transactional
     public BidDTO addBid(Bid bid) {
         Optional<Paper> paperOptional = paperDAO.findPaperByID(bid.getPaper().getPaperID());
         Optional<Reviewer> reviewerOptional = reviewerDAO.findByID(bid.getReviewer().getReviewerID());
@@ -73,5 +80,11 @@ public class BidRestServiceImpl implements BidRestService {
     @Transactional
     public boolean rejectBid(int bidID) {
         return bidDAO.rejectBid(bidID);
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelBid(int bidID) {
+        return bidDAO.cancelBid(bidID);
     }
 }

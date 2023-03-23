@@ -10,9 +10,15 @@ public interface BidRestService {
 
     List<BidDTO> findMyBidByStatus(int reviewerID, String status);
 
+    List<BidDTO> findMyAcceptedBid(int reviewerID);
+
+
+
     BidDTO addBid(Bid bid);
     boolean deleteBid(int bidID);
 
     boolean acceptBid(int bidID);
     boolean rejectBid(int bidID);
+    boolean cancelBid(int bidID);
+
 }

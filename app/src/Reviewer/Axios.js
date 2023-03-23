@@ -60,4 +60,13 @@ export const deleteFromBidAPI = async (id) => {
 }
 
 
+export const getAcceptedBidAPI = async (id) => {
+    let response = await api.get(`bids/accepted/${id}`)
+    return response.data;
+}
+
+export const SubmitReviewAPI = async (data) => {
+    let response = await api.post(`reviews`, data)
+    return response.data;
+}
 

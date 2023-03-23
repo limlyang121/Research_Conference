@@ -97,15 +97,15 @@ const AppNavbar = () => {
               <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
                 <NavItem>
                   <Button>
-                    <Link to={"/admin/users"} style={{ textDecoration: "none", color: "white" }}>
-                      Review Paper
+                    <Link to={"/reviewer/reviews"} style={{ textDecoration: "none", color: "white" }}>
+                      Review Papers
                     </Link>
                   </Button>
                 </NavItem>
 
                 <NavItem>
                   <Button>
-                    <Link to={"/reviewer/mybids/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
+                    <Link to={"/reviewer/mybids"} style={{ textDecoration: "none", color: "white" }}>
                       Bid Status
                     </Link>
                   </Button>
@@ -113,7 +113,7 @@ const AppNavbar = () => {
 
                 <NavItem>
                   <Button>
-                    <Link to={"/reviewer/bid/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
+                    <Link to={"/reviewer/bid"} style={{ textDecoration: "none", color: "white" }}>
                       Bid Paper
                     </Link>
                   </Button>
