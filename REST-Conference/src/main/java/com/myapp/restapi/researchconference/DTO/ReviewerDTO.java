@@ -16,14 +16,12 @@ public class ReviewerDTO {
     private int reviewerID;
     private int isActive;
     private Userdetails userdetails;
-    private List<Review> reviewList;
 
     public static ReviewerDTO convertToDTO(Reviewer reviewer){
         ReviewerDTO reviewerDTO = new ReviewerDTO();
         reviewerDTO.setReviewerID(reviewer.getReviewerID());
         reviewerDTO.setIsActive(reviewer.getIsActive());
         reviewerDTO.setUserdetails(reviewer.getUserdetails());
-        reviewerDTO.setReviewList(null);
         return reviewerDTO;
     }
 
@@ -32,7 +30,6 @@ public class ReviewerDTO {
         return "ReviewerDTO{" +
                 "reviewerID=" + reviewerID +
                 ", isActive=" + isActive +
-                ", reviewList=" + reviewList +
                 '}';
     }
 }

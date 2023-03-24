@@ -51,6 +51,13 @@ public class BidRestServiceImpl implements BidRestService {
 
     @Override
     @Transactional
+    public List<BidDTO> findMyCompletedBid(int reviewerID) {
+        List<Bid> bid = bidDAO.findMyCompletedBid(reviewerID);
+        return BidDTO.DTOList(bid);
+    }
+
+    @Override
+    @Transactional
     public BidDTO addBid(Bid bid) {
         Optional<Paper> paperOptional = paperDAO.findPaperByID(bid.getPaper().getPaperID());
         Optional<Reviewer> reviewerOptional = reviewerDAO.findByID(bid.getReviewer().getReviewerID());

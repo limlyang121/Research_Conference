@@ -4,8 +4,10 @@ import com.myapp.restapi.researchconference.DAO.Interface.BidDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
+import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.ReviewRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
+import com.myapp.restapi.researchconference.entity.Bid.Bid;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import com.myapp.restapi.researchconference.entity.Review.Review;
 import com.myapp.restapi.researchconference.entity.Review.Reviewer;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,19 +35,33 @@ public class ReviewRestServiceImpl implements ReviewRestService {
 
     @Override
     @Transactional
+    public List<ReviewDTO> findMyReviews(int reviewerID) {
+        List<Review> reviewList = reviewDAO.findMyReviews(reviewerID);
+        return ReviewDTO.DTOList(reviewList);
+    }
+
+    @Override
+    @Transactional
+    public Optional<Review> findReviewByID(int reviewID) {
+        return reviewDAO.findReviewByID(reviewID);
+    }
+
+    @Override
+    @Transactional
     public Review addReview(Review review) {
         Date currentTime = new Date();
         review.setReviewDate(currentTime);
-        Optional<Paper> paper = paperDAO.findPaperByID(review.getPaper().getPaperID());
-        Optional<Reviewer> reviewer = reviewerDAO.findByUserID(review.getReviewer().getReviewerID());
+        Optional<Bid> bid = bidDAO.findBidByID(review.getBid().getBidID());
+        boolean success = false;
+        if (bid.isPresent()){
+            review.setBid(bid.get());
 
-        if (paper.isPresent() && reviewer.isPresent()){
-            review.setReviewer(reviewer.get());
-            review.setPaper(paper.get());
-            review = reviewDAO.addReview(review);
-            
+            review =  reviewDAO.addReview(review);
+            success = bidDAO.completeBid(review.getBid().getBidID());
+            if (success)
+                return review;
+        }
 
-        }else
-            return null;
+        return null;
     }
 }

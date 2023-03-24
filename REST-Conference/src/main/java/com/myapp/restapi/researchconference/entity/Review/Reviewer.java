@@ -1,15 +1,10 @@
 package com.myapp.restapi.researchconference.entity.Review;
-
-
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
-import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -27,11 +22,4 @@ public class Reviewer {
     @OneToOne
     @JoinColumn(name = "user_id")
     private Userdetails userdetails;
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "reviewer", cascade = {
-            CascadeType.ALL
-    })
-    private List<Review> reviewList;
-
-
 }

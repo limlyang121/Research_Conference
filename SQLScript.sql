@@ -123,13 +123,11 @@ CREATE TABLE `bid` (
 
 create table `review` (
     `reviewID` int(11) not null auto_increment primary key,
-    `reviewerID` int(11),
-    `paperID` int(11),
+    `bidID` int(11),
     `rate` int(11),
     `comment` Varchar(50) ,
     `review_date` Date,
-    CONSTRAINT `fk_reviewer_ida` FOREIGN KEY (`reviewerID`) REFERENCES `reviewer` (`reviewerID`),
-    CONSTRAINT `fk_paper_ida` FOREIGN KEY (`paperID`) REFERENCES `paper` (`paperID`)
+    CONSTRAINT `fk_bid_idxx` FOREIGN KEY (`bidID`) REFERENCES `bid` (`bidID`)
 )ENGINE=InnoDB auto_increment=1 default charset=latin1;
 
 

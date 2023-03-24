@@ -3,19 +3,15 @@
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
-import Select from 'react-select';
 import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
-import { SubmitReviewAPI } from './Axios';
+import { getOneReviewsAPI, SubmitReviewAPI } from './Axios';
 
 function ReviewerReviewForm() {
     const reviewsForm = {
         reviewID: "",
-        reviewer: {
-            reviewerID: ""
-        },
-        paper: {
-            paperID: ""
+        bid:{
+            bidID:"",
         },
         rate: "",
         comment: "",
@@ -29,13 +25,15 @@ function ReviewerReviewForm() {
 
 
     React.useEffect(() => {
-        const fetchData = async () => {
-
+        const fetchData = async (id) => {
+            let response = await getOneReviewsAPI(id);
+            setReviews(response)
         }
 
         if (status === "new"){
-            reviews.paper.paperID = id
-            reviews.reviewer.reviewerID = sessionStorage.getItem("id")
+            reviews.bid.bidID = id
+        }else{
+            fetchData(id)
         }
     }, [])
 
@@ -97,8 +95,7 @@ function ReviewerReviewForm() {
                 <hr />
                 <Form onSubmit={handleSubmit}>
                     <Input type='hidden' name='reviewID' id='reviewID' value={reviews.reviewID}></Input>
-                    <Input type='hidden' name='reviewer.reviewerID' id='reviewer.reviewerID' value={reviews.reviewer.reviewerID}></Input>
-                    <Input type='hidden' name='paper.paperID' id='paper.paperID' value={reviews.paper.paperID}></Input>
+                    <Input type='hidden' name='bid.bidID' id='bid.bidID' value={reviews.bid.bidID}></Input>
 
                     <FormGroup>
                         <Label for="rate">Rating</Label>

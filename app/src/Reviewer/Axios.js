@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { da } from 'date-fns/locale';
 
 
 const api = axios.create({
@@ -62,6 +61,16 @@ export const deleteFromBidAPI = async (id) => {
 
 export const getAcceptedBidAPI = async (id) => {
     let response = await api.get(`bids/accepted/${id}`)
+    return response.data;
+}
+
+export const getMyReviewsAPI = async (id) => {
+    let response = await api.get(`reviews/myreviews/${id}`)
+    return response.data;
+}
+
+export const getOneReviewsAPI = async (id) => {
+    let response = await api.get(`reviews/${id}`)
     return response.data;
 }
 

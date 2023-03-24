@@ -32,9 +32,9 @@ public class PaperDAOImpl implements PaperDAO {
     @Override
     public List<Paper> findBidPapers(int reviewerID) {
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createQuery("SELECT p FROM Paper p WHERE p.status = :status AND p.paperID " +
+        Query<Paper> query = session.createQuery("SELECT p FROM Paper p WHERE p.status = :status AND p.paperID " +
                 "NOT IN (SELECT bp.paper.paperID FROM BlacklistPaper bp WHERE bp.reviewer.reviewerID = :reviewerID)" +
-                "AND p.paperID NOT IN (SELECT b.paper.paperID FROM Bid b WHERE b.reviewer.reviewerID = :reviewerID) ");
+                "AND p.paperID NOT IN (SELECT b.paper.paperID FROM Bid b WHERE b.reviewer.reviewerID = :reviewerID) ", Paper.class);
 
         query.setParameter("status", "Pending");
         query.setParameter("reviewerID", reviewerID);
@@ -45,9 +45,9 @@ public class PaperDAOImpl implements PaperDAO {
     @Override
     public List<Paper> findBanPapers(int reviewerID){
         Session session = entityManager.unwrap(Session.class);
-        Query query = session.createQuery("SELECT p FROM Paper p WHERE p.status = :status AND p.paperID " +
+        Query<Paper> query = session.createQuery("SELECT p FROM Paper p WHERE p.status = :status AND p.paperID " +
                 "IN (SELECT bp.paper.paperID FROM BlacklistPaper bp WHERE bp.reviewer.reviewerID = :reviewerID)" +
-                "AND p.paperID NOT IN (SELECT b.paper.paperID FROM Bid b WHERE b.reviewer.reviewerID = :reviewerID) ");
+                "AND p.paperID NOT IN (SELECT b.paper.paperID FROM Bid b WHERE b.reviewer.reviewerID = :reviewerID) ", Paper.class);
 
         query.setParameter("status", "Pending");
         query.setParameter("reviewerID", reviewerID);
@@ -74,8 +74,8 @@ public class PaperDAOImpl implements PaperDAO {
     public Optional<Paper> findPaperByID(int paperID) {
         Session session = entityManager.unwrap(Session.class);
 
-        Query<Paper> query = session.createQuery("select p from Paper p left join fetch p.reviewList r " +
-                "where p.paperID = :paperID", Paper.class);
+        Query<Paper> query = session.createQuery("From Paper " +
+                "where  paperID = :paperID", Paper.class);
         query.setParameter("paperID", paperID);
         Optional<Paper> paper = query.uniqueResultOptional();
 

@@ -1,14 +1,10 @@
 package com.myapp.restapi.researchconference.entity.Paper;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.myapp.restapi.researchconference.entity.Review.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Table
 @Entity
@@ -35,15 +31,8 @@ public class Paper {
     @JoinColumn (name = "paper_info_ID")
     private PaperInfo paperInfo;
 
-    @OneToMany (mappedBy = "paper", cascade = {
-            CascadeType.ALL
-    }, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Review> reviewList;
-
     public Paper() {
         file  = new File();
         paperInfo = new PaperInfo();
-        reviewList = new ArrayList<>();
     }
 }

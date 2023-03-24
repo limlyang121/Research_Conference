@@ -20,7 +20,6 @@ public class User  {
     @Column(name = "username")
     private String userName;
     @Column(name = "password")
-    @JsonIgnore
     private String password;
 
     @ManyToOne (cascade =

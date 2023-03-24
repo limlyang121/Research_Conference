@@ -82,6 +82,7 @@ const UserEdit = () => {
     };
 
     const handleSubmit = async (event) => {
+        alert(JSON.stringify(user))
         event.preventDefault();
         try{
             if (id === 'new') {

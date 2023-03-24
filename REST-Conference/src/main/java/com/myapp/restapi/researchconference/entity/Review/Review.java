@@ -1,12 +1,11 @@
 package com.myapp.restapi.researchconference.entity.Review;
 
 
-import com.myapp.restapi.researchconference.entity.Paper.Paper;
+import com.myapp.restapi.researchconference.entity.Bid.Bid;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -22,15 +21,9 @@ public class Review {
     @Column(name = "reviewID")
     private long reviewID;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {
-            CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE
-    })
-    @JoinColumn(name = "reviewerID")
-    private Reviewer reviewer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn (name = "paperID")
-    private Paper paper;
+    @OneToOne
+    @JoinColumn(name = "bidID")
+    private Bid bid;
 
     @Column(name = "rate")
     private int rate;
@@ -40,7 +33,7 @@ public class Review {
     private Date reviewDate;
 
     public Review() {
-        reviewer = new Reviewer();
-        paper = new Paper();
+        bid = new Bid();
     }
+
 }

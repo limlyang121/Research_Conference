@@ -5,8 +5,12 @@ import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
 import com.myapp.restapi.researchconference.entity.Review.Review;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReviewDAOImpl implements ReviewDAO {
@@ -15,6 +19,33 @@ public class ReviewDAOImpl implements ReviewDAO {
     @Autowired
     public ReviewDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+
+    @Override
+    public List<Review> findMyReviews(int reviewerID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Review> reviewQuery = session.createQuery("From Review where bid.reviewer .reviewerID = :reviewerID", Review.class);
+        reviewQuery.setParameter("reviewerID", reviewerID);
+
+        return reviewQuery.getResultList();
+    }
+
+    @Override
+    public Optional<Review> findReviewByID(int reviewID) {
+        Session session = entityManager.unwrap(Session.class);
+
+            Query<Review> reviewQuery = session.createQuery("From Review where reviewID = :reviewID", Review.class);
+
+        reviewQuery.setParameter("reviewID", reviewID);
+        Optional<Review> review = reviewQuery.uniqueResultOptional();
+        return reviewQuery.uniqueResultOptional();
+    }
+
+    @Override
+    public List<Review> findReviewsByPaperID(int paperID) {
+        return null;
     }
 
     @Override
@@ -27,4 +58,6 @@ public class ReviewDAOImpl implements ReviewDAO {
             return null;
         }
     }
+
+
 }

@@ -11,6 +11,7 @@ public interface BidRestService {
     List<BidDTO> findMyBidByStatus(int reviewerID, String status);
 
     List<BidDTO> findMyAcceptedBid(int reviewerID);
+    List<BidDTO> findMyCompletedBid(int reviewerID);
 
 
 

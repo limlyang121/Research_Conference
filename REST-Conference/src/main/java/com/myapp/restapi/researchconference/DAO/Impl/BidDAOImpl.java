@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class BidDAOImpl implements BidDAO {
@@ -48,6 +49,37 @@ public class BidDAOImpl implements BidDAO {
         Query<Bid> query = session.createQuery("From Bid where reviewer.reviewerID = :reviewerID and status = 'Accept'", Bid.class);
         query.setParameter("reviewerID", reviewerID);
         return query.getResultList();
+    }
+
+
+    @Override
+    public Optional<Bid> findBidByID(int bidID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Bid> query = session.createQuery("From Bid where bidID = : bidID", Bid.class);
+        query.setParameter("bidID", bidID);
+        return query.uniqueResultOptional();
+    }
+
+    @Override
+    public List<Bid> findMyCompletedBid(int reviewerID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Bid> query = session.createQuery("From Bid where reviewer.reviewerID = :reviewerID and status = 'Complete'", Bid.class);
+        query.setParameter("reviewerID", reviewerID);
+        return query.getResultList();
+    }
+
+    @Override
+    public Optional<Bid> findBidByForeignKey(int reviewerID, int paperID){
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Bid> bid = session.createQuery("From Bid  where reviewer.reviewerID = :reviewerID " +
+                "and paper.paperID =: paperID", Bid.class);
+
+        bid.setParameter("reviewerID", reviewerID);
+        bid.setParameter("paperID", paperID);
+        return bid.uniqueResultOptional();
     }
 
     @Override

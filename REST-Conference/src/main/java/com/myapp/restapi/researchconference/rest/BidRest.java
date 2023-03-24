@@ -31,6 +31,12 @@ public class BidRest {
         return bidRestService.findMyAcceptedBid(reviewerID);
     }
 
+    @GetMapping("bids/completed/{reviewerID}")
+    public List<BidDTO> findMyCompletedBids(@PathVariable int reviewerID){
+        List<BidDTO> test = bidRestService.findMyAcceptedBid(reviewerID);
+        return bidRestService.findMyAcceptedBid(reviewerID);
+    }
+
     @GetMapping("bids/{reviewerID}/{status}")
     public List<BidDTO> findMyBidByStatus(@PathVariable int reviewerID, @PathVariable String status){
         return bidRestService.findMyBidByStatus(reviewerID, status);

@@ -17,12 +17,10 @@ public class PaperDTO {
     private File file;
     private String status;
     private PaperInfo paperInfo;
-    private List<Review> reviewList;
 
     public PaperDTO() {
         file = new File();
         paperInfo = new PaperInfo();
-        reviewList = new ArrayList<>();
     }
 
     public static List<PaperDTO> convertToDTO(List<Paper> paperList){
@@ -42,7 +40,6 @@ public class PaperDTO {
         paperDTO.setPaperID(paper.getPaperID());
         paperDTO.setStatus(paper.getStatus());
         paperDTO.setPaperInfo(paper.getPaperInfo());
-        paperDTO.setReviewList(paper.getReviewList());
         return paperDTO;
     }
 
@@ -68,7 +65,6 @@ public class PaperDTO {
                 ", file=" + file +
                 ", status='" + status + '\'' +
                 ", paperInfo=" + paperInfo +
-                ", reviewList=" + reviewList +
                 '}';
     }
 }
