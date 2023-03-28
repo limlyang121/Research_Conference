@@ -40,14 +40,12 @@ function PaperList() {
         try{
 
             let response = await downloadPapers(parseInt(id))
-            alert("AAAA")
 
             console.log(response)
             const blob = new Blob([response], { type: "application/pdf" })
             saveAs(blob, response)
             
         }catch(error){
-            alert("AAAA")
 
         }
     }

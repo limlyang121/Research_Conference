@@ -1,6 +1,7 @@
 package com.myapp.restapi.researchconference.Restservice.Interface;
 
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
+import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 
@@ -12,6 +13,9 @@ public interface PapersRestService {
     List<PaperDTO> findMyPaper(int userID);
 
     PaperDTO findPaperByID(int userID);
+
+    List<ReviewDTO> findPapersReviews(int paperID);
+
     List<PaperDTO> findBidPapers(int reviewerID);
     List<PaperDTO> findBanPapers(int reviewerID);
 

@@ -1,7 +1,6 @@
 package com.myapp.restapi.researchconference.DAO.Impl;
 
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewDAO;
-import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
 import com.myapp.restapi.researchconference.entity.Review.Review;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
@@ -36,7 +35,7 @@ public class ReviewDAOImpl implements ReviewDAO {
     public Optional<Review> findReviewByID(int reviewID) {
         Session session = entityManager.unwrap(Session.class);
 
-            Query<Review> reviewQuery = session.createQuery("From Review where reviewID = :reviewID", Review.class);
+        Query<Review> reviewQuery = session.createQuery("From Review where reviewID = :reviewID", Review.class);
 
         reviewQuery.setParameter("reviewID", reviewID);
         Optional<Review> review = reviewQuery.uniqueResultOptional();
@@ -45,7 +44,11 @@ public class ReviewDAOImpl implements ReviewDAO {
 
     @Override
     public List<Review> findReviewsByPaperID(int paperID) {
-        return null;
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Review> queryReview = session.createQuery("From Review where bid.paper.paperID = :paperID", Review.class);
+        queryReview.setParameter("paperID", paperID);
+        return queryReview.getResultList();
     }
 
     @Override

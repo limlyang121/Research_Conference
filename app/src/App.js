@@ -19,6 +19,7 @@ import AccessDenied from './Security/Access-Denied';
 import ConferenceReviewerBid from './ConferenceChair/ConferenceReviewerBid';
 import ReviewerReview from './Reviewer/ReviewerReviewList';
 import ReviewerReviewForm from './Reviewer/ReviewerReviewForm';
+import PaperReview from './Author/PaperReview';
 
 
 const App = () => {
@@ -44,6 +45,9 @@ const App = () => {
         <Route path='/author/papers/form/:id' exact={true} element={<PaperEdit />} />
         <Route path='/author/papers/mypapers/:id' exact={true} element={<PaperList />} />
         <Route path='/author/papers/read/:id' exact={true} element={<PaperRead />} />
+        <Route path='/author/papers/:id/review' exact={true} element={<PaperReview />} />
+
+
 
 
         {/* Reviewer */}

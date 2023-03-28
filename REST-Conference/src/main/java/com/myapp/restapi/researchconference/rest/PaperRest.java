@@ -2,6 +2,7 @@ package com.myapp.restapi.researchconference.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
+import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
@@ -33,6 +34,11 @@ public class PaperRest {
     public List<PaperDTO> findMyPapers(@PathVariable int myID){
         List<PaperDTO> a = papersRestService.findMyPaper(myID);
         return papersRestService.findMyPaper(myID);
+    }
+
+    @GetMapping("papers/{paperID}/review")
+    public List<ReviewDTO> findReviewsByPaperID(@PathVariable int paperID) {
+        return papersRestService.findPapersReviews(paperID) ;
     }
 
     @GetMapping("papers/{paperID}")

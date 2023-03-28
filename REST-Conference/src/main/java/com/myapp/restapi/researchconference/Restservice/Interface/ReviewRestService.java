@@ -10,6 +10,7 @@ public interface ReviewRestService {
     Review addReview(Review review);
     List<ReviewDTO> findMyReviews(int reviewerID);
     Optional<Review> findReviewByID(int reviewID);
+    List<ReviewDTO> findReviewsByPaperID(int paperID);
 
 
 }

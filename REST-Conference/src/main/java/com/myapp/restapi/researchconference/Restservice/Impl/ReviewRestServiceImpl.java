@@ -47,6 +47,12 @@ public class ReviewRestServiceImpl implements ReviewRestService {
     }
 
     @Override
+    public List<ReviewDTO> findReviewsByPaperID(int paperID) {
+        List<Review> reviewList = reviewDAO.findReviewsByPaperID(paperID);
+        return ReviewDTO.DTOList(reviewList);
+    }
+
+    @Override
     @Transactional
     public Review addReview(Review review) {
         Date currentTime = new Date();

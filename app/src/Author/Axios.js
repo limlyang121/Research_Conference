@@ -49,6 +49,11 @@ export const getPaperByID = async (id) => {
     return response.data;
 }
 
+export const getPaperReviewsAPI = async (id) => {
+    let response = await api.get(`papers/${id}/review`)
+    return response.data;
+}
+
 export const addPapers = async (data) => {
     let response = await upload.post("papers", data)
     return response.data;

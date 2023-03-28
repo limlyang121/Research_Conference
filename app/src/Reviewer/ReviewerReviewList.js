@@ -32,9 +32,8 @@ function ReviewerReviewList() {
             setReviews(response)
         }
 
-
         fetchAcceptedData(id);
-        fetchCompletedData(id)
+        fetchCompletedData(id);
 
     }, [])
 
@@ -95,11 +94,11 @@ function ReviewerReviewList() {
     }
 
     const displayReviewStatus = () => {
-        if (bids.length === 0) {
+        if (reviews.length === 0) {
             return (
                 <tr>
                     <td colSpan="3" style={{ textAlign: "center" }}>
-                        No bids to display
+                        No Reviews to display
                     </td>
                 </tr>
             );

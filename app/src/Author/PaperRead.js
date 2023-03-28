@@ -1,7 +1,7 @@
 // @flow strict
 
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Card, CardBody, CardHeader, CardText, CardTitle, Container, Label } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppNavbar from '../Navbar/AppNavbar';
@@ -78,7 +78,7 @@ function PaperRead() {
                     <CardHeader tag={"h3"}>Review</CardHeader>
                     <CardBody>
                         <CardText tag={"h6"}>
-                            {myPaper?.status}
+                            <Link to={"/author/papers/"+myPaper?.paperID+"/review"}>Get paper Review</Link>
                         </CardText>
 
                     </CardBody>

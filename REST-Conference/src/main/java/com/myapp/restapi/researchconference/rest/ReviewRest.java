@@ -22,20 +22,12 @@ public class ReviewRest {
         this.reviewRestService = reviewRestService;
     }
 
-    @PostMapping("reviews")
-    public ResponseEntity<String> addReviews(@RequestBody Review review) {
-        Review tempReview = reviewRestService.addReview(review);
-        if (tempReview != null)
-            return ResponseEntity.ok("Successfully submit the Review");
-        else
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Submit");
-    }
+
 
     @GetMapping("reviews/myreviews/{reviewerID}")
     public List<ReviewDTO> findMyReviews(@PathVariable int reviewerID){
         return reviewRestService.findMyReviews(reviewerID);
     }
-
     @GetMapping("reviews/{reviewID}")
     public Review findReviewByID(@PathVariable int reviewID) {
         Optional<Review> optionalReview = reviewRestService.findReviewByID(reviewID);
@@ -43,5 +35,14 @@ public class ReviewRest {
             return optionalReview.get();
         }else
             return null;
+    }
+
+    @PostMapping("reviews")
+    public ResponseEntity<String> addReviews(@RequestBody Review review) {
+        Review tempReview = reviewRestService.addReview(review);
+        if (tempReview != null)
+            return ResponseEntity.ok("Successfully submit the Review");
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Submit");
     }
 }
