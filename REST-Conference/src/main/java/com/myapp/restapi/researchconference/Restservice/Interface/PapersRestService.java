@@ -18,13 +18,12 @@ public interface PapersRestService {
 
     List<PaperDTO> findBidPapers(int reviewerID);
     List<PaperDTO> findBanPapers(int reviewerID);
+    List<PaperDTO> findPapersThatReviewed();
+
 
 
     Paper add(Paper paper);
-
     Paper update(Paper paper, int paperID);
-
-    File downloadPdf(int paperID);
-
+    PaperDTO downloadPdf(int paperID);
     boolean deletePaper(int paperID);
 }

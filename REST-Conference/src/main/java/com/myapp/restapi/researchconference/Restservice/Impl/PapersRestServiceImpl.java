@@ -82,6 +82,12 @@ public class PapersRestServiceImpl implements PapersRestService {
     }
 
     @Override
+    public List<PaperDTO> findPapersThatReviewed() {
+        List<Paper> paperList = paperDAO.findPapersThatReviewed();
+        return PaperDTO.convertToDTO(paperList);
+    }
+
+    @Override
     @Transactional
     public Paper add(Paper paper) {
         Date currentTime = new Date();
@@ -108,12 +114,13 @@ public class PapersRestServiceImpl implements PapersRestService {
 
     @Override
     @Transactional
-    public File downloadPdf(int paperID) {
-        try{
-            return paperDAO.downloadPaper(paperID);
-        }catch (SQLException e){
-            return null;
+    public PaperDTO downloadPdf(int paperID) {
+        Optional<Paper> paper = paperDAO.findPaperByID(paperID);
+        if (paper.isPresent()){
+            return PaperDTO.convertToDTODownload(paper.get());
         }
+        else
+            return  null;
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.myapp.restapi.researchconference.entity.Paper;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.myapp.restapi.researchconference.entity.Review.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Table
 @Entity
@@ -30,6 +33,9 @@ public class Paper {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn (name = "paper_info_ID")
     private PaperInfo paperInfo;
+
+    @Column(name = "reviewed_time")
+    private int reviewedTimes;
 
     public Paper() {
         file  = new File();

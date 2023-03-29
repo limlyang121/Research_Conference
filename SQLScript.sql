@@ -82,6 +82,7 @@ create table `paper` (
     `file_info_ID` int(11) ,
     `status` varchar(50),
     `paper_info_ID` int(11) ,
+    `reviewed_time` int(11) default 0,
     constraint `fk_paperID` foreign key (`paper_info_ID`)
     references `paper_info` (`paperID`),
     constraint `fk_fileID`  foreign key (`file_info_ID`)

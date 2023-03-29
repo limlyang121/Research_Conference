@@ -11,7 +11,7 @@ const UserEdit = () => {
         id: '',
         userName: "",
         role: {
-            role: '',
+            role: "Admin",
             desc: ''
         },
         active: "",
@@ -134,7 +134,6 @@ const UserEdit = () => {
                     <FormGroup>
                         <Label for="role">Role</Label>
                         <Input type="select" name="role.role" value={user.role.role} id="role.role" onChange={handleChange}>
-                            <option defaultValue="">Select</option>
                             {myRole.map((role, index) => (
                                 <option key={index} value={role.role}>
                                     {role.role}

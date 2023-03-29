@@ -18,9 +18,12 @@ public interface PaperDAO {
 
     List<Paper> findBanPapers(int reviewerID);
 
-    Paper add(Paper paper);
+    List<Paper> findPapersThatReviewed();
 
-    File downloadPaper(int paperID) throws SQLException;
+    Paper add(Paper paper);
+    void increaseReviewTimes(int paperID);
+
+    Paper downloadPaper(int paperID) throws SQLException;
 
     boolean deletePaper(int paperID);
 

@@ -12,6 +12,10 @@ public interface ReviewDAO {
 
     List<Review> findReviewsByPaperID(int paperID);
 
+    List<Review> findReviewedPaper();
+
     Review addReview(Review review);
+
+    Review updateReview(Review review);
 
 }

@@ -134,19 +134,12 @@ const AppNavbar = () => {
 
                 <NavItem>
                   <Button>
-                    <Link to={"/reviewer/mybids/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
-                      Bid Status
+                    <Link to={"/conference/papers/ready"} style={{ textDecoration: "none", color: "white" }}>
+                      Paper Acceptance
                     </Link>
                   </Button>
                 </NavItem>
 
-                <NavItem>
-                  <Button>
-                    <Link to={"/reviewer/bid/" + parseInt(user)} style={{ textDecoration: "none", color: "white" }}>
-                      Bid Paper
-                    </Link>
-                  </Button>
-                </NavItem>
               </Nav>
             )}
 

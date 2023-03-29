@@ -21,6 +21,13 @@ public class BidDTO {
         reviewerDTO = new ReviewerDTO();
     }
 
+    public static BidDTO DTOIDOnly(Bid bid){
+        BidDTO bidDTO = new BidDTO();
+        bidDTO.setBidID(bid.getBidID());
+        bidDTO.setReviewerDTO(ReviewerDTO.convertToDTO(bid.getReviewer()));
+        return bidDTO;
+    }
+
     public static BidDTO DTOSingle(Bid bid){
         BidDTO bidDTO = new BidDTO();
         bidDTO.setBidID(bid.getBidID());

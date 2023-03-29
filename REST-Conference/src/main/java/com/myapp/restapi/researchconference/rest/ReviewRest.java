@@ -45,4 +45,13 @@ public class ReviewRest {
         else
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Submit");
     }
+
+    @PutMapping("reviews")
+    public ResponseEntity<String> updateReviews(@RequestBody Review review){
+        Review tempReview = reviewRestService.updateReview(review);
+        if (tempReview != null){
+            return ResponseEntity.ok("Successfully update the Review");
+        }else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update the review");
+    }
 }

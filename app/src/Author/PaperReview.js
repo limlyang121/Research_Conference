@@ -20,7 +20,6 @@ function PaperReview() {
 
         fetchReview(id)
 
-
     }, [])
 
     const getFullName = (review) => {
@@ -63,8 +62,8 @@ function PaperReview() {
             <AuthorSecurity />
             <Container fluid>
                 <br />
-                {displayReview()}
 
+                {displayReview()}
                 
             </Container>
         </div>

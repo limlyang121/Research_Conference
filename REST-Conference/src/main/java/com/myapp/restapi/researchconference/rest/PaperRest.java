@@ -3,6 +3,7 @@ package com.myapp.restapi.researchconference.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
+import com.myapp.restapi.researchconference.Exception.ExceptionHandling;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
@@ -56,6 +57,11 @@ public class PaperRest {
         return papersRestService.findBanPapers(reviewerID);
     }
 
+    @GetMapping("papers/ready")
+    public List<PaperDTO> findReviewedPapers(){
+        return papersRestService.findPapersThatReviewed();
+    }
+
 
     @PostMapping(value = "papers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> add(@RequestParam MultipartFile file, @RequestParam String paperData) throws IOException {
@@ -86,19 +92,20 @@ public class PaperRest {
 
     @GetMapping ("papers/download/{paperID}")
     public ResponseEntity<byte[]> downloadPaper(@PathVariable int paperID) {
-        File temp = papersRestService.downloadPdf(paperID);
-        byte[] encodedBytes = java.util.Base64.getEncoder().encode(temp.getFileData());
+        PaperDTO temp = papersRestService.downloadPdf(paperID);
         if (temp == null){
-            return null;
+            throw new RuntimeException("Paper not found");
         }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.builder("attachment").filename("Test"+"."+temp.getFileType()).build());
-        headers.setContentLength(encodedBytes.length);
+        headers.setContentDisposition(ContentDisposition
+                .builder("attachment")
+                .filename(temp.getPaperInfo().getFilename()+".pdf")
+                .build());
+        headers.setContentLength(temp.getFile().getFileData().length);
 
-        return ResponseEntity.ok().headers(headers).body(temp.getFileData());
-
+        return ResponseEntity.ok().headers(headers).body(temp.getFile().getFileData());
     }
 
     @DeleteMapping("papers/delete/{paperID}")

@@ -5,15 +5,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
-import { getOneReviewsAPI, SubmitReviewAPI } from './Axios';
+import { getOneReviewsAPI, SubmitReviewAPI, UpdateReviewAPI } from './Axios';
 
 function ReviewerReviewForm() {
+
+    const options = [
+        { value: 1, label: 1 },
+        { value: 2, label: 2 },
+        { value: 3, label: 3 },
+        { value: 4, label: 4 },
+        { value: 5, label: 5 },
+    ];
+
     const reviewsForm = {
         reviewID: "",
         bid:{
             bidID:"",
         },
-        rate: "",
+        rate: 1,
         comment: "",
         review_date: ""
     }
@@ -37,13 +46,7 @@ function ReviewerReviewForm() {
         }
     }, [])
 
-    const options = [
-        { value: '1', label: '1' },
-        { value: '2', label: '2' },
-        { value: '3', label: '3' },
-        { value: '4', label: '4' },
-        { value: '5', label: '5' },
-    ];
+
 
     const title = <h2>{status ? 'Edit Review' : 'Add Review'}</h2>;
 
@@ -72,7 +75,9 @@ function ReviewerReviewForm() {
                     alert (response)
                 })
             } else {
-                // await updateUser(user)
+                await UpdateReviewAPI(reviews).then((response) => {
+                    alert (response)
+                })
 
             }
 
@@ -101,7 +106,7 @@ function ReviewerReviewForm() {
                         <Label for="rate">Rating</Label>
                         <Input type='select' name='rate' id='rate' value={reviews.rate} onChange={handleChange}>
                             {options.map((optionChoice) => (
-                                <option key={optionChoice.value} value={optionChoice.label} >
+                                <option key={optionChoice.value} value={optionChoice.value} defaultValue>
                                     {optionChoice.label}
                                 </option>
                             ))}

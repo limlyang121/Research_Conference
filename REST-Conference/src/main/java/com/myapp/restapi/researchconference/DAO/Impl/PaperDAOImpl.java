@@ -60,7 +60,7 @@ public class PaperDAOImpl implements PaperDAO {
         Session session = entityManager.unwrap(Session.class);
         try{
             Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperID = pi.paperID" +
-                    " where pi .authorID.id = :userID", Paper.class);
+                    " where pi.authorID.id = :userID", Paper.class);
             paperQuery.setParameter("userID", userID);
 
             return paperQuery.getResultList();
@@ -84,6 +84,14 @@ public class PaperDAOImpl implements PaperDAO {
     }
 
     @Override
+    public List<Paper> findPapersThatReviewed() {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Paper> paperQuery = session.createQuery("from Paper where reviewedTimes >= 5", Paper.class);
+        return paperQuery.getResultList();
+    }
+
+    @Override
     public Paper add(Paper paper) {
         Session session = entityManager.unwrap(Session.class);
 
@@ -103,12 +111,23 @@ public class PaperDAOImpl implements PaperDAO {
     }
 
     @Override
-    public File downloadPaper(int paperID) {
+    public void increaseReviewTimes(int paperID) {
         Session session = entityManager.unwrap(Session.class);
 
         Paper paper = session.get(Paper.class, paperID);
-        File file = paper.getFile();
-        return file;
+        paper.setReviewedTimes(paper.getReviewedTimes() + 1);
+        session.merge(paper);
+    }
+
+    @Override
+    public Paper downloadPaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Paper paper = session.get(Paper.class, paperID);
+        if (paper != null){
+            return paper;
+        }
+        return null;
     }
 
     @Override

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LoginUser } from "./Axios";
 import { storeTokenData } from "./Axios";
 
@@ -8,7 +8,7 @@ import "./Login.css";
 
 function Login() {
   // React States
-  const [errorMessages, setErrorMessages] = useState({});
+  const [errorMessages, setErrorMessages] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
@@ -24,48 +24,51 @@ function Login() {
     }
   ];
 
-  const errors = {
-    uname: "invalid username",
-    pass: "invalid password"
-  };
-
   const handleSubmit = async (event) => {
     //Prevent page reload
     event.preventDefault();
 
-
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData.entries())
-    
-    let tokenData = await LoginUser(data)   
-    storeTokenData(tokenData)
-    navigate("/home")
+
+    try {
+      let tokenData = await LoginUser(data)
+      storeTokenData(tokenData)
+      navigate("/home")
+    } catch (error) {
+      alert(JSON.stringify(error))
+      setErrorMessages(error)
+    }
 
   };
 
-  // Generate JSX code for error message
-  const renderErrorMessage = (name) =>
-    name === errorMessages.name && (
-      <div className="error">{errorMessages.message}</div>
+  const renderErrorMessage = () => {
+    return (
+      <div className="error">
+        {errorMessages && errorMessages.message}
+      </div>
     );
-
+  };
   // JSX code for login form
   const renderForm = (
     <div className="form">
       <form onSubmit={handleSubmit}>
+        {renderErrorMessage()}
+
         <div className="input-container">
           <label>Username </label>
           <input type="text" name="username" required />
-          {renderErrorMessage("uname")}
         </div>
+
         <div className="input-container">
           <label>Password </label>
           <input type="password" name="password" required />
-          {renderErrorMessage("pass")}
         </div>
+
         <div className="button-container">
           <input type="submit" />
         </div>
+
       </form>
     </div>
   );

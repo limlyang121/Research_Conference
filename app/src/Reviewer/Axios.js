@@ -79,3 +79,7 @@ export const SubmitReviewAPI = async (data) => {
     return response.data;
 }
 
+export const UpdateReviewAPI = async (data) => {
+    let response = await api.put(`reviews`, data)
+    return response.data;
+}

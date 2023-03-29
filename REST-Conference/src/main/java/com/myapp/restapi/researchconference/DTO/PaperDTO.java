@@ -14,12 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class PaperDTO {
     private int paperID;
-    private File file;
+    private FileDTO file;
     private String status;
     private PaperInfo paperInfo;
 
     public PaperDTO() {
-        file = new File();
+        file = new FileDTO();
         paperInfo = new PaperInfo();
     }
 
@@ -51,9 +51,9 @@ public class PaperDTO {
         return paperDTO;
     }
 
-    public PaperDTO convertToDTODownload(Paper paper){
+    public static PaperDTO convertToDTODownload(Paper paper){
         PaperDTO paperDTO = new PaperDTO();
-        paperDTO.setFile(paper.getFile());
+        paperDTO.setFile(FileDTO.DTOSingle(paper.getFile()));
         paperDTO.setPaperInfo(paper.getPaperInfo());
         return paperDTO;
     }

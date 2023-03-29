@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRestService {
-    Review addReview(Review review);
     List<ReviewDTO> findMyReviews(int reviewerID);
     Optional<Review> findReviewByID(int reviewID);
-    List<ReviewDTO> findReviewsByPaperID(int paperID);
+    List<ReviewDTO> findReviewedPaper();
+
+    Review addReview(Review review);
+    Review updateReview(Review review);
 
 
 }

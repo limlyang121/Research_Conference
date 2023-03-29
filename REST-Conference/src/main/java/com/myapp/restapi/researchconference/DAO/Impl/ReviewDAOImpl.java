@@ -52,6 +52,16 @@ public class ReviewDAOImpl implements ReviewDAO {
     }
 
     @Override
+    public List<Review> findReviewedPaper() {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Review> query = session.createQuery("select r from Review r " +
+                "group by r.bid.paper.paperID having COUNT (r.reviewID) >= 2 ", Review.class);
+
+        return query.getResultList();
+    }
+
+    @Override
     public Review addReview(Review review) {
         Session session = entityManager.unwrap(Session.class);
         try{
@@ -62,5 +72,15 @@ public class ReviewDAOImpl implements ReviewDAO {
         }
     }
 
+    @Override
+    public Review updateReview(Review review) {
+        Session session = entityManager.unwrap(Session.class);
 
+        try{
+            return session.merge(review);
+
+        }catch (Exception e ){
+            return null;
+        }
+    }
 }

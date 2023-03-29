@@ -17,7 +17,7 @@ const upload = axios.create({
 
 const download = axios.create({
     baseURL: "http://localhost:8080/api/",
-    responseType: "arraybuffer",
+    responseType: "blob",
 });
 
 const interceptor = async (config) => {
@@ -71,6 +71,6 @@ export const deletePapers = async (id) => {
 
 export const downloadPapers = async (id) => {
     let response = await download.get(`papers/download/${id}`)
-    return response.data
+    return response
 }
 

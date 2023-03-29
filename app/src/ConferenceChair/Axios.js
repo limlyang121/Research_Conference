@@ -36,3 +36,8 @@ export const cancelBidAPI = async (id) => {
     let response = await api.patch(`bids/cancel/${id}`)
     return response.data;
 }
+
+export const fetchPendingPaperAPI = async () => {
+    let response = await api.get(`papers/ready`)
+    return response.data;
+}

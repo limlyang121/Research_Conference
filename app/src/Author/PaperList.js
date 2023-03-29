@@ -38,15 +38,16 @@ function PaperList() {
 
     const downloadFile = async (id) => {
         try{
-
+            
             let response = await downloadPapers(parseInt(id))
+            const contentDispositionHeader = response.headers['content-disposition'];
+            // const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1];
 
-            console.log(response)
-            const blob = new Blob([response], { type: "application/pdf" })
-            saveAs(blob, response)
+            const blob = new Blob([response.data], { type: "application/pdf" })
+            saveAs(blob)
             
         }catch(error){
-
+            alert(JSON.stringify(error))
         }
     }
 

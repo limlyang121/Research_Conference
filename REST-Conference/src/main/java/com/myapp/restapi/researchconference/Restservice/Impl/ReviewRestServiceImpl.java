@@ -47,8 +47,8 @@ public class ReviewRestServiceImpl implements ReviewRestService {
     }
 
     @Override
-    public List<ReviewDTO> findReviewsByPaperID(int paperID) {
-        List<Review> reviewList = reviewDAO.findReviewsByPaperID(paperID);
+    public List<ReviewDTO> findReviewedPaper() {
+        List<Review> reviewList = reviewDAO.findReviewedPaper();
         return ReviewDTO.DTOList(reviewList);
     }
 
@@ -61,13 +61,29 @@ public class ReviewRestServiceImpl implements ReviewRestService {
         boolean success = false;
         if (bid.isPresent()){
             review.setBid(bid.get());
-
             review =  reviewDAO.addReview(review);
             success = bidDAO.completeBid(review.getBid().getBidID());
-            if (success)
+            if (success){
+                paperDAO.increaseReviewTimes(review.getBid().getPaper().getPaperID());
                 return review;
+            }
         }
 
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public Review updateReview(Review review) {
+        Date currentTime = new Date();
+        Optional<Bid> bid = bidDAO.findBidByID(review.getBid().getBidID());
+        if (bid.isPresent()){
+            review.setBid(bid.get());
+            review =  reviewDAO.updateReview(review);
+            if (review != null)
+                return review;
+
+        }
         return null;
     }
 }
