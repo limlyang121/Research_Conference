@@ -5,6 +5,8 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { fetchPendingPaperAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
+import { format } from "date-fns"
+
 
 function ConferencePaperList() {
     const [paperList, setPaperList] = React.useState([]);
@@ -31,14 +33,30 @@ function ConferencePaperList() {
             fetchAcceptRejectData();
 
 
-
     }, [status, changeStatus])
+
+    const fullName = (paper) => {
+        return paper.paperInfo.authorID.firstName + " " + paper.paperInfo.authorID.lastName
+    }
+
+    const dateFormat = (date) => {
+        const dateType = new Date(date)
+
+        return (format(dateType, "dd/MM/yyyy"))
+    }
 
     const displayListData = paperList.map((paper) => {
         return (
 
             <tr key={paper.paperID} >
-                <td style={{ whiteSpace: "nowrap" }} > {paper.paperID}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.title}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {dateFormat(paper.paperInfo.upload)}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {fullName(paper)}  </td>
+                <td style={{ whiteSpace: "nowrap", textAlign: "center" }} > {paper.reviewedTimes}  </td>
+                <td>
+                    <Button color='primary' > Check Reviewer review</Button>
+
+                </td>
 
             </tr>
         )
@@ -53,8 +71,8 @@ function ConferencePaperList() {
 
                 <h3>Paper Publish Place</h3>
                 <ButtonGroup style={{ gap: "10px" }}>
-                    <Button color='primary' onClick={() => changeStatus("Pending")} >Show Ready</Button>
-                    <Button color='danger' onClick={() => changeStatus("Accept")} >Show Accept</Button>
+                    <Button color='secondary' onClick={() => changeStatus("Pending")} >Show Ready</Button>
+                    <Button color='primary' onClick={() => changeStatus("Accept")} >Show Accept</Button>
                     <Button color='danger' onClick={() => changeStatus("Reject")} >Show Reject</Button>
 
                 </ButtonGroup>
@@ -64,6 +82,7 @@ function ConferencePaperList() {
                             <th style={{ width: "10%" }} >Paper Title </th>
                             <th style={{ width: "20%" }}>Paper Upload Date </th>
                             <th style={{ width: "20%" }}>Author Name </th>
+                            <th style={{ width: "20%" }}>Reviewed times </th>
                             <th colSpan={3}>Action</th>
                         </tr>
                     </thead>

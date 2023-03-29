@@ -17,6 +17,7 @@ public class PaperDTO {
     private FileDTO file;
     private String status;
     private PaperInfo paperInfo;
+    private int reviewedTimes;
 
     public PaperDTO() {
         file = new FileDTO();
@@ -30,6 +31,7 @@ public class PaperDTO {
             paperDTO.setPaperID(paper.getPaperID());
             paperDTO.setStatus(paper.getStatus());
             paperDTO.setPaperInfo(paper.getPaperInfo());
+            paperDTO.setReviewedTimes(paper.getReviewedTimes());
             paperDTOList.add(paperDTO);
         }
         return paperDTOList;
