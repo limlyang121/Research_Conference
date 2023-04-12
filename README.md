@@ -1,3 +1,5 @@
+***Will begin update again since Job assessment is done***  
+
 # MyProject
  Practicing Coding (Full Stack).
 
@@ -20,9 +22,7 @@ Enhance Error Exception Handling
 Enchance UI
 RBAC(Back-End)
 
-Preparing Interview 
-=========================
-Not updating for a while
+
 
 
 
