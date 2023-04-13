@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "bid", schema = "public")
 public class Bid {
 
     @Id

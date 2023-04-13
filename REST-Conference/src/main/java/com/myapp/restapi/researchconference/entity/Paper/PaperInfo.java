@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity
-@Table
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table (name = "paper_info", schema = "public")
 public class PaperInfo {
 
     @Id
@@ -29,7 +29,7 @@ public class PaperInfo {
     cascade = {
             CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}
     )
-    @JoinColumn(name = "authorID")
+    @JoinColumn(name = "authorID", referencedColumnName = "id")
     private Userdetails authorID;
     private String description;
 

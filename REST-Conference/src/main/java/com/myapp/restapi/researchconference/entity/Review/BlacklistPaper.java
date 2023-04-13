@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "blacklist_paper")
+@Table(name = "blacklist_paper", schema = "public")
 public class BlacklistPaper{
     @EmbeddedId
     private BlacklistPaperID id;

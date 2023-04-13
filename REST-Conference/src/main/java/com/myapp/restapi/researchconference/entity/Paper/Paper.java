@@ -9,7 +9,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@Table
+@Table (name = "paper", schema = "public")
 @Entity
 @Data
 @Builder

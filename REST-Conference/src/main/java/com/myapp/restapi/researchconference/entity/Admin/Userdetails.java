@@ -8,11 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_details")
+@Table(name = "user_details", schema = "public")
 public class Userdetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_details_seq")
+    @SequenceGenerator(name = "user_details_seq", sequenceName = "user_details_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "first_name")

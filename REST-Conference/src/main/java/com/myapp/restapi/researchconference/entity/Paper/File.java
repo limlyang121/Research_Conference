@@ -14,7 +14,7 @@ import java.util.Arrays;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "file")
+@Table(name = "file", schema = "public")
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

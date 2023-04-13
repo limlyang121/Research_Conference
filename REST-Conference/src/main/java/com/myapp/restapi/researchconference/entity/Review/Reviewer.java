@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table (name = "reviewer", schema = "public")
 public class Reviewer {
     @Id
     @Column(name = "reviewerID")

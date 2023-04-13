@@ -62,7 +62,7 @@ public class PaperDAOImpl implements PaperDAO {
             Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperID = pi.paperID" +
                     " where pi.authorID.id = :userID", Paper.class);
             paperQuery.setParameter("userID", userID);
-
+            List<Paper> a = paperQuery.getResultList();
             return paperQuery.getResultList();
         }catch (Exception e){
             System.out.println(e);

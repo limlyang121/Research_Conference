@@ -25,14 +25,19 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User findByUserName(String userName) {
-        Session session = entityManager.unwrap(Session.class);
-        Query<User> query = session.createQuery("from User where userName = :username", User.class);
-        query.setParameter("username", userName);
-        Optional<User> result = query.uniqueResultOptional();
-        if (result.isPresent()){
-            return result.get();
-        }else
+        try {
+            Session session = entityManager.unwrap(Session.class);
+            Query<User> query = session.createQuery("from User where userName = :username", User.class);
+            query.setParameter("username", userName);
+            Optional<User> result = query.uniqueResultOptional();
+            if (result.isPresent()) {
+                return result.get();
+            } else
+                return null;
+        }catch (Exception e ){
+            System.err.println(e);
             return null;
+        }
     }
 
     @Override

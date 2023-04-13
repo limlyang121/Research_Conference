@@ -1,6 +1,5 @@
 package com.myapp.restapi.researchconference.entity.Admin;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,11 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table (name = "user",schema = "public")
 public class User  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_id_seq", allocationSize = 1)
     @Column(name = "id")
     private int id;
     @Column(name = "username")
@@ -24,7 +24,7 @@ public class User  {
 
     @ManyToOne (cascade =
             {CascadeType.DETACH,CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REFRESH})
-    @JoinColumn(name = "roles")
+    @JoinColumn(name = "roles", referencedColumnName = "roles")
     private Role role;
     @Column(name = "active")
     private int active;
@@ -32,7 +32,7 @@ public class User  {
     @OneToOne(cascade = {
             CascadeType.ALL
     })
-    @JoinColumn (name = "user_id")
+    @JoinColumn (name = "user_id", referencedColumnName = "id")
     @JsonManagedReference
     private Userdetails userdetails;
 
