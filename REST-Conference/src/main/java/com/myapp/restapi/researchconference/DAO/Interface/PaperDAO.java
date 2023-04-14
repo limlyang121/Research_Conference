@@ -29,6 +29,6 @@ public interface PaperDAO {
 
     Paper updatePaper(Paper paper);
 
-
-
+    boolean acceptPaper(int paperID);
+    boolean rejectPaper(int paperID);
 }

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Card, CardBody, CardFooter, CardHeader, Container, Table } from 'reactstrap';
+import { Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Form, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getPaperReviewsAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
@@ -10,12 +10,16 @@ import ConferenceSecurity from './ConferenceSecurity';
 function ConferencePaperReview() {
 
     const [paperReview, setPaperReviews] = React.useState([]);
+    const [average, setAverage] = React.useState(0);
     const { id } = useParams();
 
     React.useEffect(() => {
         const fetchReview = async (id) => {
             let response = await getPaperReviewsAPI(id);
             setPaperReviews(response);
+
+            const sum = response.reduce((acc, review) => acc + review.rate, 0);
+            setAverage(sum / response.length);
         }
 
         fetchReview(id)
@@ -36,7 +40,7 @@ function ConferencePaperReview() {
         }
 
         return paperReview.map((review, index) => (
-            <div>
+            <div key={index}>
                 <Card>
                     <CardHeader>
                         Review {index + 1}
@@ -64,7 +68,18 @@ function ConferencePaperReview() {
                 <br />
 
                 {displayReview()}
-                
+
+                Average is : {average}
+
+                <Form>
+                    <ButtonGroup style={{gap:"10px"}}>
+                        <Button color='primary' >Accept</Button>
+                        <Button color='danger' >Reject</Button>
+                    </ButtonGroup>
+                </Form>
+
+
+
             </Container>
         </div>
     );

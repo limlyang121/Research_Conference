@@ -146,4 +146,28 @@ public class PaperDAOImpl implements PaperDAO {
         Session session = entityManager.unwrap(Session.class);
         return session.merge(paper);
     }
+
+    @Override
+    public boolean acceptPaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        Paper paper = session.get(Paper.class, paperID);
+        if (paper == null)
+            return false;
+
+        paper.setStatus("Accept");
+        session.merge(paper);
+        return true;
+    }
+
+    @Override
+    public boolean rejectPaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        Paper paper = session.get(Paper.class, paperID);
+        if (paper == null)
+            return false;
+
+        paper.setStatus("Reject");
+        session.merge(paper);
+        return true;
+    }
 }
