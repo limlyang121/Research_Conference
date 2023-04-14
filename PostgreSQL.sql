@@ -56,13 +56,26 @@ INSERT INTO user_details VALUES
 (1, 'Lim', 'Yang', 177, 72),
 (2, 'Reine', 'Pavolia', 175, 50),
 (3, 'Ollie', 'Kureiji', 165, 48),
-(4, 'Anya', 'Melfissa', 148, 45);
+(4, 'Anya', 'Melfissa', 148, 45),
+(5, 'Moona', 'Hoshinova', 177, 50),
+(6, 'Ayunda', 'Risu', 150, 22),
+(7, 'Airani', 'Iofi', 148, 40),
+(8, 'Kobo', 'Kanaeru', 130, 45),
+(9, 'Kaela', 'Kov', 180, 60),
+(10, 'Zeta', 'Nani ', 160, 45);
 
 INSERT INTO "user" VALUES
 (1, 'admin', '$2a$10$pEwyHagJ6fbpNwAuIU4kXOYQnPT90YO7zWenR5y0DeJ1haVRftnRS', 'ADMIN', 1, 1),
 (2, 'author', '$2a$10$pEwyHagJ6fbpNwAuIU4kXOYQnPT90YO7zWenR5y0DeJ1haVRftnRS', 'AUTHOR', 1, 2),
 (3, 'reviewer', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 3),
-(4, 'conference', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'CONFERENCE', 1, 4);
+(4, 'reviewer1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 4),
+(5, 'reviewer2', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 5),
+(6, 'reviewer3', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 6),
+(7, 'reviewer4', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 7),
+(8, 'admin1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'ADMIN', 1, 8),
+(9, 'author1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'AUTHOR', 1, 9),
+(10, 'conference', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'CONFERENCE', 1, 10);
+
 
 CREATE TABLE paper_info (
     paperID INTEGER PRIMARY KEY DEFAULT nextval('paper_info_id_seq'),
@@ -76,7 +89,7 @@ CREATE TABLE paper_info (
 
 CREATE TABLE "file" (
     fileID  INTEGER PRIMARY KEY DEFAULT nextval('file_id_seq'),
-    file_data BYTEA,
+    file_data OID,
     file_type VARCHAR(50)
 );
 
@@ -98,7 +111,11 @@ CREATE TABLE reviewer (
 );
 
 INSERT INTO reviewer VALUES
-(3, 1, 3);
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7);
 
 CREATE TABLE "blacklist_paper" (
   reviewerID integer not null,

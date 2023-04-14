@@ -2,8 +2,10 @@
 
 import * as React from 'react';
 import { getPendingPapers, addToBlackListAPI, getBanPapers, DeleteFromBlackListAPI, addToBidAPI } from './Axios';
+import { downloadPapersAPI } from '../General/DownloadAxios';
+import { saveAs } from "file-saver"
 import { format } from "date-fns"
-import { Button, ButtonGroup, Container, Table, Label, FormGroup, Form, Input } from 'reactstrap';
+import { Button, ButtonGroup, Container, Table, Form, Input } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
@@ -106,6 +108,21 @@ function ReviewerBid() {
         }
     }
 
+    const downloadFile = async (id) => {
+        try{
+            
+            let response = await downloadPapersAPI(parseInt(id))
+            const contentDispositionHeader = response.headers['content-disposition'];
+            // const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+
+            const blob = new Blob([response.data], { type: "application/pdf" })
+            saveAs(blob)
+            
+        }catch(error){
+            alert("Unknown Error")
+        }
+    }
+
 
 
 
@@ -123,7 +140,7 @@ function ReviewerBid() {
         return (
 
             <ButtonGroup style={{ gap: "10px" }}>
-                <Button size="sm" color="info" tag={Link} to={"#"}>Download</Button>
+                <Button size="sm" color="info" onClick={async () => downloadFile(paper.paperID)} >Download</Button>
                 <Form onSubmit={addToBid}>
                     <Input name="reviewer.reviewerID" id="reviewer.reviewerID" value={id} type="hidden" />
                     <Input name="paper.paperID" id="paper.paperID" value={paper.paperID} type="hidden" />

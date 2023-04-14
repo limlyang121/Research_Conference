@@ -6,6 +6,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import { fetchPendingPaperAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
 import { format } from "date-fns"
+import { Link } from 'react-router-dom';
 
 
 function ConferencePaperList() {
@@ -54,7 +55,7 @@ function ConferencePaperList() {
                 <td style={{ whiteSpace: "nowrap" }} > {fullName(paper)}  </td>
                 <td style={{ whiteSpace: "nowrap", textAlign: "center" }} > {paper.reviewedTimes}  </td>
                 <td>
-                    <Button color='primary' > Check Reviewer review</Button>
+                    <Button color='primary' tag={Link} to={"/conference/papers/" + paper.paperID+ "/reviews"} > Check Reviewer review</Button>
 
                 </td>
 

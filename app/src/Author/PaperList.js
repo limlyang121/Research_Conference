@@ -4,8 +4,9 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { getMyPapers, deletePapers, downloadPapers, getPaperByID } from './Axios';
+import { getMyPapers, deletePapers} from './Axios';
 import { saveAs } from "file-saver"
+import { downloadPapersAPI } from '../General/DownloadAxios';
 import { format } from "date-fns"
 import AuthorSecurity from './AuthorSecurity';
 
@@ -39,7 +40,7 @@ function PaperList() {
     const downloadFile = async (id) => {
         try{
             
-            let response = await downloadPapers(parseInt(id))
+            let response = await downloadPapersAPI(parseInt(id))
             const contentDispositionHeader = response.headers['content-disposition'];
             // const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1];
 
@@ -47,7 +48,7 @@ function PaperList() {
             saveAs(blob)
             
         }catch(error){
-            alert(JSON.stringify(error))
+            alert("Unknown Error")
         }
     }
 

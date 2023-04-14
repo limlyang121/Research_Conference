@@ -6,9 +6,9 @@ const api = axios.create({
     headers:{
         "Content-Type": "application/json   "
     }
-
-
 });
+
+
 
 export const storeTokenData = (tokenString) => {
     const token = JSON.stringify(tokenString)
@@ -29,11 +29,12 @@ export const LoginUser = async (formData) => {
     return response.data
 }
 
-export const logout = () => {
+export const logout = async () => {
     sessionStorage.removeItem("token")
     sessionStorage.removeItem("username")
     sessionStorage.removeItem("myRole")
-
+    let response = await api.post("logout");
+    return response.data;
 }
 
 

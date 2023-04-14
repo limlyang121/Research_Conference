@@ -7,6 +7,9 @@ import AppNavbar from '../Navbar/AppNavbar';
 import { getAcceptedBidAPI, getMyReviewsAPI } from './Axios';
 import ReviewerSecurity from './ReviewerSecurity';
 import { format } from "date-fns"
+import { downloadPapersAPI } from '../General/DownloadAxios';
+import { saveAs } from "file-saver"
+
 
 
 function ReviewerReviewList() {
@@ -36,6 +39,21 @@ function ReviewerReviewList() {
         fetchCompletedData(id);
 
     }, [])
+
+    const downloadFile = async (id) => {
+        try {
+
+            let response = await downloadPapersAPI(parseInt(id))
+            const contentDispositionHeader = response.headers['content-disposition'];
+            // const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1];
+
+            const blob = new Blob([response.data], { type: "application/pdf" })
+            saveAs(blob)
+
+        } catch (error) {
+            alert("Unknown Error")
+        }
+    }
 
     const dateFormat = (date) => {
         const dateType = new Date(date)
@@ -86,7 +104,7 @@ function ReviewerReviewList() {
                 <td>
                     <ButtonGroup style={{ gap: "10px" }} >
                         <Button color='primary' tag={Link} to={"/reviewer/review/" + bid.bidID + "/new"}> Review!</Button>
-                        <Button color="warning"  > </Button>
+                        <Button size="sm" color="info" onClick={async () => downloadFile(bid.paperDTO.paperID)} > Download</Button>
                     </ButtonGroup>
                 </td>
             </tr>

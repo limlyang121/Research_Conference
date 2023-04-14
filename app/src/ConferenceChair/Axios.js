@@ -41,3 +41,8 @@ export const fetchPendingPaperAPI = async () => {
     let response = await api.get(`papers/ready`)
     return response.data;
 }
+
+export const getPaperReviewsAPI = async (id) => {
+    let response = await api.get(`papers/${id}/review`)
+    return response.data;
+}

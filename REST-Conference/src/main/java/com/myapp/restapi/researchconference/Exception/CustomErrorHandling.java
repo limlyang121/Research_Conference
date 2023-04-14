@@ -10,9 +10,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomErrorHandling extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public final ResponseEntity<Object> handleUserNotFoundException(UsernameNotFoundException ex) {
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {
         ExceptionHandling errorResponse = new ExceptionHandling(ex.getMessage());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        errorResponse.setTimeStamp(System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
