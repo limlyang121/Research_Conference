@@ -13,19 +13,19 @@ import java.util.List;
 @AllArgsConstructor
 public class ReviewDTO {
     private long reviewID;
-    private BidDTO bidDTO;
+    private BidDTO bid;
     private int rate;
     private String comment;
     private Date reviewDate;
 
     public ReviewDTO() {
-        bidDTO = new BidDTO();
+        bid = new BidDTO();
     }
 
     public static ReviewDTO DTOSingle(Review review){
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setReviewID(review.getReviewID());
-        reviewDTO.setBidDTO(BidDTO.DTOSingle(review.getBid()));
+        reviewDTO.setBid(BidDTO.DTOSingle(review.getBid()));
         reviewDTO.setRate(review.getRate());
         reviewDTO.setComment(review.getComment());
         reviewDTO.setReviewDate(review.getReviewDate());

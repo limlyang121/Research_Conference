@@ -12,27 +12,27 @@ import java.util.List;
 @AllArgsConstructor
 public class BidDTO {
     private int bidID;
-    private PaperDTO paperDTO;
-    private ReviewerDTO reviewerDTO;
+    private PaperDTO paper;
+    private ReviewerDTO reviewer;
     private String status;
 
     public BidDTO() {
-        paperDTO = new PaperDTO();
-        reviewerDTO = new ReviewerDTO();
+        paper = new PaperDTO();
+        reviewer = new ReviewerDTO();
     }
 
     public static BidDTO DTOIDOnly(Bid bid){
         BidDTO bidDTO = new BidDTO();
         bidDTO.setBidID(bid.getBidID());
-        bidDTO.setReviewerDTO(ReviewerDTO.convertToDTO(bid.getReviewer()));
+        bidDTO.setReviewer(ReviewerDTO.convertToDTO(bid.getReviewer()));
         return bidDTO;
     }
 
     public static BidDTO DTOSingle(Bid bid){
         BidDTO bidDTO = new BidDTO();
         bidDTO.setBidID(bid.getBidID());
-        bidDTO.setPaperDTO(PaperDTO.convertToDTOBid(bid.getPaper()));
-        bidDTO.setReviewerDTO(ReviewerDTO.convertToDTO(bid.getReviewer()));
+        bidDTO.setPaper(PaperDTO.convertToDTOBid(bid.getPaper()));
+        bidDTO.setReviewer(ReviewerDTO.convertToDTO(bid.getReviewer()));
         bidDTO.setStatus(bid.getStatus());
         return bidDTO;
     }
@@ -50,8 +50,8 @@ public class BidDTO {
     public String toString() {
         return "BidDTO{" +
                 "bidID=" + bidID +
-                ", paperDTO=" + paperDTO +
-                ", reviewerDTO=" + reviewerDTO +
+                ", paperDTO=" + paper +
+                ", reviewerDTO=" + reviewer +
                 ", status='" + status + '\'' +
                 '}';
     }

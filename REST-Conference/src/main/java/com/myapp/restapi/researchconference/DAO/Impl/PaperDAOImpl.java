@@ -87,7 +87,25 @@ public class PaperDAOImpl implements PaperDAO {
     public List<Paper> findPapersThatReviewed() {
         Session session = entityManager.unwrap(Session.class);
 
-        Query<Paper> paperQuery = session.createQuery("from Paper where reviewedTimes >= 5", Paper.class);
+        Query<Paper> paperQuery = session.createQuery("from Paper where reviewedTimes >= 5 and status='Pending'", Paper.class);
+        return paperQuery.getResultList();
+    }
+
+    @Override
+    public List<Paper> findReadyPapers() {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Paper> paperQuery = session.createQuery("from Paper where status = 'Ready'", Paper.class);
+        return paperQuery.getResultList();
+    }
+
+    @Override
+    public List<Paper> findPapersReadyToPublishOrReject() {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Paper> paperQuery = session.createQuery("from Paper as p inner join Bid as b " +
+                "on p.id = b.paper.id where " +
+                "p.status = 'Ready' and b.status = 'Complete'", Paper.class);
         return paperQuery.getResultList();
     }
 
@@ -145,6 +163,18 @@ public class PaperDAOImpl implements PaperDAO {
     public Paper updatePaper(Paper paper){
         Session session = entityManager.unwrap(Session.class);
         return session.merge(paper);
+    }
+
+    @Override
+    public boolean readyPaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        Paper paper = session.get(Paper.class, paperID);
+        if (paper == null)
+            return false;
+
+        paper.setStatus("Ready");
+        session.merge(paper);
+        return true;
     }
 
     @Override

@@ -13,6 +13,10 @@ public interface BidDAO {
     List<Bid> findMyAcceptedBid(int reviewerID);
     List<Bid> findMyCompletedBid(int reviewerID);
 
+    List<Bid> findReadyPapersBid();
+
+    List<Bid> findAllBidForSpecifiedPapers(int paperID);
+
     Optional<Bid> findBidByID(int bidID);
 
 

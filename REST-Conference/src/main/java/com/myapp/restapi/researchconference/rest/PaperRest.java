@@ -57,9 +57,19 @@ public class PaperRest {
         return papersRestService.findBanPapers(reviewerID);
     }
 
-    @GetMapping("papers/ready")
+    @GetMapping("papers/pending")
     public List<PaperDTO> findReviewedPapers(){
         return papersRestService.findPapersThatReviewed();
+    }
+
+    @GetMapping("papers/ready")
+    public List<PaperDTO> findPapersByStatus(){
+        return papersRestService.findReadyPapers();
+    }
+
+    @GetMapping("papers/readyToPublishOrReject")
+    public List<PaperDTO> findPapersThatReadyToPublishOrReject(){
+        return papersRestService.findPapersReadyToPublishOrReject();
     }
 
 

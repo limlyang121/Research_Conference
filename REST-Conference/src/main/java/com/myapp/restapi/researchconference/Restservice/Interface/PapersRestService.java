@@ -20,6 +20,9 @@ public interface PapersRestService {
     List<PaperDTO> findBanPapers(int reviewerID);
     List<PaperDTO> findPapersThatReviewed();
 
+    List<PaperDTO> findReadyPapers();
+
+    List<PaperDTO> findPapersReadyToPublishOrReject();
 
 
     Paper add(Paper paper);

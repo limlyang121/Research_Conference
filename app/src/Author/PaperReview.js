@@ -24,7 +24,7 @@ function PaperReview() {
 
     const getFullName = (review) => {
         return (
-            review.bidDTO.reviewerDTO.userdetails.firstName + " " + review.bidDTO.reviewerDTO.userdetails.lastName
+            review.bid.reviewer.userdetails.firstName + " " + review.bid.reviewer.userdetails.lastName
         )
     }
 

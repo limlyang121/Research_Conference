@@ -3,10 +3,12 @@
 import * as React from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { fetchPendingPaperAPI } from './Axios';
+import { closeBidToReadyPapersAPI, fetchReadyPapersAPI, fetchPendingPaperAPI, fetchReadyToPublishOrRejectAPI, fetchReadytoBePublishOrRejectAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
 import { format } from "date-fns"
 import { Link } from 'react-router-dom';
+import BidData from './Component/BidData';
+import PaperData from './Component/PaperData';
 
 
 function ConferencePaperList() {
@@ -24,44 +26,28 @@ function ConferencePaperList() {
             setPaperList(response);
         }
 
-        const fetchAcceptRejectData = async () => {
-
+        const fetchReadytoBePublishOrReject = async () => {
+            let response = await fetchReadytoBePublishOrRejectAPI();
+            setPaperList(response);
         }
 
         if (status === "Pending") {
             fetchPendingData();
         } else
-            fetchAcceptRejectData();
+            fetchReadytoBePublishOrReject();
+
 
 
     }, [status, changeStatus])
 
-    const fullName = (paper) => {
-        return paper.paperInfo.authorID.firstName + " " + paper.paperInfo.authorID.lastName
+
+    const closeBidding = async (paperID) => {
+        if (window.confirm("Close the bidding for this paper? "))
+            await closeBidToReadyPapersAPI(paperID).then((response) => {
+                alert(response);
+            })
     }
 
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
-
-    const displayListData = paperList.map((paper) => {
-        return (
-
-            <tr key={paper.paperID} >
-                <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.title}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {dateFormat(paper.paperInfo.upload)}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {fullName(paper)}  </td>
-                <td style={{ whiteSpace: "nowrap", textAlign: "center" }} > {paper.reviewedTimes}  </td>
-                <td>
-                    <Button color='primary' tag={Link} to={"/conference/papers/" + paper.paperID+ "/reviews"} > Check Reviewer review</Button>
-
-                </td>
-
-            </tr>
-        )
-    })
 
     return (
         <div>
@@ -70,27 +56,31 @@ function ConferencePaperList() {
 
             <Container fluid>
 
-                <h3>Paper Publish Place</h3>
+                <br />
+
                 <ButtonGroup style={{ gap: "10px" }}>
-                    <Button color='secondary' onClick={() => changeStatus("Pending")} >Show Ready</Button>
-                    <Button color='primary' onClick={() => changeStatus("Accept")} >Show Accept</Button>
+                    <Button color='secondary' onClick={() => changeStatus("Pending")} >Show Pending</Button>
+                    <Button color='primary' onClick={() => changeStatus("Ready")} >Show Ready</Button>
                     <Button color='danger' onClick={() => changeStatus("Reject")} >Show Reject</Button>
 
                 </ButtonGroup>
+
                 <Table className="mt-4">
                     <thead>
                         <tr>
-                            <th style={{ width: "10%" }} >Paper Title </th>
-                            <th style={{ width: "20%" }}>Paper Upload Date </th>
-                            <th style={{ width: "20%" }}>Author Name </th>
-                            <th style={{ width: "20%" }}>Reviewed times </th>
+                            <th style={{ width: "10%" }} > Paper Title </th>
+                            <th style={{ width: "20%" }} > Paper Upload Date </th>
+                            <th style={{ width: "20%" }} > Author Name </th>
+                            <th style={{ width: "20%" }} > Reviewed times </th>
                             <th colSpan={3}>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {displayListData}
 
+                        {status === "Pending" && <PaperData paperList={paperList} closeBidding={closeBidding} />}
+                        {status === "Ready" && <BidData paperList={paperList} />}
                     </tbody>
+
                 </Table>
 
             </Container>

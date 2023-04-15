@@ -82,8 +82,23 @@ public class PapersRestServiceImpl implements PapersRestService {
     }
 
     @Override
+    @Transactional
     public List<PaperDTO> findPapersThatReviewed() {
         List<Paper> paperList = paperDAO.findPapersThatReviewed();
+        return PaperDTO.convertToDTO(paperList);
+    }
+
+    @Override
+    @Transactional
+    public List<PaperDTO> findReadyPapers() {
+        List<Paper> paperList = paperDAO.findReadyPapers();
+        return PaperDTO.convertToDTO(paperList);
+    }
+
+    @Override
+    @Transactional
+    public List<PaperDTO> findPapersReadyToPublishOrReject() {
+        List<Paper> paperList = paperDAO.findPapersReadyToPublishOrReject();
         return PaperDTO.convertToDTO(paperList);
     }
 

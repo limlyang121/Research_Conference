@@ -42,6 +42,7 @@ public class PaperDTO {
         paperDTO.setPaperID(paper.getPaperID());
         paperDTO.setStatus(paper.getStatus());
         paperDTO.setPaperInfo(paper.getPaperInfo());
+        paperDTO.setReviewedTimes(paper.getReviewedTimes());
         return paperDTO;
     }
 

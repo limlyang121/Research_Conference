@@ -42,6 +42,11 @@ public class BidRest {
         return bidRestService.findMyBidByStatus(reviewerID, status);
     }
 
+    @GetMapping("bids/ready")
+    public List<BidDTO> findReadyPapersBid (){
+        return bidRestService.findReadyPapersBid();
+    }
+
     @PostMapping("bids")
     public ResponseEntity<String> addBids(@RequestBody Bid bid) {
         BidDTO temp = bidRestService.addBid(bid);

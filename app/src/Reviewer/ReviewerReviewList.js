@@ -99,12 +99,12 @@ function ReviewerReviewList() {
         return bids.map((bid) => (
             <tr key={bid.bidID} >
                 <td style={{ whiteSpace: "nowrap" }} > {bid.status}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {bid.paperDTO.paperInfo.title}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {bid.paperDTO.paperInfo.filename}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {bid.paper.paperInfo.title}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {bid.paper.paperInfo.filename}  </td>
                 <td>
                     <ButtonGroup style={{ gap: "10px" }} >
                         <Button color='primary' tag={Link} to={"/reviewer/review/" + bid.bidID + "/new"}> Review!</Button>
-                        <Button size="sm" color="info" onClick={async () => downloadFile(bid.paperDTO.paperID)} > Download</Button>
+                        <Button size="sm" color="info" onClick={async () => downloadFile(bid.paper.paperID)} > Download</Button>
                     </ButtonGroup>
                 </td>
             </tr>
@@ -126,7 +126,7 @@ function ReviewerReviewList() {
             <tr key={reviews.reviewID} >
                 <td style={{ whiteSpace: "nowrap" }} > {reviews.rate} out of 5  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {dateFormat(reviews.reviewDate)}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {reviews.bidDTO.paperDTO.paperInfo.filename}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {reviews.bid.paper.paperInfo.filename}  </td>
                 <td>
                     <ButtonGroup style={{ gap: "10px" }} >
                         <Button color='info' tag={Link} to={"/reviewer/review/" + reviews.reviewID + "/edit"}> Edit Review</Button>

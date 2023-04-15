@@ -38,11 +38,32 @@ export const cancelBidAPI = async (id) => {
 }
 
 export const fetchPendingPaperAPI = async () => {
-    let response = await api.get(`papers/ready`)
+    let response = await api.get(`papers/pending`)
     return response.data;
 }
 
+export const fetchReadytoBePublishOrRejectAPI = async () => {
+    let response = await api.get(`publish/papers/final`)
+    return response.data;
+}
+
+
 export const getPaperReviewsAPI = async (id) => {
     let response = await api.get(`papers/${id}/review`)
+    return response.data;
+}
+
+export const closeBidToReadyPapersAPI = async (id) => {
+    let response = await api.patch(`publish/ready/${id}`)
+    return response.data;
+}
+
+export const acceptPaperToPublishAPI = async (id) => {
+    let response = await api.patch(`publish/accept/${id}`)
+    return response.data;
+}
+
+export const rejectPaperToPublishAPI = async (id) => {
+    let response = await api.patch(`publish/reject/${id}`)
     return response.data;
 }

@@ -19,6 +19,10 @@ public interface PaperDAO {
     List<Paper> findBanPapers(int reviewerID);
 
     List<Paper> findPapersThatReviewed();
+    List<Paper> findReadyPapers();
+
+    List<Paper> findPapersReadyToPublishOrReject();
+
 
     Paper add(Paper paper);
     void increaseReviewTimes(int paperID);
@@ -28,6 +32,8 @@ public interface PaperDAO {
     boolean deletePaper(int paperID);
 
     Paper updatePaper(Paper paper);
+
+    boolean readyPaper(int paperID);
 
     boolean acceptPaper(int paperID);
     boolean rejectPaper(int paperID);

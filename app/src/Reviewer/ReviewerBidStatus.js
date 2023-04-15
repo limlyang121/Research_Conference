@@ -60,8 +60,8 @@ function ReviewerBidStatus() {
         return (
             <tr key={bid.bidID} >
                 <td style={{ whiteSpace: "nowrap" }} > {bid.status}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {bid.paperDTO.paperInfo.title}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {bid.paperDTO.paperInfo.filename}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {bid.paper.paperInfo.title}  </td>
+                <td style={{ whiteSpace: "nowrap" }} > {bid.paper.paperInfo.filename}  </td>
                 <td>
                     {status === "Pending" && PendingAction(bid)}
                     {status === "Accept" && AcceptAction(bid)}
