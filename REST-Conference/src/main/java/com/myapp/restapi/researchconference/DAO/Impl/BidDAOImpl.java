@@ -92,7 +92,8 @@ public class BidDAOImpl implements BidDAO {
     @Override
     public List<Bid> findAllBidForSpecifiedPapers(int paperID) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Bid> bidQuery = session.createQuery("From Bid where paper.id = :paperID");
+        Query<Bid> bidQuery = session.createQuery("From Bid where paper.id = :paperID " +
+                "and status != 'Reject'", Bid.class);
         bidQuery.setParameter("paperID", paperID);
         return bidQuery.getResultList();
     }

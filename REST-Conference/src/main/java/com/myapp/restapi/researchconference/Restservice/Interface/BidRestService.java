@@ -12,7 +12,7 @@ public interface BidRestService {
 
     List<BidDTO> findMyAcceptedBid(int reviewerID);
     List<BidDTO> findMyCompletedBid(int reviewerID);
-    List<BidDTO> findReadyPapersBid();
+    List<BidDTO> findAllBidsByPaperID(int paperID);
 
 
 

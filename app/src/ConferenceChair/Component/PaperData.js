@@ -17,9 +17,9 @@ export default function PaperData({ paperList, closeBidding }) {
 
     return (
         <>
-            {Array.isArray(paperList) && paperList.map((paper) => {
+            {Array.isArray(paperList)  && paperList.length > 0  && paperList.map((paper) => {
                 return (
-                    <tr key={paper.bidID}>
+                    <tr key={paper.paperID}>
                         <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.title}  </td>
                         <td style={{ whiteSpace: "nowrap" }} > {dateFormat(paper.paperInfo.upload)}  </td>
                         <td style={{ whiteSpace: "nowrap" }} > {fullName(paper)}  </td>

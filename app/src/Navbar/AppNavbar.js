@@ -135,7 +135,7 @@ const AppNavbar = () => {
                 <NavItem>
                   <Button>
                     <Link to={"/conference/papers/ready"} style={{ textDecoration: "none", color: "white" }}>
-                      Paper Acceptance
+                      Publication
                     </Link>
                   </Button>
                 </NavItem>

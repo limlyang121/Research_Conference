@@ -42,10 +42,11 @@ public class BidRest {
         return bidRestService.findMyBidByStatus(reviewerID, status);
     }
 
-    @GetMapping("bids/ready")
-    public List<BidDTO> findReadyPapersBid (){
-        return bidRestService.findReadyPapersBid();
+    @GetMapping("bids/ready/{paperID}")
+    public List<BidDTO> findAllBidsByPaperID (@PathVariable int paperID){
+        return bidRestService.findAllBidsByPaperID(paperID);
     }
+
 
     @PostMapping("bids")
     public ResponseEntity<String> addBids(@RequestBody Bid bid) {

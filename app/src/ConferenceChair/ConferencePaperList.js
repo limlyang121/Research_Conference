@@ -13,6 +13,7 @@ import PaperData from './Component/PaperData';
 
 function ConferencePaperList() {
     const [paperList, setPaperList] = React.useState([]);
+    const [bidList, setBidList] = React.useState([]);
     const [status, setStatus] = React.useState("Pending");
 
 
@@ -28,14 +29,13 @@ function ConferencePaperList() {
 
         const fetchReadytoBePublishOrReject = async () => {
             let response = await fetchReadytoBePublishOrRejectAPI();
-            setPaperList(response);
+            setBidList(response);
         }
 
         if (status === "Pending") {
             fetchPendingData();
         } else
             fetchReadytoBePublishOrReject();
-
 
 
     }, [status, changeStatus])
@@ -68,17 +68,19 @@ function ConferencePaperList() {
                 <Table className="mt-4">
                     <thead>
                         <tr>
-                            <th style={{ width: "10%" }} > Paper Title </th>
+                            <th style={{ width: "20%" }} > Paper Title </th>
                             <th style={{ width: "20%" }} > Paper Upload Date </th>
                             <th style={{ width: "20%" }} > Author Name </th>
-                            <th style={{ width: "20%" }} > Reviewed times </th>
-                            <th colSpan={3}>Action</th>
+                            {status === "Pending" &&
+                                <th style={{ width: "20%" }} > Reviewed times </th>
+                            }
+                            <th colSpan={3} >Action</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         {status === "Pending" && <PaperData paperList={paperList} closeBidding={closeBidding} />}
-                        {status === "Ready" && <BidData paperList={paperList} />}
+                        {status === "Ready" && <BidData paperList={bidList} />}
                     </tbody>
 
                 </Table>

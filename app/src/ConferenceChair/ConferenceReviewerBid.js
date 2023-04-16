@@ -29,17 +29,16 @@ function ConferenceReviewerBid() {
 
         fetchBidsByStatus(status);
 
-        // alert(JSON.stringify(bids))
 
 
     }, [status, changeBidsStatus])
 
     const fullNameBid = (bid) => {
-        return bid.reviewerDTO.userdetails.firstName + " " + bid.reviewerDTO.userdetails.lastName;
+        return bid.reviewer.userdetails.firstName + " " + bid.reviewer.userdetails.lastName;
     }
 
     const fullNamePaper = (bid) => {
-        return bid.paperDTO.paperInfo.authorID.firstName + " " + bid.paperDTO.paperInfo.authorID.lastName;
+        return bid.paper.paperInfo.authorID.firstName + " " + bid.paper.paperInfo.authorID.lastName;
     }
 
     const CancelAcceptRejectPaper = async (bid, stat) => {
@@ -80,8 +79,6 @@ function ConferenceReviewerBid() {
             <ButtonGroup>
                 <Button size="sm" color="primary" onClick={async () => CancelAcceptRejectPaper(bid, "Accept")} ><FaCheck /></Button>
                 <Button size="sm" color="warning" onClick={async () => CancelAcceptRejectPaper(bid, "Reject")} ><FaRegTimesCircle />  </Button>
-
-
             </ButtonGroup>
         )
     }
@@ -90,8 +87,6 @@ function ConferenceReviewerBid() {
         return (
             <ButtonGroup>
                 <Button size="sm" color="primary" onClick={async () => CancelAcceptRejectPaper(bid, "Pending")} > <MdRestore /></Button>
-
-
             </ButtonGroup>
         )
     }
@@ -101,7 +96,7 @@ function ConferenceReviewerBid() {
             <tr key={bid.bidID}>
                 <td style={{ whiteSpace: 'nowrap' }}>{fullNamePaper(bid)}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{fullNameBid(bid)}</td>
-                <td style={{ whiteSpace: 'nowrap' }}>{bid.paperDTO.paperInfo.title}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{bid.paper.paperInfo.title}</td>
                 {BidActionSwitch(bid)}
 
             </tr>
@@ -132,7 +127,7 @@ function ConferenceReviewerBid() {
                         </tr>
                     </thead>
                     <tbody>
-                        {bidsList}
+                        {bids.length !== 0 && bidsList}
                     </tbody>
                 </Table>
             </Container>

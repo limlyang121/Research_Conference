@@ -42,6 +42,11 @@ export const fetchPendingPaperAPI = async () => {
     return response.data;
 }
 
+export const fetchAllBidsByPaperIDAPI = async (paperID) => {
+    let response = await api.get(`bids/ready/${paperID}`)
+    return response.data;
+}
+
 export const fetchReadytoBePublishOrRejectAPI = async () => {
     let response = await api.get(`publish/papers/final`)
     return response.data;

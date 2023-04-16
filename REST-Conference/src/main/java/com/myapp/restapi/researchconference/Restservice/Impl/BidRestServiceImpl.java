@@ -58,8 +58,8 @@ public class BidRestServiceImpl implements BidRestService {
 
     @Override
     @Transactional
-    public List<BidDTO> findReadyPapersBid() {
-        List<Bid> bidList = bidDAO.findReadyPapersBid();
+    public List<BidDTO> findAllBidsByPaperID(int paperID) {
+        List<Bid> bidList = bidDAO.findAllBidForSpecifiedPapers(paperID);
         return BidDTO.DTOList(bidList);
     }
 

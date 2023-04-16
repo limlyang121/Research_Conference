@@ -22,6 +22,7 @@ import ReviewerReviewForm from './Reviewer/ReviewerReviewForm';
 import PaperReview from './Author/PaperReview';
 import ConferencePaperList from './ConferenceChair/ConferencePaperList';
 import ConferencePaperReview from './ConferenceChair/ConferencePaperReview';
+import ConferenceAllReviewerBid from './ConferenceChair/ConferenceAllReviewerBid';
 
 
 const App = () => {
@@ -63,6 +64,8 @@ const App = () => {
         <Route path='/conference/bids' exact={true} element={<ConferenceReviewerBid />} />
         <Route path='/conference/papers/ready' exact={true} element={<ConferencePaperList />} />
         <Route path='/conference/papers/:id/reviews' exact={true} element={<ConferencePaperReview />} />
+        <Route path='/conference/papers/:id/bids' exact={true} element={<ConferenceAllReviewerBid />} />
+
 
 
         {/* Access Denied */}
