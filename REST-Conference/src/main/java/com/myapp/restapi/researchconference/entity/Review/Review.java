@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -23,6 +25,7 @@ public class Review {
 
     @OneToOne
     @JoinColumn(name = "bidID")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Bid bid;
 
     @Column(name = "rate")

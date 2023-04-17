@@ -54,6 +54,13 @@ public class ReviewRestServiceImpl implements ReviewRestService {
 
     @Override
     @Transactional
+    public List<ReviewDTO> findCompletedReviewsByPaperID(int paperID) {
+        List<Review> reviewList = reviewDAO.findCompletedReviewsByPaperID(paperID);
+        return ReviewDTO.DTOList(reviewList);
+    }
+
+    @Override
+    @Transactional
     public Review addReview(Review review) {
         Date currentTime = new Date();
         review.setReviewDate(currentTime);

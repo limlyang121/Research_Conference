@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { closeBidToReadyPapersAPI, fetchReadyPapersAPI, fetchPendingPaperAPI, fetchReadyToPublishOrRejectAPI, fetchReadytoBePublishOrRejectAPI } from './Axios';
+import { closeBidToReadyPapersAPI,  fetchPendingPaperAPI, fetchReadytoBePublishOrRejectAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
 import { format } from "date-fns"
 import { Link } from 'react-router-dom';
@@ -45,6 +45,8 @@ function ConferencePaperList() {
         if (window.confirm("Close the bidding for this paper? "))
             await closeBidToReadyPapersAPI(paperID).then((response) => {
                 alert(response);
+                let updatedPapaers = [...paperList].filter(i => i.paperID !== paperID);
+                setPaperList(updatedPapaers)
             })
     }
 
@@ -61,8 +63,6 @@ function ConferencePaperList() {
                 <ButtonGroup style={{ gap: "10px" }}>
                     <Button color='secondary' onClick={() => changeStatus("Pending")} >Show Pending</Button>
                     <Button color='primary' onClick={() => changeStatus("Ready")} >Show Ready</Button>
-                    <Button color='danger' onClick={() => changeStatus("Reject")} >Show Reject</Button>
-
                 </ButtonGroup>
 
                 <Table className="mt-4">

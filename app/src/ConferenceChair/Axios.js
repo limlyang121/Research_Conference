@@ -37,8 +37,20 @@ export const cancelBidAPI = async (id) => {
     return response.data;
 }
 
+export const deletelBidAPI = async (id) => {
+    let response = await api.delete(`bids/${id}`)
+    return response.data;
+}
+
+
+
 export const fetchPendingPaperAPI = async () => {
     let response = await api.get(`papers/pending`)
+    return response.data;
+}
+
+export const fetchAllReviewsByPaperIDAPI = async (paperID) => {
+    let response = await api.get(`reviews/ready/${paperID}`)
     return response.data;
 }
 

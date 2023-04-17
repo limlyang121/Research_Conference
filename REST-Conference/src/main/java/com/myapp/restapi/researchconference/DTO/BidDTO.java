@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,6 +16,7 @@ public class BidDTO {
     private PaperDTO paper;
     private ReviewerDTO reviewer;
     private String status;
+    private Date bidDate;
 
     public BidDTO() {
         paper = new PaperDTO();
@@ -25,6 +27,7 @@ public class BidDTO {
         BidDTO bidDTO = new BidDTO();
         bidDTO.setBidID(bid.getBidID());
         bidDTO.setReviewer(ReviewerDTO.convertToDTO(bid.getReviewer()));
+        bidDTO.setBidDate(bid.getBidDate());
         return bidDTO;
     }
 
@@ -34,6 +37,7 @@ public class BidDTO {
         bidDTO.setPaper(PaperDTO.convertToDTOBid(bid.getPaper()));
         bidDTO.setReviewer(ReviewerDTO.convertToDTO(bid.getReviewer()));
         bidDTO.setStatus(bid.getStatus());
+        bidDTO.setBidDate(bid.getBidDate());
         return bidDTO;
     }
 

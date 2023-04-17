@@ -11,6 +11,9 @@ public interface ReviewRestService {
     Optional<Review> findReviewByID(int reviewID);
     List<ReviewDTO> findReviewedPaper();
 
+    List<ReviewDTO> findCompletedReviewsByPaperID(int paperID);
+
+
     Review addReview(Review review);
     Review updateReview(Review review);
 

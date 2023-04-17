@@ -12,6 +12,8 @@ public interface ReviewDAO {
 
     List<Review> findReviewsByPaperID(int paperID);
 
+    List<Review> findCompletedReviewsByPaperID(int paperID);
+
     List<Review> findReviewedPaper();
 
     Review addReview(Review review);

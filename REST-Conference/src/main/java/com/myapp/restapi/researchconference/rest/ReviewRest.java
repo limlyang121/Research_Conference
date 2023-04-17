@@ -37,6 +37,14 @@ public class ReviewRest {
             return null;
     }
 
+
+
+    @GetMapping("reviews/ready/{paperID}")
+    public List<ReviewDTO> findCompletedReviewsByPaperID(@PathVariable int paperID){
+        List<ReviewDTO> reviewDTOList = reviewRestService.findCompletedReviewsByPaperID(paperID);
+        return reviewDTOList;
+    }
+
     @PostMapping("reviews")
     public ResponseEntity<String> addReviews(@RequestBody Review review) {
         Review tempReview = reviewRestService.addReview(review);

@@ -130,7 +130,8 @@ CREATE TABLE "bid" (
     bidID INTEGER PRIMARY KEY DEFAULT nextval('bid_id_seq'),
     paperID INTEGER NOT NULL,
     reviewerID INTEGER NOT NULL,
-status varchar(50) default 'Pending',
+    status varchar(50) default 'Pending',
+    bid_date DATE,
 CONSTRAINT "fk_reviewer_idx" FOREIGN KEY (reviewerID) REFERENCES reviewer (reviewerID),
 CONSTRAINT "fk_paper_idx" FOREIGN KEY (paperID) REFERENCES paper (paperID)
 );

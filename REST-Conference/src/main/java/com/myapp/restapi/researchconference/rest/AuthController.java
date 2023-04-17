@@ -1,5 +1,6 @@
 package com.myapp.restapi.researchconference.rest;
 
+import com.myapp.restapi.researchconference.Exception.UserNotFoundException;
 import com.myapp.restapi.researchconference.Restservice.Impl.MyUserDetails;
 import com.myapp.restapi.researchconference.Util.JwtUtil;
 import com.myapp.restapi.researchconference.entity.AuthenticationRequest;
@@ -30,14 +31,12 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest request) throws Exception{
-
-
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
         }catch (BadCredentialsException e){
-            throw new Exception("Incorrect username or password", e);
+            throw new UserNotFoundException("Incorrect username or password");
         }
 
         final CustomUserDetails userDetails = MyUserDetails.loadUserByUsername(request.getUsername());

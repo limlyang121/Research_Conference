@@ -45,7 +45,7 @@ public class PublishRest {
 
     @PatchMapping("publish/reject/{paperID}")
     public ResponseEntity<String> rejectPaper(@PathVariable int paperID){
-        boolean success = publishRestService.acceptPaper(paperID);
+        boolean success = publishRestService.rejectPaper(paperID);
         if (success){
             return ResponseEntity.ok("Successfully Reject the Paper to be publish");
         }else

@@ -52,6 +52,15 @@ public class ReviewDAOImpl implements ReviewDAO {
     }
 
     @Override
+    public List<Review> findCompletedReviewsByPaperID(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Review> queryReview = session.createQuery("From Review where bid.paper.paperID = :paperID and bid.status != 'Reject' ", Review.class);
+        queryReview.setParameter("paperID", paperID);
+        return queryReview.getResultList();
+    }
+
+    @Override
     public List<Review> findReviewedPaper() {
         Session session = entityManager.unwrap(Session.class);
 

@@ -6,16 +6,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class CustomErrorHandling extends ResponseEntityExceptionHandler {
+public class CustomErrorHandling  {
     @ExceptionHandler
+    @ResponseBody
     public final ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {
         ExceptionHandling errorResponse = new ExceptionHandling(ex.getMessage());
         errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
         errorResponse.setTimeStamp(System.currentTimeMillis());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +73,7 @@ public class BidRestServiceImpl implements BidRestService {
             bid.setPaper(paperOptional.get());
             bid.setReviewer(reviewerOptional.get());
             bid.setStatus("Pending");
+            bid.setBidDate(new Date());
             BidDTO bidDTO = BidDTO.DTOSingle(bidDAO.addBid(bid));
             return bidDTO ;
         }
