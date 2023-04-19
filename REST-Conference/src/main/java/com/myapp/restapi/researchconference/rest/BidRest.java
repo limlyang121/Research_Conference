@@ -52,7 +52,7 @@ public class BidRest {
     public ResponseEntity<String> addBids(@RequestBody Bid bid) {
         BidDTO temp = bidRestService.addBid(bid);
         if (temp != null)
-            return ResponseEntity.ok("Successfully bid the Paper");
+            return ResponseEntity.ok("Successfully Bid the Paper");
         else
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to bid the paper");
     }
@@ -70,7 +70,7 @@ public class BidRest {
     public ResponseEntity<String> acceptBids(@PathVariable int bidID){
         boolean success = bidRestService.acceptBid(bidID);
         if (success)
-            return ResponseEntity.ok("Successfully Accept the bid");
+            return ResponseEntity.ok("Successfully Allocate the bid");
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bid Can't be found");
 
@@ -90,7 +90,7 @@ public class BidRest {
     public ResponseEntity<String> cancelBid(@PathVariable int bidID){
         boolean success = bidRestService.cancelBid(bidID);
         if (success)
-            return ResponseEntity.ok("Successfully Reject the bid");
+            return ResponseEntity.ok("Successfully Cancel the bid");
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bid Can't be found");
 

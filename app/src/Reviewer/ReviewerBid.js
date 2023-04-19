@@ -13,12 +13,12 @@ import ReviewerSecurity from './ReviewerSecurity';
 function ReviewerBid() {
 
     const [displayPapers, setDisplayPaper] = React.useState([])
-    const  id  = sessionStorage.getItem("id")
+    const id = sessionStorage.getItem("id")
     const [status, setStatus] = React.useState("bid");
 
     const changeStatus = React.useCallback((stat) => {
         setStatus(stat)
-    },[setStatus])
+    }, [setStatus])
 
 
     React.useEffect(() => {
@@ -31,9 +31,9 @@ function ReviewerBid() {
             setDisplayPaper(response)
         }
 
-        if (status === "bid"){
+        if (status === "bid") {
             fetchBidData(id)
-        }else{
+        } else {
             fetchBanData(id)
         }
 
@@ -102,23 +102,23 @@ function ReviewerBid() {
 
             await addToBidAPI(bid).then((response) => {
                 alert(response)
-                let updatedPapers = [...displayPapers].filter(i => parseInt (i.paperID) !== parseInt (bid.paper.paperID));
+                let updatedPapers = [...displayPapers].filter(i => parseInt(i.paperID) !== parseInt(bid.paper.paperID));
                 setDisplayPaper(updatedPapers)
             })
         }
     }
 
     const downloadFile = async (id) => {
-        try{
-            
+        try {
+
             let response = await downloadPapersAPI(parseInt(id))
             const contentDispositionHeader = response.headers['content-disposition'];
             // const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1];
 
             const blob = new Blob([response.data], { type: "application/pdf" })
             saveAs(blob)
-            
-        }catch(error){
+
+        } catch (error) {
             alert("Unknown Error")
         }
     }
@@ -200,8 +200,10 @@ function ReviewerBid() {
             <ReviewerSecurity />
             <Container fluid>
                 <h3>Bid Papers</h3>
-                <Button color='primary' onClick={ () => changeStatus("bid")} >Show Bid</Button>
-                <Button color='danger' onClick= { () => changeStatus("hide")} >Show Hide</Button>
+                <ButtonGroup style={{gap:"10px"}}>
+                    <Button color='primary' onClick={() => changeStatus("bid")} >Show Bid</Button>
+                    <Button color='danger' onClick={() => changeStatus("hide")} >Show Hide</Button>
+                </ButtonGroup>
                 <Table className="mt-4">
                     <thead>
                         <tr>

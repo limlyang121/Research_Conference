@@ -2,6 +2,8 @@ package com.myapp.restapi.researchconference.Restservice.Impl;
 
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
+import com.myapp.restapi.researchconference.DTO.ResetPasswordDTO;
+import com.myapp.restapi.researchconference.Exception.PrivilegesUserException;
 import com.myapp.restapi.researchconference.Restservice.Interface.UserRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Role;
 import com.myapp.restapi.researchconference.entity.Admin.User;
@@ -97,6 +99,10 @@ public class UserRestServiceImpl implements UserRestService {
         boolean isReviewer = false;
         boolean wasReviewer = false;
 
+        if (userID > 0 && userID <= 4){
+            throw new PrivilegesUserException("Can't update user id 1 to 4");
+        }
+
         User checkIfUserExisted = userRepo.findByUserName(user.getUserName());
         if (checkIfUserExisted != null && checkIfUserExisted.getId() != userID){
             return null;
@@ -141,13 +147,19 @@ public class UserRestServiceImpl implements UserRestService {
             success = true;
         }
 
-        return tempUser;
+        if (success)
+            return tempUser;
+        else
+            return null;
 
     }
 
     @Override
     @Transactional
     public void deactivation(int userID) {
+        if (userID > 0 && userID <= 4){
+            throw new PrivilegesUserException("Can't Disabled user id 1 to 4");
+        }
         userRepo.deactivation(userID);
     }
 
@@ -161,5 +173,17 @@ public class UserRestServiceImpl implements UserRestService {
     @Transactional
     public void delete(int userID) {
         userRepo.delete(userID);
+    }
+
+    @Override
+    @Transactional
+    public User resetPassword(ResetPasswordDTO resetPasswordDTO) {
+        if (resetPasswordDTO.getUserID() >0 && resetPasswordDTO.getUserID() <= 4 ){
+            throw new PrivilegesUserException("Can't reset User id from 1 to 4");
+        }
+        int userID = resetPasswordDTO.getUserID();
+        String password = bCryptPasswordEncoder.encode(resetPasswordDTO.getPassword());
+
+        return  userRepo.resetPassword(userID, password);
     }
 }

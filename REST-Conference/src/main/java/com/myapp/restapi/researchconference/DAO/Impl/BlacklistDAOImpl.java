@@ -5,6 +5,7 @@ import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import com.myapp.restapi.researchconference.entity.Review.BlacklistPaper;
 import com.myapp.restapi.researchconference.entity.Review.Reviewer;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,4 +44,16 @@ public class BlacklistDAOImpl implements BlacklistDAO {
         }
     }
 
+    @Override
+    public boolean deleteBlackListAssociatedWithSpecifiedPaperID(int paperID) {
+        try {
+            Session session = entityManager.unwrap(Session.class);
+            Query query = session.createQuery("delete  from BlacklistPaper where paper.id = :paperID");
+            query.setParameter("paperID", paperID);
+            query.executeUpdate();
+            return true;
+        }catch (Exception e ){
+            return false;
+        }
+    }
 }

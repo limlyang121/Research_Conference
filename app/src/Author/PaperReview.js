@@ -36,7 +36,7 @@ function PaperReview() {
         }
 
         return paperReview.map((review, index) => (
-            <div>
+            <div key={index}>
                 <Card>
                     <CardHeader>
                         Review {index + 1}

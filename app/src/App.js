@@ -21,7 +21,6 @@ import ReviewerReview from './Reviewer/ReviewerReviewList';
 import ReviewerReviewForm from './Reviewer/ReviewerReviewForm';
 import PaperReview from './Author/PaperReview';
 import ConferencePaperList from './ConferenceChair/ConferencePaperList';
-import ConferencePaperReview from './ConferenceChair/ConferencePaperReview';
 import ConferenceCheckReviewerBidProcess from './ConferenceChair/ConferenceCheckReviewerBidProcess';
 import ConferenceAllReviewerBid from './ConferenceChair/ConferenceAllPaperReviews';
 

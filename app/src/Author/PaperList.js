@@ -65,7 +65,9 @@ function PaperList() {
     const myPapersData = myPapers.map(paper => {
         return (
             <tr key={paper.paperID}>
-                <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.title}  </td>
+                <td style={{ whiteSpace: "nowrap" }} 
+                // className={paper.status === "Accept" ? "green" : paper.status === "Reject" ? "red" : ""}
+                > {paper.paperInfo.title}  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.filename}  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {dateFormat (paper.paperInfo.upload)}  </td>
                 <td>

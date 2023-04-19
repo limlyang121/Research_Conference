@@ -63,7 +63,7 @@ const UserList = () => {
       await activateAccountAPI(id)
         .then((responseData) => {
           alert(responseData)
-          let updatedGroups = [...users].filter(i =>  i.id !== id);
+          let updatedGroups = [...users].filter(i => i.id !== id);
           setUsers(updatedGroups)
         })
     }
@@ -128,9 +128,10 @@ const UserList = () => {
           <Button color="success" tag={Link} to="/admin/users/form/new">Add User</Button>
         </div>
         <h3>My Users</h3>
-
-        <Button color='primary' onClick={() => changeList("active")} >Show Active</Button>
-        <Button color='danger' onClick={() => changeList("nonactive")}>Show Deactive</Button>
+        <ButtonGroup style={{gap:"10px"}}>
+          <Button color='primary' onClick={() => changeList("active")} >Show Active</Button>
+          <Button color='danger' onClick={() => changeList("nonactive")}>Show Deactive</Button>
+        </ButtonGroup>
 
         <Table className="mt-4">
           <thead>

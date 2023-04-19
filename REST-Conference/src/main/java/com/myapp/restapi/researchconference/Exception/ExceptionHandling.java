@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 public class ExceptionHandling{
     private int status;
     private String message;
@@ -16,9 +17,4 @@ public class ExceptionHandling{
         this.message = message;
     }
 
-    public ExceptionHandling(int status, String message, long timeStamp) {
-        this.status = status;
-        this.message = message;
-        this.timeStamp = timeStamp;
-    }
 }

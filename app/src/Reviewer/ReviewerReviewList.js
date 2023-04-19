@@ -129,7 +129,12 @@ function ReviewerReviewList() {
                 <td style={{ whiteSpace: "nowrap" }} > {reviews.bid.paper.paperInfo.filename}  </td>
                 <td>
                     <ButtonGroup style={{ gap: "10px" }} >
-                        <Button color='info' tag={Link} to={"/reviewer/review/" + reviews.reviewID + "/edit"}> Edit Review</Button>
+                        {reviews.bid.paper.status === "Pending" &&
+                            <Button color='info' tag={Link} to={"/reviewer/review/" + reviews.reviewID + "/edit"}> Edit Review</Button>
+                        }
+                        {reviews.bid.paper.status !== "Pending" &&
+                            <Button color='secondary' onClick={() => alert("Paper is ready to be Accept/Reject")} > Edit Review</Button>
+                        }
                     </ButtonGroup>
                 </td>
             </tr>

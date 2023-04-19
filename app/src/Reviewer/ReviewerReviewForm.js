@@ -81,7 +81,7 @@ function ReviewerReviewForm() {
 
             }
 
-            navigate('/home');
+            navigate('/reviewer/reviews');
         }catch{
             alert("Username existed")
         }

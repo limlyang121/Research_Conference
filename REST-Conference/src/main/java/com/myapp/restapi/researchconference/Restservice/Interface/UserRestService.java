@@ -1,5 +1,6 @@
 package com.myapp.restapi.researchconference.Restservice.Interface;
 
+import com.myapp.restapi.researchconference.DTO.ResetPasswordDTO;
 import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,7 @@ public interface UserRestService {
     void deactivation(int userID);
 
     void activation(int userID);
+
+    User resetPassword(ResetPasswordDTO resetPasswordDTO);
 
 }

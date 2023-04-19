@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { activateAccount, activateAccountAPI, deactivationAccount, getUserByID } from './adminAxios';
+import { activateAccount, activateAccountAPI, deactivationAccount, getUserByID, resetPasswordAPI } from './adminAxios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AdminSecurity from './AdminSecurity';
 
 const UserRead = () => {
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true)
+    const [showPassowrdInputForm, setPasswordInputForm] = useState(false)
+    const navigate = useNavigate()
+
     const initialFormState = {
         id: '',
         userName: "",
@@ -17,13 +22,19 @@ const UserRead = () => {
         userdetails: {
             firstName: '',
             lastName: '',
+            email: '',
             height: '',
             weight: ''
         },
     }
+    const resetPasswordForm = {
+        userID: id,
+        password:""
+    }
+
     const [user, setUser] = useState(initialFormState);
-    const [loading, setLoading] = useState(true)
-    const { id } = useParams();
+    const [reset, setReset] = useState(resetPasswordForm)
+
 
     useEffect(() => {
         const fecthData = async () => {
@@ -35,45 +46,6 @@ const UserRead = () => {
 
     }, [id, setUser]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        accountUpdate(user.id);
-    }
-
-    const accountUpdate = async (id) => {
-        if (window.confirm("Are you sure ? ")) {
-
-            if (user.active === 1) {
-                await deactivationAccount(id)
-                    .then(() => {
-                        setUser({ ...user, active: 0 })
-                    })
-
-            } else {
-                await activateAccountAPI(id)
-                    .then(() => {
-                        setUser({ ...user, active: 1 })
-                    })
-            }
-        }
-    }
-
-    const displayButton = () => {
-        if (Number(user.active) === 1) {
-            return (
-                <FormGroup>
-                    <Button size='sm' color='danger' type='submit'>Deactive Account</Button>
-                </FormGroup>
-            )
-        } else {
-            return (
-                <FormGroup>
-
-                    <Button size='sm' color='primary' type='submit'>Activate Account</Button>
-                </FormGroup>
-            )
-        }
-    }
 
     if (loading) {
         return (
@@ -82,8 +54,36 @@ const UserRead = () => {
     }
 
 
+    const handleNewPasswordChange = (event) => {
+        setReset({ ...reset, password:event.target.value });
+    }
+
+    const handleSubmit = async(event) => {
+        event.preventDefault();
+
+        alert(JSON.stringify(reset))
+
+        await resetPasswordAPI(reset).then((response) => {
+            alert(response)
+        })
+
+        navigate("/admin/users")
+        // call your API to update the password here
+    }
+
+
+
+
     return (
         <div>
+            <style>
+                {`
+                Input {
+                    margin-bottom: 10px;
+                }
+                `}
+
+            </style>
             <AppNavbar />
             <AdminSecurity />
 
@@ -100,21 +100,29 @@ const UserRead = () => {
                 <Label for='role'>Current Role : </Label>
                 <Input disabled type='text' name='role' id='role' value={user.role.role}></Input>
 
+                <Label for='email'>Email : </Label>
+                <Input disabled type='text' name='email' id='email' value={user.userdetails.email}></Input>                <br />
+
+
+                <Button style={{marginBottom:"25px"}} size='sm' color='warning' onClick={() => setPasswordInputForm(true)} >Reset user password </Button>
+
+                <br  />
+
+                {showPassowrdInputForm && (
+                    <Form onSubmit={handleSubmit}>
+                        <FormGroup>
+                            <Label for='password'>New Password: </Label>
+                            <Input type='password' name='password' id='password' value={reset.password} onChange={handleNewPasswordChange} required 
+                            minLength={6} placeholder='Mininum 6 Character'
+                            />
+                        </FormGroup>
+                        <Button color='primary' type='submit'>Save</Button>
+                        {' '}
+                        <Button color='secondary' onClick={() => setPasswordInputForm(false)}>Cancel</Button>
+                    </Form>
+                )}
                 <br />
-                <Form>
-                    <FormGroup>
-                        <Button size='sm' color='warning' type='submit'>Reset user password (not implement) </Button>
-                    </FormGroup>
-                </Form>
 
-                <br />
-
-
-
-
-                <Form onSubmit={handleSubmit}>
-                    {displayButton()}
-                </Form>
             </Container>
         </div>
     )

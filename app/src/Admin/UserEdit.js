@@ -18,6 +18,7 @@ const UserEdit = () => {
         userdetails: {
             firstName: '',
             lastName: '',
+            email:'',
             height: '',
             weight: ''
         },
@@ -74,7 +75,9 @@ const UserEdit = () => {
                 <FormGroup>
                     <Label for="password">Password</Label>
                     <Input type="password" name="password" id="password"
-                        onChange={handleChange} autoComplete="password" />
+                        onChange={handleChange} autoComplete="password" 
+                        minLength={6} title=' Minimal length is 6'
+                        />
                 </FormGroup>
 
             );
@@ -126,14 +129,15 @@ const UserEdit = () => {
                     <FormGroup>
                         <Label for="userName">Username</Label>
                         <Input type="text" name="userName" id="userName" value={user.userName}
-                            onChange={handleChange} autoComplete="userName" />
+                            onChange={handleChange} autoComplete="userName" required minLength={5}
+                             />
                     </FormGroup>
 
                     {displayPassword()}
 
                     <FormGroup>
                         <Label for="role">Role</Label>
-                        <Input type="select" name="role.role" value={user.role.role} id="role.role" onChange={handleChange}>
+                        <Input type="select" name="role.role" value={user.role.role} id="role.role" onChange={handleChange} >
                             {myRole.map((role, index) => (
                                 <option key={index} value={role.role}>
                                     {role.role}
@@ -162,15 +166,29 @@ const UserEdit = () => {
                     </FormGroup>
 
                     <FormGroup>
+                        <Label for="userdetails.email">Email</Label>
+                        <Input type="text" name="userdetails.email" id="userdetails.email" value={user.userdetails.email}
+                            onChange={handleChange} autoComplete="userdetails.email"
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+                            title='Please enter valid Email'
+                            required
+                            />
+                    </FormGroup>
+
+                    <FormGroup>
                         <Label for="userdetails.height">Height</Label>
                         <Input type="text" name="userdetails.height" id="userdetails.height" value={user.userdetails.height}
-                            onChange={handleChange} autoComplete="userdetails.height" />
+                            onChange={handleChange} autoComplete="userdetails.height" 
+                            pattern="[0-9]+" title="Please enter only numbers"
+                            />
                     </FormGroup>
 
                     <FormGroup>
                         <Label for="userdetails.weight">Weight </Label>
                         <Input type="text" name="userdetails.weight" id="userdetails.weight" value={user.userdetails.weight}
-                            onChange={handleChange} autoComplete="userdetails.weight" />
+                            onChange={handleChange} autoComplete="userdetails.weight" 
+                            pattern="[0-9]+" title="Please enter only numbers"
+                            />
                     </FormGroup>
 
                     <br/>
@@ -178,7 +196,7 @@ const UserEdit = () => {
 
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
-                        <Button color="secondary" tag={Link} to="/users">Cancel</Button>
+                        <Button color="secondary" tag={Link} to="/admin/users">Cancel</Button>
                     </FormGroup>
                 </Form>
             </Container>

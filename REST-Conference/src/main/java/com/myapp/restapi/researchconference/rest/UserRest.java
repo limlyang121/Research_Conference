@@ -1,5 +1,6 @@
 package com.myapp.restapi.researchconference.rest;
 
+import com.myapp.restapi.researchconference.DTO.ResetPasswordDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.UserRestService;
 import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,15 @@ public class UserRest {
         userRestService.deactivation(userID);
 
         return ResponseEntity.ok("Successfully Deactivate the Account");
+    }
+
+    @PostMapping("reset/password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO){
+        User user = userRestService.resetPassword(resetPasswordDTO);
+        if (user == null)
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with that ID not found");
+
+        return  ResponseEntity.ok("Successfully Reset the password");
     }
 
 }

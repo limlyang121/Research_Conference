@@ -1,6 +1,7 @@
 package com.myapp.restapi.researchconference.Restservice.Impl;
 
 import com.myapp.restapi.researchconference.DAO.Interface.BidDAO;
+import com.myapp.restapi.researchconference.DAO.Interface.BlacklistDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.PublishDAO;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
@@ -19,14 +20,15 @@ import java.util.List;
 public class PublishRestServiceImpl implements PublishRestService {
     private final PaperDAO paperDAO;
     private final PublishDAO publishDAO;
-
     private final BidDAO bidDAO;
+    private final BlacklistDAO blacklistDAO;
 
     @Autowired
-    public PublishRestServiceImpl(PaperDAO paperDAO, PublishDAO publishDAO, BidDAO bidDAO) {
+    public PublishRestServiceImpl(PaperDAO paperDAO, PublishDAO publishDAO, BidDAO bidDAO, BlacklistDAO blacklistDAO) {
         this.paperDAO = paperDAO;
         this.publishDAO = publishDAO;
         this.bidDAO = bidDAO;
+        this.blacklistDAO = blacklistDAO;
     }
 
     @Override
@@ -57,12 +59,20 @@ public class PublishRestServiceImpl implements PublishRestService {
     @Override
     @Transactional
     public boolean acceptPaper(int paperID) {
-        return paperDAO.acceptPaper(paperID);
+        boolean success = paperDAO.acceptPaper(paperID);
+        if (success){
+            return blacklistDAO.deleteBlackListAssociatedWithSpecifiedPaperID(paperID);
+        }
+        return false;
     }
 
     @Override
     @Transactional
     public boolean rejectPaper(int paperID) {
-        return paperDAO.rejectPaper(paperID);
+        boolean success = paperDAO.rejectPaper(paperID);
+        if (success){
+            return blacklistDAO.deleteBlackListAssociatedWithSpecifiedPaperID(paperID);
+        }
+        return false;
     }
 }

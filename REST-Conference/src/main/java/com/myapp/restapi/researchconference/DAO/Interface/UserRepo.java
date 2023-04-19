@@ -32,5 +32,7 @@ public interface UserRepo  {
 
     void activation(int userID);
 
+    User resetPassword(int userID, String password);
+
 
 }

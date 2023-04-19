@@ -98,12 +98,9 @@ function ConferenceReviewerBid() {
                 <td style={{ whiteSpace: 'nowrap' }}>{fullNameBid(bid)}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{bid.paper.paperInfo.title}</td>
                 {BidActionSwitch(bid)}
-
             </tr>
         )
     })
-
-
 
     return (
         <div>
@@ -115,7 +112,6 @@ function ConferenceReviewerBid() {
                     <Button color='secondary' onClick={() => changeBidsStatus("Pending")} >Show Pending</Button>
                     <Button color='success' onClick={() => changeBidsStatus("Accept")}>Show Accept</Button>
                     <Button color='danger' onClick={() => changeBidsStatus("Reject")}>Show Reject</Button>
-                    <Button color='info' onClick={() => changeBidsStatus("Completed")}>Show Completed</Button>
                 </ButtonGroup>
                 <Table className="mt-4">
                     <thead>

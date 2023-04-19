@@ -19,11 +19,11 @@ CREATE SEQUENCE IF NOT EXISTS bid_id_seq;
 CREATE SEQUENCE IF NOT EXISTS review_id_seq;
 
 
-
 CREATE TABLE user_details (
     id INTEGER PRIMARY KEY DEFAULT nextval('user_details_id_seq'),
     first_name VARCHAR(50),
     last_name VARCHAR(50),
+    email varchar(200),
     height INT,
     weight INT
 );
@@ -46,35 +46,7 @@ CREATE TABLE "user" (
     CONSTRAINT fk_role FOREIGN KEY (roles) REFERENCES roles(roles)
 );
 
-INSERT INTO roles VALUES
-('ADMIN', 'Admin desc'),
-('REVIEWER', 'Reviewer desc'),
-('AUTHOR', 'Author desc'),
-('CONFERENCE', 'Conference desc');
 
-INSERT INTO user_details VALUES
-(1, 'Lim', 'Yang', 177, 72),
-(2, 'Reine', 'Pavolia', 175, 50),
-(3, 'Ollie', 'Kureiji', 165, 48),
-(4, 'Anya', 'Melfissa', 148, 45),
-(5, 'Moona', 'Hoshinova', 177, 50),
-(6, 'Ayunda', 'Risu', 150, 22),
-(7, 'Airani', 'Iofi', 148, 40),
-(8, 'Kobo', 'Kanaeru', 130, 45),
-(9, 'Kaela', 'Kov', 180, 60),
-(10, 'Zeta', 'Nani ', 160, 45);
-
-INSERT INTO "user" VALUES
-(1, 'admin', '$2a$10$pEwyHagJ6fbpNwAuIU4kXOYQnPT90YO7zWenR5y0DeJ1haVRftnRS', 'ADMIN', 1, 1),
-(2, 'author', '$2a$10$pEwyHagJ6fbpNwAuIU4kXOYQnPT90YO7zWenR5y0DeJ1haVRftnRS', 'AUTHOR', 1, 2),
-(3, 'reviewer', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 3),
-(4, 'reviewer1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 4),
-(5, 'reviewer2', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 5),
-(6, 'reviewer3', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 6),
-(7, 'reviewer4', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 7),
-(8, 'admin1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'ADMIN', 1, 8),
-(9, 'author1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'AUTHOR', 1, 9),
-(10, 'conference', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'CONFERENCE', 1, 10);
 
 
 CREATE TABLE paper_info (
@@ -110,12 +82,7 @@ CREATE TABLE reviewer (
   CONSTRAINT fk_reviewer_idxx FOREIGN KEY (user_id) REFERENCES user_details(id)
 );
 
-INSERT INTO reviewer VALUES
-(3, 1, 3),
-(4, 1, 4),
-(5, 1, 5),
-(6, 1, 6),
-(7, 1, 7);
+
 
 CREATE TABLE "blacklist_paper" (
   reviewerID integer not null,
@@ -144,3 +111,60 @@ CREATE TABLE "review" (
     review_date Date,
 CONSTRAINT "fk_bid_idxx" FOREIGN KEY (bidID) REFERENCES bid (bidID)
 );
+
+
+INSERT INTO roles (roles, Description)
+VALUES
+('ADMIN', 'Admin desc'),
+('REVIEWER', 'Reviewer desc'),
+('AUTHOR', 'Author desc'),
+('CONFERENCE', 'Conference desc');
+
+INSERT INTO user_details (id, first_name, last_name, email, height, weight)
+VALUES
+(1, 'Lim', 'Yang', 'yang@gmail.com', 177, 72),
+(2, 'Reine', 'Pavolia', 'reine@gmail.com', 175, 50),
+(3, 'Ollie', 'Kureiji', 'ollie@gmail.com', 165, 48),
+(4, 'Anya', 'Melfissa', 'Anya@gmail.com', 148, 45),
+(5, 'Moona', 'Hoshinova', 'Moona@gmail.com' ,177, 50),
+(6, 'Ayunda', 'Risu', 'Risu@gmail.com', 150, 22),
+(7, 'Airani', 'Iofi', 'iofi@gmail.com', 148, 40),
+(8, 'Kobo', 'Kanaeru', 'kobo@gmail.com', 130, 45),
+(9, 'Kaela', 'Kov', 'Kaela@gmail.com',180, 60),
+(10, 'Zeta', 'Nani ', 'Zeta@gmail.com',160, 45);
+
+INSERT INTO "user" (id, username, password, roles, active, user_id)
+VALUES
+(1, 'admin', '$2a$10$pEwyHagJ6fbpNwAuIU4kXOYQnPT90YO7zWenR5y0DeJ1haVRftnRS', 'ADMIN', 1, 1),
+(2, 'author', '$2a$10$pEwyHagJ6fbpNwAuIU4kXOYQnPT90YO7zWenR5y0DeJ1haVRftnRS', 'AUTHOR', 1, 2),
+(3, 'conference', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'CONFERENCE', 1, 3),
+(4, 'reviewer', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 4),
+(5, 'reviewer1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 5),
+(6, 'reviewer2', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 6),
+(7, 'reviewer3', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 7),
+(8, 'reviewer4', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'REVIEWER', 1, 8),
+(9, 'admin1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'ADMIN', 1, 9),
+(10, 'author1', '$2a$10$nyOXTmKmmD8YczBtBIONDOokPTRC83ZoJRQtjIu5g4yq/QGvTIVQu', 'AUTHOR', 1, 10);
+
+INSERT INTO reviewer (reviewerID, is_active, user_id)
+VALUES
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8);
+
+-- INSERT INTO file VALUES
+--   (1, io_import('/Desktop/Edy_kelvianto_Resume.pdf'), 'application/pdf'),
+--   (2, io_import('/Desktop/a'), 'application/pdf');
+
+
+-- INSERT INTO paper_info VALUES
+-- (1, "My Paper 1", "Edy_kelvianto_Resume.pdf", now(), 2),
+-- (2, "My Paper 1", "a.pdf", now(), 2);
+
+
+-- INSERT INTO paper VALUES
+-- (1, 1 , "Pending", 1, 0),
+-- (2, 2 , "Pending", 2, 0);
+

@@ -80,3 +80,9 @@ export const deactivationAccount = async (id) => {
     let response = await api.patch(`users/deactivation/${id}`)
     return response.data
 }
+
+export const resetPasswordAPI = async (formData) => {
+    let response = await api.post(`reset/password`, formData)
+    return response.data
+}
+

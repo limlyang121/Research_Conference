@@ -21,6 +21,7 @@ function Login() {
 
     try {
       let tokenData = await LoginUser(data)
+
       storeTokenData(tokenData)
       navigate("/home")
     } catch (error) {

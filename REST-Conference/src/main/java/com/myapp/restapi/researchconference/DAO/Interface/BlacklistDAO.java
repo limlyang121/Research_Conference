@@ -7,4 +7,5 @@ public interface BlacklistDAO {
 
     boolean deleteBlackList(BlacklistPaper blacklistPaper);
 
+    boolean deleteBlackListAssociatedWithSpecifiedPaperID(int paperID);
 }

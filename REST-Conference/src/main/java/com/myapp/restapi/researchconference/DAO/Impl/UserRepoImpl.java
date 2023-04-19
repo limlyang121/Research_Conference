@@ -159,5 +159,14 @@ public class UserRepoImpl implements UserRepo {
         session.merge(user);
     }
 
+    @Override
+    public User resetPassword(int userID, String password) {
+        Session session = entityManager.unwrap(Session.class);
+        User user = session.get(User.class, userID);
+        if (user == null)
+            return null;
 
+        user.setPassword(password);
+        return session.merge(user);
+    }
 }

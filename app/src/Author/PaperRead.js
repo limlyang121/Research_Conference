@@ -6,6 +6,9 @@ import { Card, CardBody, CardHeader, CardText, CardTitle, Container, Label } fro
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getPaperByID } from './Axios';
+import { format } from "date-fns"
+import './PaperRead.css'
+
 import AuthorSecurity from './AuthorSecurity';
 
 function PaperRead() {
@@ -18,13 +21,20 @@ function PaperRead() {
         const fetchData = async (id) => {
             let response = await getPaperByID(id)
             setPaper(response)
+            setLoading(false)
         }
 
         fetchData(id);
-        setLoading(false)
 
 
     }, [])
+
+    const dateFormat = (date) => {
+        const dateType = new Date(date)
+
+        return (format(dateType, "dd/MM/yyyy"))
+    }
+
 
 
     if (loading) {
@@ -36,14 +46,13 @@ function PaperRead() {
         <div>
             <AppNavbar />
             <AuthorSecurity />
-
             <Container>
                 <br />
                 <Card>
-                    <CardHeader tag={"h3"}>Status</CardHeader>
+                    <CardHeader tag={"h3"} >Status</CardHeader>
                     <CardBody>
-                        <CardText tag={"h6"}>
-                            {myPaper?.status}
+                        <CardText tag={"h6"} className={myPaper?.status === "Accept" ? "green" : myPaper?.status === "Reject" ? "red" : ""}>
+                            {myPaper.status}
                         </CardText>
 
                     </CardBody>
@@ -63,7 +72,8 @@ function PaperRead() {
                         </CardText>
 
                         <CardText tag={"h6"}>
-                            Upload At : {myPaper?.paperInfo.upload}
+                            {/* Upload At : { format(myPaper.paperInfo.upload, "dd/MM/yyyy")} */}
+                            Upload At : { dateFormat (myPaper?.paperInfo.upload)}
                         </CardText>
 
                         <CardText tag={"h6"}>
@@ -73,6 +83,7 @@ function PaperRead() {
                     </CardBody>
 
                 </Card>
+                <br />
 
                 <Card>
                     <CardHeader tag={"h3"}>Review</CardHeader>

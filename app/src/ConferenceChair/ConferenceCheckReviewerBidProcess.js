@@ -5,7 +5,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import ConferenceSecurity from './ConferenceSecurity';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import { fetchAllBidsByPaperIDAPI } from './Axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { format } from "date-fns"
 import { deleteFromBidAPI } from '../Reviewer/Axios';
 
@@ -89,11 +89,11 @@ function ConferenceCheckReviewerBidProcess() {
                                 </tr>
                             )
                         })}
-
-
                     </tbody>
 
                 </Table>
+
+                <Button color='primary' tag={Link} to={`/conference/papers/` + id + `/reviews`} > Accept/Reject </Button>
 
             </Container>
         </div>
