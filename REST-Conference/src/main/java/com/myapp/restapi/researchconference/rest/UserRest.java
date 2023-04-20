@@ -70,7 +70,7 @@ public class UserRest {
     public ResponseEntity<String > add(@RequestBody User user){
         User userData = userRestService.save(user);
         if (userData == null){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Username existed in DB");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Username is used by other user");
         }
         return ResponseEntity.ok("Successfully Add");
     }

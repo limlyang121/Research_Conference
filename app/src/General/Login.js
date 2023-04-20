@@ -5,11 +5,11 @@ import { storeTokenData } from "./Axios";
 
 
 import "./Login.css";
+import LoginSessionCheck from "./LoginSessionCheck";
 
 function Login() {
   // React States
   const [errorMessages, setErrorMessages] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -21,12 +21,11 @@ function Login() {
 
     try {
       let tokenData = await LoginUser(data)
-
       storeTokenData(tokenData)
       navigate("/home")
     } catch (error) {
-      alert(JSON.stringify(error))
-      setErrorMessages(error)
+      const errorMessage = error.response.data.message
+      setErrorMessages(errorMessage)
     }
 
   };
@@ -34,7 +33,7 @@ function Login() {
   const renderErrorMessage = () => {
     return (
       <div className="error">
-        {errorMessages && errorMessages.message}
+        {errorMessages}
       </div>
     );
   };
@@ -64,9 +63,11 @@ function Login() {
 
   return (
     <div className="app">
+      <LoginSessionCheck />
+
       <div className="login-form">
         <div className="title">Sign In</div>
-        {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
+        {renderForm}
       </div>
     </div>
   );

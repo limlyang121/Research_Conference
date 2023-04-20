@@ -85,7 +85,6 @@ const UserEdit = () => {
     };
 
     const handleSubmit = async (event) => {
-        alert(JSON.stringify(user))
         event.preventDefault();
         try{
             if (id === 'new') {
@@ -98,8 +97,11 @@ const UserEdit = () => {
 
             setUser(initialFormState);
             navigate('/admin/users');
-        }catch{
-            alert("Username existed")
+        }catch(error){
+            if (error.response.status === 403){
+                alert(error.response.data.message)
+            }else if (error.response.status === 500)
+                alert(error.response.data)
         }
     }
 

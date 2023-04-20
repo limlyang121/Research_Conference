@@ -113,10 +113,10 @@ function ReviewerBid() {
 
             let response = await downloadPapersAPI(parseInt(id))
             const contentDispositionHeader = response.headers['content-disposition'];
-            // const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1];
-
+            const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1].replace(/"/g, '');
+            
             const blob = new Blob([response.data], { type: "application/pdf" })
-            saveAs(blob)
+            saveAs(blob,filename)
 
         } catch (error) {
             alert("Unknown Error")

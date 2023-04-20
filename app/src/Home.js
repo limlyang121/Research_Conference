@@ -11,17 +11,17 @@ const Home = () => {
   useEffect(() => {
     let username = sessionStorage.getItem("username")
     setUser(username)
-  },[])
+  }, [])
 
   return (
     <div>
-      <AppNavbar/>
-      <Container fluid>
-        <img src="/img/background.png" alt='Image Desc' className='backgroundImage'/>
+      <AppNavbar />
+      <div className='welcome-container' >
+        <img src="/img/background.png" alt='Image Desc' className='backgroundImage' />
         <div className='welcomeText'>
           Welcome {user}
         </div>
-      </Container>
+      </div>
     </div>
   );
 }

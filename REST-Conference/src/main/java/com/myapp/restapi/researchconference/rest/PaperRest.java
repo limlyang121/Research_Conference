@@ -3,9 +3,7 @@ package com.myapp.restapi.researchconference.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
-import com.myapp.restapi.researchconference.Exception.ExceptionHandling;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
-import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -108,10 +106,11 @@ public class PaperRest {
         }
 
         HttpHeaders headers = new HttpHeaders();
+
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition
                 .builder("attachment")
-                .filename(temp.getPaperInfo().getFilename()+".pdf")
+                .filename(temp.getPaperInfo().getFilename().replaceAll(" ", "_"))
                 .build());
         headers.setContentLength(temp.getFile().getFileData().length);
 
