@@ -4,6 +4,7 @@ import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { updateUser, addUser, getUserByID, getAllRoles } from './adminAxios';
 import AdminSecurity from './AdminSecurity';
+import { displayErrorMessage } from '../General/GeneralFunction';
 
 
 const UserEdit = () => {
@@ -92,16 +93,12 @@ const UserEdit = () => {
 
             } else {
                 await updateUser(user)
-
             }
 
             setUser(initialFormState);
             navigate('/admin/users');
         }catch(error){
-            if (error.response.status === 403){
-                alert(error.response.data.message)
-            }else if (error.response.status === 500)
-                alert(error.response.data)
+            displayErrorMessage(error, navigate, null)
         }
     }
 

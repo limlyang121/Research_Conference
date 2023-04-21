@@ -5,6 +5,7 @@ import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +41,9 @@ public class PaperRest {
         return papersRestService.findPapersReviews(paperID) ;
     }
 
-    @GetMapping("papers/{paperID}")
-    public PaperDTO findPaperByID(@PathVariable int paperID){
-        PaperDTO paperDTO = papersRestService.findPaperByID(paperID);
+    @GetMapping("papers/{paperID}/{authorID}")
+    public PaperDTO findPaperByID(@PathVariable int paperID, @PathVariable @Min(1) int authorID) throws IllegalAccessException {
+        PaperDTO paperDTO = papersRestService.findPaperByID(paperID, authorID);
         return  paperDTO;
     }
     @GetMapping("papers/bid/{reviewerID}")

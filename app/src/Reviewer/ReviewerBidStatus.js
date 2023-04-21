@@ -6,6 +6,7 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { deleteFromBidAPI, getBidByStatus } from './Axios';
 import ReviewerSecurity from './ReviewerSecurity';
+import { downloadFile } from '../General/GeneralFunction';
 
 function ReviewerBidStatus() {
 
@@ -26,7 +27,7 @@ function ReviewerBidStatus() {
         fetchBidData(id, status)
 
 
-    }, [status, changeList])
+    }, [id ,status, changeList])
 
     const deleteFromBid = async (id) => {
         if (window.confirm("Unbid the paper?")) {
@@ -38,11 +39,10 @@ function ReviewerBidStatus() {
         }
     }
 
-
     const PendingAction = (bid) => {
         return (
             <ButtonGroup style={{ gap: "10px" }} >
-                <Button color='primary'> Download</Button>
+                <Button color='primary'onClick={async() => downloadFile(bid.paper.paperID)} > Download</Button>
                 <Button color="warning" onClick={async () => deleteFromBid(bid.bidID)} > Unbid</Button>
             </ButtonGroup>
         )
@@ -83,19 +83,30 @@ function ReviewerBidStatus() {
                     <Button color='danger' onClick={() => changeList("Reject ")}  >Show Reject</Button>
 
                 </ButtonGroup>
-                <Table className="mt-4">
-                    <thead>
-                        <tr>
-                            <th style={{ width: "10%" }} >Bid Status </th>
-                            <th style={{ width: "20%" }} >Paper Title </th>
-                            <th style={{ width: "20%" }} >FileName </th>
-                            <th colSpan={3}>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {displayBidStatus}
-                    </tbody>
-                </Table>
+
+                {myBid.length === 0 &&
+                    <h3 style={{ textAlign: "center" }}> Currently No Paper to Bid</h3>
+                }
+
+                {myBid.length !== 0 && (
+
+                    <Table className="mt-4">
+                        <thead>
+                            <tr>
+                                <th style={{ width: "10%" }} >Bid Status </th>
+                                <th style={{ width: "20%" }} >Paper Title </th>
+                                <th style={{ width: "20%" }} >FileName </th>
+                                <th colSpan={3}>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {displayBidStatus}
+                        </tbody>
+                    </Table>
+
+                )}
+
+
             </Container>
         </div>
     );

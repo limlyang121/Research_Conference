@@ -12,7 +12,7 @@ public interface PapersRestService {
 
     List<PaperDTO> findMyPaper(int userID);
 
-    PaperDTO findPaperByID(int userID);
+    PaperDTO findPaperByID(int userID, int authorID) throws IllegalAccessException;
 
     List<ReviewDTO> findPapersReviews(int paperID);
 

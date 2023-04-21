@@ -44,8 +44,8 @@ export const getMyPapers = async (id) => {
     return response.data;
 }
 
-export const getPaperByID = async (id) => {
-    let response = await api.get(`papers/${id}`)
+export const getPaperByID = async (id, authorID) => {
+    let response = await api.get(`papers/${id}/${authorID}`)
     return response.data;
 }
 

@@ -5,12 +5,8 @@ import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getMyPapers, deletePapers} from './Axios';
-import { saveAs } from "file-saver"
-import { downloadPapersAPI } from '../General/DownloadAxios';
-import { format } from "date-fns"
 import AuthorSecurity from './AuthorSecurity';
-
-
+import { dateFormat, downloadFile } from '../General/GeneralFunction';
 
 
 function PaperList() {
@@ -31,27 +27,6 @@ function PaperList() {
 
     }, [])
 
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
-
-    const downloadFile = async (id) => {
-        try{
-            
-            let response = await downloadPapersAPI(parseInt(id))
-
-            const contentDispositionHeader = response.headers['content-disposition'];
-            const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1].replace(/"/g, '');
-            
-            const blob = new Blob([response.data], { type: "application/pdf" })
-            saveAs(blob, filename)
-            
-        }catch(error){
-            alert("Unknown Error")
-        }
-    }
 
     const remove = async (id) => {
         if (window.confirm("Delete? ")) {
@@ -102,8 +77,6 @@ function PaperList() {
                             <th>Paper filename </th>
                             <th>Upload At </th>
                             <th colSpan={4}>Action</th>
-
-
                         </tr>
                     </thead>
                     <tbody>

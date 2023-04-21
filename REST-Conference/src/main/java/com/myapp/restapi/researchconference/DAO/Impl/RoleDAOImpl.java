@@ -8,6 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,6 +19,15 @@ public class RoleDAOImpl implements RoleDAO {
     @Autowired
     public RoleDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+
+    @Override
+    public List<Role> findAll() {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Role> query = session.createQuery("From Role order by role", Role.class);
+        return query.getResultList();
     }
 
     @Override
@@ -43,7 +53,12 @@ public class RoleDAOImpl implements RoleDAO {
 
     @Override
     public Role update(Role role) {
-        return null;
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            return session.merge(role);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override

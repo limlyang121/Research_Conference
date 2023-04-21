@@ -3,10 +3,9 @@
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppNavbar from '../Navbar/AppNavbar';
-import { Container, Input, Label, FormGroup, Button, Form } from 'reactstrap';
+import { Container, Input, Button, Form } from 'reactstrap';
 import { addPapers } from './Axios';
 import { getPaperByID, updatePaper } from './Axios';
-import { data } from 'autoprefixer';
 import AuthorSecurity from './AuthorSecurity';
 
 
@@ -46,13 +45,6 @@ function PaperEdit() {
             //Get Data
             let response = await getPaperByID(id)
             setPaper(response)
-
-            //Check
-            // if (response.paperInfo.authorID != myID){
-            //     alert("Not privilaged to edit someone paper")
-            //     navigate("/home")
-            // }
-
 
         }
         if (id !== 'new') {

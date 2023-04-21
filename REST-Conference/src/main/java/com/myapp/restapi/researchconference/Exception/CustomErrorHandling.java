@@ -23,6 +23,14 @@ public class CustomErrorHandling  {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler
+    public final ResponseEntity<ExceptionResponse> PrivilegesUsers(IllegalAccessException ex) {
+        ExceptionResponse errorResponse = new ExceptionResponse(ex.getMessage());
+        errorResponse.setStatus(HttpStatus.FORBIDDEN.value());
+        errorResponse.setTimeStamp(System.currentTimeMillis());
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex) {
         ExceptionResponse errorResponse = new ExceptionResponse(ex.getMessage());

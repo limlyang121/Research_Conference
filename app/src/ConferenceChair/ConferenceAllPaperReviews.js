@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { acceptPaperToPublishAPI, fetchAllReviewsByPaperIDAPI, rejectPaperToPublishAPI } from './Axios';
-import { id } from 'date-fns/locale';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppNavbar from '../Navbar/AppNavbar';
 import ConferenceSecurity from './ConferenceSecurity';
@@ -13,7 +12,6 @@ function ConferenceAllReviewerBid() {
     const [paperList, SetPapersList] = React.useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
-
 
     React.useEffect(() => {
         const fetchAllReviewsByPaperID = async (id) => {

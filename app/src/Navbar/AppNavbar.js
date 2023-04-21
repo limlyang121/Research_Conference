@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Collapse, FormGroup, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Form, Button, NavbarText, Container } from 'reactstrap';
+import { Collapse, FormGroup, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, Form, Button, NavbarText, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { logout } from '../General/Axios';
-import { useNavigate, BrowserRouter } from 'react-router-dom';
-import UserList from '../Admin/UserList';
+import { useNavigate } from 'react-router-dom';
 import SessionCheck from '../Security/SessionCheck';
 
 
@@ -75,7 +74,7 @@ const AppNavbar = () => {
               <Nav className='justify-content-start' style={{ width: "100%", gap: "10px" }} navbar>
                 <NavItem>
                   <Button>
-                    <Link tag={Link} to={"/author/papers/mypapers/" + user} style={{ textDecoration: "none", color: "white" }}>
+                    <Link tag={Link} to={"/author/papers"} style={{ textDecoration: "none", color: "white" }}>
                       My Papers
                     </Link>
                   </Button>
@@ -86,6 +85,14 @@ const AppNavbar = () => {
                   <Button>
                     <Link tag={Link} to={"/author/papers/form/new"} style={{ textDecoration: "none", color: "white" }}>
                       Add Paper
+                    </Link>
+                  </Button>
+                </NavItem>
+
+                <NavItem>
+                  <Button>
+                    <Link tag={Link} to={"/author/test"} style={{ textDecoration: "none", color: "white" }}>
+                      Upload to Google Drive (Test Only)
                     </Link>
                   </Button>
                 </NavItem>

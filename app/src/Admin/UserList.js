@@ -4,6 +4,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
 import { deactivationAccount, getAllNonActiveUsers, getAllUsers, removeUser, activateAccountAPI } from './adminAxios';
 import AdminSecurity from './AdminSecurity';
+import ErrorBoundary from '../ErrorBoundary';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -37,24 +38,17 @@ const UserList = () => {
 
   }, [status, changeList]);
 
-  // const remove = async (id) => {
-  //   if (window.confirm("Delete? ")) {
-  //     await removeUser(id)
-  //       .then(() => {
-  //         let updatedGroups = [...users].filter(i => i.id !== id);
-  //         setUsers(updatedGroups);
-  //       });
-  //   }
-  // }
 
   const deactiveAccount = async (id) => {
     if (window.confirm("Are you sure? ")) {
-      await deactivationAccount(id)
-        .then((responseData) => {
-          alert(responseData)
-          let updatedGroups = [...users].filter(i => i.id !== id);
-          setUsers(updatedGroups)
-        })
+      try {
+        const responseData = await deactivationAccount(id);
+        alert(responseData);
+        let updatedGroups = [...users].filter(i => i.id !== id);
+        setUsers(updatedGroups);
+      } catch (error) {
+        alert(JSON.stringify (error.response.data.message))
+      }
     }
   }
 
@@ -128,7 +122,7 @@ const UserList = () => {
           <Button color="success" tag={Link} to="/admin/users/form/new">Add User</Button>
         </div>
         <h3>My Users</h3>
-        <ButtonGroup style={{gap:"10px"}}>
+        <ButtonGroup style={{ gap: "10px" }}>
           <Button color='primary' onClick={() => changeList("active")} >Show Active</Button>
           <Button color='danger' onClick={() => changeList("nonactive")}>Show Deactive</Button>
         </ButtonGroup>
@@ -143,7 +137,7 @@ const UserList = () => {
             </tr>
           </thead>
           <tbody>
-            {groupList}
+              {groupList}
           </tbody>
         </Table>
       </Container>

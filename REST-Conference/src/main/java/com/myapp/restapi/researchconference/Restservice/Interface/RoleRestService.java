@@ -13,7 +13,7 @@ public interface RoleRestService {
 
     Role add(Role role);
 
-    Role update(Role role);
+    Role update(Role role, String roleName);
 
     boolean delete(String roleName);
 

@@ -80,15 +80,6 @@ public class UserRepoImpl implements UserRepo {
 
         return session.get(User.class, userID);
     }
-
-    @Override
-    public List<Role> findAllRole() {
-        Session session = entityManager.unwrap(Session.class);
-
-        Query<Role> query = session.createQuery("From Role ", Role.class);
-        return query.getResultList();
-    }
-
     @Override
     public User save(User user) {
         Session session = entityManager.unwrap(Session.class);

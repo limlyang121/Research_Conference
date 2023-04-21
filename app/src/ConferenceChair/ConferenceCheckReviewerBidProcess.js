@@ -3,26 +3,16 @@
 import * as React from 'react';
 import AppNavbar from '../Navbar/AppNavbar';
 import ConferenceSecurity from './ConferenceSecurity';
-import { Button, ButtonGroup, Container, Table } from 'reactstrap';
+import { Button, Container, Table } from 'reactstrap';
 import { fetchAllBidsByPaperIDAPI } from './Axios';
 import { Link, useParams } from 'react-router-dom';
-import { format } from "date-fns"
 import { deleteFromBidAPI } from '../Reviewer/Axios';
+import { dateFormat, fullName } from '../General/GeneralFunction';
 
 
 function ConferenceCheckReviewerBidProcess() {
     const [bidList, setBidsList] = React.useState([]);
     const { id } = useParams()
-
-    const fullName = (reviewer) => {
-        return reviewer.userdetails.firstName + " " + reviewer.userdetails.lastName
-    }
-
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
 
     React.useEffect(() => {
         const fetchAllBidsByPaperID = async (id) => {
@@ -31,11 +21,7 @@ function ConferenceCheckReviewerBidProcess() {
         }
 
         fetchAllBidsByPaperID(id);
-
-
-
-
-    }, [])
+    }, [id])
 
     const deleteBid = async (bidID) => {
         if (window.confirm("Delete this Bid? ")) {

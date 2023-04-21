@@ -1,20 +1,9 @@
-import React, { useState } from "react";
-import { format } from "date-fns"
-import { Button, ButtonGroup, Container, Table } from 'reactstrap';
+import React from "react";
+import { Button } from 'reactstrap';
+import { dateFormat, fullName } from "../../General/GeneralFunction";
 
 
 export default function PaperData({ paperList, closeBidding }) {
-    const fullName = (paper) => {
-        return paper.paperInfo.authorID.firstName + " " + paper.paperInfo.authorID.lastName
-    }
-
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
-
-
     return (
         <>
             {Array.isArray(paperList)  && paperList.length > 0 ? (
@@ -27,7 +16,6 @@ export default function PaperData({ paperList, closeBidding }) {
                             <td style={{ whiteSpace: "nowrap", textAlign: "center" }} > {paper.reviewedTimes}  </td>
                             <td>
                                 <Button color='primary' onClick={async () => closeBidding(paper.paperID)}  > Close Bidding</Button>
-                                {/* <Button color='primary' tag={Link} to={"/conference/papers/" + paper.paperID+ "/reviews"} > Check Reviewer review</Button> */}
                             </td>
                         </tr>
                     )

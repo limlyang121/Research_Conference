@@ -5,8 +5,6 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { closeBidToReadyPapersAPI,  fetchPendingPaperAPI, fetchReadytoBePublishOrRejectAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
-import { format } from "date-fns"
-import { Link } from 'react-router-dom';
 import BidData from './Component/BidData';
 import PaperData from './Component/PaperData';
 
@@ -49,7 +47,6 @@ function ConferencePaperList() {
                 setPaperList(updatedPapaers)
             })
     }
-
 
     return (
         <div>

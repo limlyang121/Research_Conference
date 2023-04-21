@@ -5,6 +5,7 @@ import com.myapp.restapi.researchconference.DAO.Interface.ReviewDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
+import com.myapp.restapi.researchconference.Exception.IllegalAccessException;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import com.myapp.restapi.researchconference.entity.Paper.File;
@@ -52,10 +53,13 @@ public class PapersRestServiceImpl implements PapersRestService {
 
     @Override
     @Transactional
-    public PaperDTO findPaperByID(int paperID)    {
+    public PaperDTO findPaperByID(int paperID, int authorID) throws IllegalAccessException {
         Optional<Paper>  paper = paperDAO.findPaperByID(paperID);
         if (paper.isPresent()){
-            return PaperDTO.convertToDTOSingle(paper.get());
+            if (paper.get().getPaperInfo().getAuthorID().getId() == authorID){
+                return PaperDTO.convertToDTOSingle(paper.get());
+            }else
+                throw new IllegalAccessException("You can't access other user Papers");
         }else
             return null;
     }

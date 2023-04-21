@@ -1,8 +1,8 @@
 // @flow strict
 
 import * as React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { Button, Card, CardBody, CardFooter, CardHeader, Container, Table } from 'reactstrap';
+import { useParams } from 'react-router-dom';
+import { Card, CardBody, CardFooter, CardHeader, Container } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import AuthorSecurity from './AuthorSecurity';
 import { getPaperReviewsAPI } from './Axios';
@@ -64,7 +64,7 @@ function PaperReview() {
                 <br />
 
                 {displayReview()}
-                
+
             </Container>
         </div>
     );

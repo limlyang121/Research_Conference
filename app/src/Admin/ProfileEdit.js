@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Container, FormGroup, Input, Label, Button } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { addRole, getRoleByName } from './adminAxios';
+import { addRole, getRoleByName, updateRole } from './adminAxios';
 import AdminSecurity from './AdminSecurity';
 
 function ProfileEdit() {
@@ -56,7 +56,9 @@ function ProfileEdit() {
                 alert(reponse)
 
             } else {
-                // await updateUser(user)
+                alert ("A")
+                let response = await updateRole(role, role.role);
+                alert  (response)
 
             }
 

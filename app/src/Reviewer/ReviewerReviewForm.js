@@ -44,7 +44,7 @@ function ReviewerReviewForm() {
         }else{
             fetchData(id)
         }
-    }, [])
+    }, [id, reviews.bid, status])
 
 
 

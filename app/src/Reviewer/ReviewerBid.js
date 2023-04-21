@@ -1,14 +1,9 @@
-// @flow strict
-
 import * as React from 'react';
 import { getPendingPapers, addToBlackListAPI, getBanPapers, DeleteFromBlackListAPI, addToBidAPI } from './Axios';
-import { downloadPapersAPI } from '../General/DownloadAxios';
-import { saveAs } from "file-saver"
-import { format } from "date-fns"
 import { Button, ButtonGroup, Container, Table, Form, Input } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
+import { dateFormat, downloadFile, fullName } from '../General/GeneralFunction';
 
 function ReviewerBid() {
 
@@ -38,7 +33,7 @@ function ReviewerBid() {
         }
 
 
-    }, [status, changeStatus])
+    }, [id ,status, changeStatus])
 
     const addToBlackList = async (event) => {
         if (window.confirm("Hide the paper?")) {
@@ -108,34 +103,6 @@ function ReviewerBid() {
         }
     }
 
-    const downloadFile = async (id) => {
-        try {
-
-            let response = await downloadPapersAPI(parseInt(id))
-            const contentDispositionHeader = response.headers['content-disposition'];
-            const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1].replace(/"/g, '');
-            
-            const blob = new Blob([response.data], { type: "application/pdf" })
-            saveAs(blob,filename)
-
-        } catch (error) {
-            alert("Unknown Error")
-        }
-    }
-
-
-
-
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
-
-    const fullName = (paper) => {
-        return paper.paperInfo.authorID.firstName + " " + paper.paperInfo.authorID.lastName
-    }
-
     const BidButtonDsiplay = (paper) => {
         return (
 
@@ -172,24 +139,27 @@ function ReviewerBid() {
         )
     }
 
-    const displayBidPapers = displayPapers.map(paper => {
-        return (
-            <tr key={paper.paperID} >
-                <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.title}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {dateFormat(paper.paperInfo.upload)}  </td>
-                <td style={{ whiteSpace: "nowrap" }} > {fullName(paper)}  </td>
-                <td>
-                    {status === "bid" && (<>
+    const displayBidPapers = (displayPapers.map(paper => (
+        <tr key={paper.paperID}>
+            <td style={{ whiteSpace: "nowrap" }}>{paper.paperInfo.title}</td>
+            <td style={{ whiteSpace: "nowrap" }}>{dateFormat(paper.paperInfo.upload)}</td>
+            <td style={{ whiteSpace: "nowrap" }}>{fullName(paper)}</td>
+            <td>
+                {status === "bid" && (
+                    <>
                         {BidButtonDsiplay(paper)}
-                    </>)}
+                    </>
+                )}
 
-                    {status === "hide" && (<>
+                {status === "hide" && (
+                    <>
                         {BanButtonDsiplay(paper)}
-                    </>)}
-                </td>
-            </tr>
-        )
-    })
+                    </>
+                )}
+            </td>
+        </tr>
+    ))
+    );
 
 
 
@@ -200,26 +170,35 @@ function ReviewerBid() {
             <ReviewerSecurity />
             <Container fluid>
                 <h3>Bid Papers</h3>
-                <ButtonGroup style={{gap:"10px"}}>
+                <ButtonGroup style={{ gap: "10px" }}>
                     <Button color='primary' onClick={() => changeStatus("bid")} >Show Bid</Button>
                     <Button color='danger' onClick={() => changeStatus("hide")} >Show Hide</Button>
                 </ButtonGroup>
-                <Table className="mt-4">
-                    <thead>
-                        <tr>
-                            <th style={{ width: "10%" }} >Paper Title </th>
-                            <th style={{ width: "20%" }}>Paper Upload Date </th>
-                            <th style={{ width: "20%" }}>Author Name </th>
-                            <th colSpan={3}>Action</th>
+
+                {displayPapers.length === 0 &&
+                    <h3 style={{ textAlign: "center" }}> No Data to Display</h3>
+                }
+
+                {displayPapers.length !== 0 && (
+
+                    <Table className="mt-4">
+                        <thead>
+                            <tr>
+                                <th style={{ width: "10%" }} >Paper Title </th>
+                                <th style={{ width: "20%" }}>Paper Upload Date </th>
+                                <th style={{ width: "20%" }}>Author Name </th>
+                                <th colSpan={3}>Action</th>
 
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {displayBidPapers}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {displayBidPapers}
+                        </tbody>
 
-                    </tbody>
-                </Table>
+                    </Table>
+                )}
+
             </Container>
         </div>
     );

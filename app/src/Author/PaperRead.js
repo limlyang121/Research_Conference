@@ -1,40 +1,42 @@
 // @flow strict
 
 import * as React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { Card, CardBody, CardHeader, CardText, CardTitle, Container, Label } from 'reactstrap';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Card, CardBody, CardHeader, CardText, Container } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getPaperByID } from './Axios';
-import { format } from "date-fns"
 import './PaperRead.css'
 
 import AuthorSecurity from './AuthorSecurity';
+import { dateFormat, displayErrorMessage } from '../General/GeneralFunction';
 
 function PaperRead() {
 
     const [myPaper, setPaper] = React.useState()
     const [loading, setLoading] = React.useState(true)
+    const [errorAlerted, setErrorAlerted] = React.useState(false);
     const { id } = useParams()
+    const authorID = sessionStorage.getItem("id");
+    const navigate = useNavigate();
 
     React.useEffect(() => {
-        const fetchData = async (id) => {
-            let response = await getPaperByID(id)
-            setPaper(response)
-            setLoading(false)
+
+        const fetchData = async (id, authorID) => {
+            try {
+                let response = await getPaperByID(id, authorID)
+                setPaper(response)
+                setLoading(false)
+            } catch (error) {
+                displayErrorMessage(error, navigate, "/admin/papers")
+            }
+
         }
 
-        fetchData(id);
+        fetchData(id, authorID);
 
 
-    }, [])
-
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
-
+    }, [errorAlerted])
 
 
     if (loading) {
@@ -73,7 +75,7 @@ function PaperRead() {
 
                         <CardText tag={"h6"}>
                             {/* Upload At : { format(myPaper.paperInfo.upload, "dd/MM/yyyy")} */}
-                            Upload At : { dateFormat (myPaper?.paperInfo.upload)}
+                            Upload At : {dateFormat(myPaper?.paperInfo.upload)}
                         </CardText>
 
                         <CardText tag={"h6"}>
@@ -89,7 +91,7 @@ function PaperRead() {
                     <CardHeader tag={"h3"}>Review</CardHeader>
                     <CardBody>
                         <CardText tag={"h6"}>
-                            <Link to={"/author/papers/"+myPaper?.paperID+"/review"}>Get paper Review</Link>
+                            <Link to={"/author/papers/" + myPaper?.paperID + "/review"}>Get paper Review</Link>
                         </CardText>
 
                     </CardBody>

@@ -16,8 +16,6 @@ public interface UserRepo  {
 
     User findByID(int userID);
 
-    List<Role> findAllRole();
-
     List<User> searchByUsername(String username);
 
     List<User> searchByUsernameAndRole(String username, String roleName);

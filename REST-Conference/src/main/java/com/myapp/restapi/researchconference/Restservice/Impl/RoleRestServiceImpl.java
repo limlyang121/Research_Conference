@@ -14,18 +14,16 @@ import java.util.Optional;
 @Service
 public class RoleRestServiceImpl implements RoleRestService {
 
-    private final UserRepo userRepo;
     private final RoleDAO roleDAO;
 
     @Autowired
-    public RoleRestServiceImpl(UserRepo userRepo, RoleDAO roleDAO) {
-        this.userRepo = userRepo;
+    public RoleRestServiceImpl(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
     }
 
     @Transactional
     public List<Role> findAll(){
-        return userRepo.findAllRole();
+        return roleDAO.findAll();
     }
 
     @Transactional
@@ -42,7 +40,13 @@ public class RoleRestServiceImpl implements RoleRestService {
 
     @Override
     @Transactional
-    public Role update(Role role) {
+    public Role update(Role role, String roleName) {
+        Optional<Role> roleOptional = roleDAO.findRoleByName(roleName);
+        if (roleOptional.isPresent()){
+            Role tempRole = roleOptional.get();
+            tempRole.setDesc(role.getDesc());
+            return roleDAO.update(tempRole);
+        }
         return null;
     }
 

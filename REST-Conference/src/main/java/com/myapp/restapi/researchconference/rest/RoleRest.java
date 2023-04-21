@@ -3,6 +3,7 @@ package com.myapp.restapi.researchconference.rest;
 import com.myapp.restapi.researchconference.Restservice.Impl.RoleRestServiceImpl;
 import com.myapp.restapi.researchconference.Restservice.Interface.RoleRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Role;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,14 @@ public class RoleRest {
             return ResponseEntity.ok("Successfully added the New Role");
         else
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add the Role");
+    }
+
+    @PutMapping("roles/{roleName}")
+    public ResponseEntity<String> update(@RequestBody Role role, @PathVariable @NotBlank String roleName){
+        Role role1 = roleRestService.update(role, roleName);
+        if (role1 == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to Update the role");
+        return ResponseEntity.ok("Successfully update the Role Description");
     }
 
     @DeleteMapping("roles/{roleName}")

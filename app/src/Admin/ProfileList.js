@@ -64,6 +64,7 @@ function ProfileList() {
                         <tr>
                             <th width="20%" className='col-sm 4'>Role Name</th>
                             <th width="60%">Role Descritpion</th>
+                            <th width="40%">Action</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -38,7 +38,7 @@ function ReviewerReviewList() {
         fetchAcceptedData(id);
         fetchCompletedData(id);
 
-    }, [])
+    }, [id])
 
     const downloadFile = async (id) => {
         try {

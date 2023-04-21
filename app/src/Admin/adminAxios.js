@@ -65,6 +65,11 @@ export const addRole = async (data) => {
     return response.data
 }
 
+export const updateRole = async (data, roleName) => {
+    let response = await api.put(`roles/${roleName}`, data, roleName)
+    return response.data
+}
+
 export const deleteRole = async (name) => {
     let response = await api.delete(`roles/${name}`)
     return response.data
