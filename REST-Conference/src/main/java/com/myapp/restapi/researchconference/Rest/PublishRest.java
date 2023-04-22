@@ -1,10 +1,9 @@
-package com.myapp.restapi.researchconference.rest;
+package com.myapp.restapi.researchconference.Rest;
 
 
 import com.myapp.restapi.researchconference.DTO.PublishDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.PublishRestService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

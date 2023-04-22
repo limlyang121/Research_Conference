@@ -6,9 +6,8 @@ import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { getAcceptedBidAPI, getMyReviewsAPI } from './Axios';
 import ReviewerSecurity from './ReviewerSecurity';
-import { format } from "date-fns"
-import { downloadPapersAPI } from '../General/DownloadAxios';
-import { saveAs } from "file-saver"
+import { dateFormat, downloadFile } from '../General/GeneralFunction';
+import { NoDataToDisplay } from '../General/GeneralDisplay';
 
 
 
@@ -38,29 +37,9 @@ function ReviewerReviewList() {
         fetchAcceptedData(id);
         fetchCompletedData(id);
 
+
     }, [id])
 
-    const downloadFile = async (id) => {
-        try {
-
-            let response = await downloadPapersAPI(parseInt(id))
-            const contentDispositionHeader = response.headers['content-disposition'];
-            const filename = contentDispositionHeader.split(';')[1].trim().split('=')[1].replace(/"/g, '');
-            
-            const blob = new Blob([response.data], { type: "application/pdf" })
-            saveAs(blob,filename)
-            
-
-        } catch (error) {
-            alert("Unknown Error")
-        }
-    }
-
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
 
     const displayBidStatusHeader = () => {
         return (
@@ -87,16 +66,6 @@ function ReviewerReviewList() {
 
 
     const displayBidStatus = () => {
-        if (bids.length === 0) {
-            return (
-                <tr>
-                    <td colSpan="3" style={{ textAlign: "center" }}>
-                        No bids to display
-                    </td>
-                </tr>
-            );
-        }
-
         return bids.map((bid) => (
             <tr key={bid.bidID} >
                 <td style={{ whiteSpace: "nowrap" }} > {bid.status}  </td>
@@ -113,16 +82,6 @@ function ReviewerReviewList() {
     }
 
     const displayReviewStatus = () => {
-        if (reviews.length === 0) {
-            return (
-                <tr>
-                    <td colSpan="3" style={{ textAlign: "center" }}>
-                        No Reviews to display
-                    </td>
-                </tr>
-            );
-        }
-
         return reviews.map((reviews) => (
             <tr key={reviews.reviewID} >
                 <td style={{ whiteSpace: "nowrap" }} > {reviews.rate} out of 5  </td>
@@ -154,14 +113,23 @@ function ReviewerReviewList() {
                     <Button color='primary' onClick={() => changeList("Complete")}> Show Reviewed</Button>
 
                 </ButtonGroup>
-                <Table className="mt-4">
+
+                {status === "Pending" && bids.length === 0 && (
+                    <NoDataToDisplay />
+                )}
+
+                {status === "Complete" && reviews.length === 0 && (
+                    <NoDataToDisplay />
+                )}
+
+                <Table striped bordered hover className="mt-4">
                     <thead>
-                        {status === "Pending" && displayBidStatusHeader()}
-                        {status === "Complete" && displayReviewStatusHeader()}
+                        {status === "Pending" && bids.length !== 0 && displayBidStatusHeader()}
+                        {status === "Complete" && reviews.length !== 0 && displayReviewStatusHeader()}
                     </thead>
                     <tbody>
-                        {status === "Pending" && displayBidStatus()}
-                        {status === "Complete" && displayReviewStatus()}
+                        {status === "Pending" && bids.length !== 0 && displayBidStatus()}
+                        {status === "Complete" && reviews.length !== 0 && displayReviewStatus()}
                     </tbody>
                 </Table>
             </Container>

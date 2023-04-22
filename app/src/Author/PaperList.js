@@ -25,7 +25,7 @@ function PaperList() {
 
         fetchData(myID);
 
-    }, [])
+    }, [myID])
 
 
     const remove = async (id) => {
@@ -70,7 +70,7 @@ function PaperList() {
                 </div>
 
                 <h3>My Papers</h3>
-                <Table className="mt-4">
+                <Table striped bordered hover className="mt-4">
                     <thead>
                         <tr>
                             <th>Paper Title </th>

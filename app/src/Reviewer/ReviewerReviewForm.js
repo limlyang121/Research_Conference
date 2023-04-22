@@ -6,6 +6,7 @@ import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
 import { getOneReviewsAPI, SubmitReviewAPI, UpdateReviewAPI } from './Axios';
+import { displayErrorMessage } from '../General/GeneralFunction';
 
 function ReviewerReviewForm() {
 
@@ -19,8 +20,8 @@ function ReviewerReviewForm() {
 
     const reviewsForm = {
         reviewID: "",
-        bid:{
-            bidID:"",
+        bid: {
+            bidID: "",
         },
         rate: 1,
         comment: "",
@@ -35,16 +36,22 @@ function ReviewerReviewForm() {
 
     React.useEffect(() => {
         const fetchData = async (id) => {
-            let response = await getOneReviewsAPI(id);
-            setReviews(response)
+            try {
+                let response = await getOneReviewsAPI(id);
+                setReviews(response)
+            } catch (error) {
+                displayErrorMessage(error, navigate, -1);
+            }
         }
 
-        if (status === "new"){
-            reviews.bid.bidID = id
-        }else{
+        if (status === "new") {
+            setReviews(prevState => ({
+                ...prevState, bid: { ...prevState.bid, bidID: id }
+            }));
+        } else {
             fetchData(id)
         }
-    }, [id, reviews.bid, status])
+    }, [id, reviews.bid.bidID, status, navigate])
 
 
 
@@ -69,25 +76,25 @@ function ReviewerReviewForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try{
+        try {
             if (status === 'new') {
                 await SubmitReviewAPI(reviews).then((response) => {
-                    alert (response)
+                    alert(response)
                 })
             } else {
                 await UpdateReviewAPI(reviews).then((response) => {
-                    alert (response)
+                    alert(response)
                 })
 
             }
 
             navigate('/reviewer/reviews');
-        }catch{
+        } catch {
             alert("Username existed")
         }
     }
 
-    
+
 
 
     return (
@@ -106,7 +113,7 @@ function ReviewerReviewForm() {
                         <Label for="rate">Rating</Label>
                         <Input type='select' name='rate' id='rate' value={reviews.rate} onChange={handleChange}>
                             {options.map((optionChoice) => (
-                                <option key={optionChoice.value} value={optionChoice.value} defaultValue>
+                                <option key={optionChoice.value} value={optionChoice.value} selected={reviews.rate === optionChoice.value}>
                                     {optionChoice.label}
                                 </option>
                             ))}
@@ -124,9 +131,6 @@ function ReviewerReviewForm() {
                     <br />
 
                     <Button type='submit' color='primary'>Submit Review  </Button>
-
-
-
 
                 </Form>
             </Container>

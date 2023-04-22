@@ -1,5 +1,3 @@
-// @flow strict
-
 import * as React from 'react';
 import AppNavbar from '../Navbar/AppNavbar';
 import ConferenceSecurity from './ConferenceSecurity';
@@ -7,7 +5,7 @@ import { Button, Container, Table } from 'reactstrap';
 import { fetchAllBidsByPaperIDAPI } from './Axios';
 import { Link, useParams } from 'react-router-dom';
 import { deleteFromBidAPI } from '../Reviewer/Axios';
-import { dateFormat, fullName } from '../General/GeneralFunction';
+import { dateFormat, fullNameDetails } from '../General/GeneralFunction';
 
 
 function ConferenceCheckReviewerBidProcess() {
@@ -44,7 +42,7 @@ function ConferenceCheckReviewerBidProcess() {
 
                 <h3>Bid Status </h3>
 
-                <Table className="mt-4">
+                <Table striped bordered hover className="mt-4">
                     <thead>
                         <tr>
                             <th style={{ width: "20%" }} > Reviewer Name </th>
@@ -58,7 +56,7 @@ function ConferenceCheckReviewerBidProcess() {
                         {bidList.map((bid) => {
                             return (
                                 <tr key={bid.bidID}>
-                                    <td> {fullName(bid.reviewer)}</td>
+                                    <td> {fullNameDetails(bid.reviewer.userdetails)}</td>
                                     <td> {dateFormat(bid.paper.paperInfo.upload)} </td>
                                     <td> {dateFormat(bid.bidDate)} </td>
                                     {bid.status === "Complete" ? (
@@ -78,9 +76,10 @@ function ConferenceCheckReviewerBidProcess() {
                     </tbody>
 
                 </Table>
-
-                <Button color='primary' tag={Link} to={`/conference/papers/` + id + `/reviews`} > Accept/Reject </Button>
-
+                {bidList.every(item => item.status === "Complete")
+                    ? <Button color='primary' tag={Link} to={`/conference/papers/` + id + `/reviews`} > Accept/Reject </Button>
+                    : <Button color='secondary' disabled > Accept/Reject </Button>
+                }
             </Container>
         </div>
     );

@@ -2,9 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
-import { deactivationAccount, getAllNonActiveUsers, getAllUsers, removeUser, activateAccountAPI } from './adminAxios';
+import { deactivationAccount, getAllNonActiveUsers, getAllUsers, activateAccountAPI } from './adminAxios';
 import AdminSecurity from './AdminSecurity';
-import ErrorBoundary from '../ErrorBoundary';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -84,7 +83,7 @@ const UserList = () => {
   const groupList = users.map(user => {
     return (
       <tr key={user.id}>
-        {user.id == myID ? (
+        {user.id === myID ? (
           <></>
         ) : (
           <>
@@ -102,10 +101,6 @@ const UserList = () => {
       </tr>
     )
   });
-
-
-
-
 
   if (loading) {
     return <p>Loading...</p>;
@@ -127,7 +122,7 @@ const UserList = () => {
           <Button color='danger' onClick={() => changeList("nonactive")}>Show Deactive</Button>
         </ButtonGroup>
 
-        <Table className="mt-4">
+        <Table striped bordered hover className="mt-4">
           <thead>
             <tr>
               <th width="20%">First Name</th>

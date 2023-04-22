@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.rest;
+package com.myapp.restapi.researchconference.Rest;
 
 import com.myapp.restapi.researchconference.Exception.InvalidUsernameOrPassword;
 import com.myapp.restapi.researchconference.Restservice.Impl.MyUserDetails;

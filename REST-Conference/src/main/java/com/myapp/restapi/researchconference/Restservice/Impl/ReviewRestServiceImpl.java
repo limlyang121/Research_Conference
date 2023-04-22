@@ -5,6 +5,8 @@ import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewerDAO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
+import com.myapp.restapi.researchconference.Exception.IllegalAccessException;
+import com.myapp.restapi.researchconference.Exception.NoDataFoundException;
 import com.myapp.restapi.researchconference.Restservice.Interface.ReviewRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import com.myapp.restapi.researchconference.entity.Bid.Bid;
@@ -42,14 +44,38 @@ public class ReviewRestServiceImpl implements ReviewRestService {
 
     @Override
     @Transactional
-    public Optional<Review> findReviewByID(int reviewID) {
-        return reviewDAO.findReviewByID(reviewID);
+    public ReviewDTO findReviewByID(int reviewID, int reviewerID) throws IllegalAccessException {
+        Optional<Review> reviewOptional = reviewDAO.findReviewByID(reviewID);
+        if (!reviewOptional.isPresent())
+            throw new NoDataFoundException("No Data Found");
+
+        Review review = reviewOptional.get();
+        if (review.getBid().getReviewer().getReviewerID() != reviewerID){
+            throw new IllegalAccessException("You can't access other people review");
+        }
+
+        return ReviewDTO.DTOSingle(review);
     }
 
     @Override
     public List<ReviewDTO> findReviewedPaper() {
         List<Review> reviewList = reviewDAO.findReviewedPaper();
         return ReviewDTO.DTOList(reviewList);
+    }
+
+    @Override
+    @Transactional
+    public List<ReviewDTO> findReviewsByPaperID(int paperID, int authorID) throws IllegalAccessException {
+        Optional<Paper> paperOptional = paperDAO.findPaperByID(paperID);
+        if (paperOptional.isPresent()){
+            Paper paper = paperOptional.get();
+            if (paper.getPaperInfo().getAuthorID().getId() != authorID){
+                throw new IllegalAccessException("Not allow to See Reviews that belong to other User paper");
+            }
+            List<Review> reviewList = reviewDAO.findReviewsByPaperID(paperID);
+            return ReviewDTO.DTOList(reviewList);
+        }
+        return null;
     }
 
     @Override
@@ -82,14 +108,13 @@ public class ReviewRestServiceImpl implements ReviewRestService {
     @Override
     @Transactional
     public Review updateReview(Review review) {
-        Date currentTime = new Date();
-        Optional<Bid> bid = bidDAO.findBidByID(review.getBid().getBidID());
-        if (bid.isPresent()){
-            review.setBid(bid.get());
-            review =  reviewDAO.updateReview(review);
-            if (review != null)
-                return review;
-
+        Optional<Review> reviewDataOptional = reviewDAO.findReviewByID(review.getReviewID());
+        if (reviewDataOptional.isPresent()){
+            Review reviewData = reviewDataOptional.get();
+            reviewData.setRate(review.getRate());
+            reviewData.setComment(review.getComment());
+            reviewData.setReviewDate(new Date());
+            return  reviewDAO.updateReview(reviewData);
         }
         return null;
     }

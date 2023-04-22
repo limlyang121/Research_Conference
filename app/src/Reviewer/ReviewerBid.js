@@ -4,6 +4,7 @@ import { Button, ButtonGroup, Container, Table, Form, Input } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
 import { dateFormat, downloadFile, fullName } from '../General/GeneralFunction';
+import { NoDataToDisplay } from '../General/GeneralDisplay';
 
 function ReviewerBid() {
 
@@ -36,8 +37,9 @@ function ReviewerBid() {
     }, [id ,status, changeStatus])
 
     const addToBlackList = async (event) => {
+        event.preventDefault();
+
         if (window.confirm("Hide the paper?")) {
-            event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
             const blacklist = {
@@ -56,9 +58,10 @@ function ReviewerBid() {
     }
 
     const DeleteFromBlackList = async (event) => {
+        event.preventDefault();
+
         if (window.confirm("Unhide?")) {
 
-            event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
             const blacklist = {
@@ -80,8 +83,9 @@ function ReviewerBid() {
     }
 
     const addToBid = async (event) => {
+        event.preventDefault();
+
         if (window.confirm("Bid the papers?")) {
-            event.preventDefault();
 
             const form = event.target;
             const formData = new FormData(form);
@@ -176,19 +180,18 @@ function ReviewerBid() {
                 </ButtonGroup>
 
                 {displayPapers.length === 0 &&
-                    <h3 style={{ textAlign: "center" }}> No Data to Display</h3>
+                    <NoDataToDisplay />
                 }
 
                 {displayPapers.length !== 0 && (
 
-                    <Table className="mt-4">
+                    <Table striped bordered hover className="mt-4">
                         <thead>
                             <tr>
                                 <th style={{ width: "10%" }} >Paper Title </th>
                                 <th style={{ width: "20%" }}>Paper Upload Date </th>
                                 <th style={{ width: "20%" }}>Author Name </th>
                                 <th colSpan={3}>Action</th>
-
 
                             </tr>
                         </thead>

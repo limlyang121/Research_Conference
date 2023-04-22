@@ -8,6 +8,7 @@ import ConferenceSecurity from './ConferenceSecurity';
 
 import { FaCheck, FaRegTimesCircle } from 'react-icons/fa';
 import { MdRestore } from 'react-icons/md';
+import { NoDataToDisplay } from '../General/GeneralDisplay';
 
 
 function ConferenceReviewerBid() {
@@ -15,6 +16,7 @@ function ConferenceReviewerBid() {
 
     const [bids, setBids] = React.useState([])
     const [status, setStatus] = React.useState("Pending")
+    const [sort, setSort] = React.useState("id")
 
     const changeBidsStatus = React.useCallback((stat) => {
         setStatus(stat)
@@ -26,7 +28,7 @@ function ConferenceReviewerBid() {
             let response = await fetchPendingBidsAPI(stat);
             setBids(response)
         }
-
+        // alert(JSON.stringify(bids))
         fetchBidsByStatus(status);
 
 
@@ -73,6 +75,35 @@ function ConferenceReviewerBid() {
         return showAction
     }
 
+    const sortListByID = () => {
+        const sorted = [...bids].sort((a, b) => {
+            if (a.bidID < b.bidID) {
+                return -1;
+            }
+            if (a.bidID > b.bidID) {
+                return 1;
+            }
+            return 0;
+        });
+        setSort("id")
+        setBids(sorted);
+    }
+
+    const sortListByTitle = () => {
+        const sorted = [...bids].sort((a, b) => {
+            if (a.paper.paperInfo.title < b.paper.paperInfo.title) {
+                return -1;
+            }
+            if (a.paper.paperInfo.title > b.paper.paperInfo.title) {
+                return 1;
+            }
+            return 0;
+        });
+
+        setSort("title")
+        setBids(sorted);
+    }
+
 
     const pendingAction = (bid) => {
         return (
@@ -97,7 +128,9 @@ function ConferenceReviewerBid() {
                 <td style={{ whiteSpace: 'nowrap' }}>{fullNamePaper(bid)}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{fullNameBid(bid)}</td>
                 <td style={{ whiteSpace: 'nowrap' }}>{bid.paper.paperInfo.title}</td>
-                {BidActionSwitch(bid)}
+                <td>
+                    {BidActionSwitch(bid)}
+                </td>
             </tr>
         )
     })
@@ -108,24 +141,44 @@ function ConferenceReviewerBid() {
             <ConferenceSecurity />
             <Container fluid>
                 <h3>Reviewer Bid</h3>
+
                 <ButtonGroup style={{ gap: "10px" }}>
                     <Button color='secondary' onClick={() => changeBidsStatus("Pending")} >Show Pending</Button>
                     <Button color='success' onClick={() => changeBidsStatus("Accept")}>Show Accept</Button>
                     <Button color='danger' onClick={() => changeBidsStatus("Reject")}>Show Reject</Button>
                 </ButtonGroup>
-                <Table className="mt-4">
-                    <thead>
-                        <tr>
-                            <th width="20%">Author Name</th>
-                            <th width="20%">Reviewe Name</th>
-                            <th width="20%">Title</th>
-                            <th >Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bids.length !== 0 && bidsList}
-                    </tbody>
-                </Table>
+
+                {bidsList.length === 0 && <NoDataToDisplay />}
+
+                {bidsList.length !== 0 && (
+                    <div>
+                        <br />
+                        <label style={{marginRight:"10px"}}>
+                            <input type="radio" onClick={() => sortListByID()}  checked={sort === "id"} />
+                            Sort by Date
+                        </label>
+
+                        <label>
+                            <input type="radio" onClick={() => sortListByTitle()} checked={sort === "title"} />
+                            Sort by Title
+                        </label>
+
+
+                        <Table striped bordered hover className="mt-4">
+                            <thead>
+                                <tr>
+                                    <th width="20%">Author Name</th>
+                                    <th width="20%">Reviewe Name</th>
+                                    <th width="20%">Title</th>
+                                    <th >Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {bidsList}
+                            </tbody>
+                        </Table>
+                    </div>
+                )}
             </Container>
         </div>
     );

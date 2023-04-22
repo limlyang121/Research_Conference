@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.rest;
+package com.myapp.restapi.researchconference.Rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;

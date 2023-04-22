@@ -27,12 +27,19 @@ export const fullName = (paper) => {
     return paper.paperInfo.authorID.firstName + " " + paper.paperInfo.authorID.lastName
 }
 
+export const fullNameDetails = (userdetails) => {
+    return userdetails.firstName + " " + userdetails.lastName; 
+}
+
 export const displayErrorMessage = (error, navigate, link) => {
     if (error.response.status === 403) {
         alert(error.response.data.message)
 
     } else if (error.response.status === 500)
         alert(error.response.data)
+
+    else if (error.response.status === 404)
+        alert(error.response.data.message)
 
 
     if (link != null)

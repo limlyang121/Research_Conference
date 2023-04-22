@@ -15,28 +15,26 @@ function PaperRead() {
 
     const [myPaper, setPaper] = React.useState()
     const [loading, setLoading] = React.useState(true)
-    const [errorAlerted, setErrorAlerted] = React.useState(false);
     const { id } = useParams()
-    const authorID = sessionStorage.getItem("id");
     const navigate = useNavigate();
 
     React.useEffect(() => {
 
-        const fetchData = async (id, authorID) => {
+        const fetchData = async (id) => {
             try {
-                let response = await getPaperByID(id, authorID)
+                let response = await getPaperByID(id)
                 setPaper(response)
                 setLoading(false)
             } catch (error) {
-                displayErrorMessage(error, navigate, "/admin/papers")
+                displayErrorMessage(error, navigate, "/author/papers")
             }
 
         }
 
-        fetchData(id, authorID);
+        fetchData(id);
 
 
-    }, [errorAlerted])
+    }, [navigate, id])
 
 
     if (loading) {

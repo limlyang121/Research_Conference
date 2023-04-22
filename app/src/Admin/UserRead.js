@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { activateAccount, activateAccountAPI, deactivationAccount, getUserByID, resetPasswordAPI } from './adminAxios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getUserByID, resetPasswordAPI } from './adminAxios';
+import { useNavigate, useParams } from 'react-router-dom';
 import AdminSecurity from './AdminSecurity';
+import { displayErrorMessage } from '../General/GeneralFunction';
 
 const UserRead = () => {
     const { id } = useParams();
@@ -29,7 +30,7 @@ const UserRead = () => {
     }
     const resetPasswordForm = {
         userID: id,
-        password:""
+        password: ""
     }
 
     const [user, setUser] = useState(initialFormState);
@@ -55,20 +56,21 @@ const UserRead = () => {
 
 
     const handleNewPasswordChange = (event) => {
-        setReset({ ...reset, password:event.target.value });
+        setReset({ ...reset, password: event.target.value });
     }
 
-    const handleSubmit = async(event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        alert(JSON.stringify(reset))
+        try {
+            let response = await resetPasswordAPI(reset);
+            alert(response);
+        } catch (error) {
+            displayErrorMessage(error, navigate, null);
+        } finally {
+            navigate("/admin/users")
+        }
 
-        await resetPasswordAPI(reset).then((response) => {
-            alert(response)
-        })
-
-        navigate("/admin/users")
-        // call your API to update the password here
     }
 
 
@@ -104,16 +106,16 @@ const UserRead = () => {
                 <Input disabled type='text' name='email' id='email' value={user.userdetails.email}></Input>                <br />
 
 
-                <Button style={{marginBottom:"25px"}} size='sm' color='warning' onClick={() => setPasswordInputForm(true)} >Reset user password </Button>
+                <Button style={{ marginBottom: "25px" }} size='sm' color='warning' onClick={() => setPasswordInputForm(true)} >Reset user password </Button>
 
-                <br  />
+                <br />
 
                 {showPassowrdInputForm && (
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
                             <Label for='password'>New Password: </Label>
-                            <Input type='password' name='password' id='password' value={reset.password} onChange={handleNewPasswordChange} required 
-                            minLength={6} placeholder='Mininum 6 Character'
+                            <Input type='password' name='password' id='password' value={reset.password} onChange={handleNewPasswordChange} required
+                                minLength={6} placeholder='Mininum 6 Character'
                             />
                         </FormGroup>
                         <Button color='primary' type='submit'>Save</Button>

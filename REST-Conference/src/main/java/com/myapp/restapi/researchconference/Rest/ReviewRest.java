@@ -1,8 +1,11 @@
-package com.myapp.restapi.researchconference.rest;
+package com.myapp.restapi.researchconference.Rest;
 
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
+import com.myapp.restapi.researchconference.Exception.IllegalAccessException;
+import com.myapp.restapi.researchconference.Exception.NoDataFoundException;
 import com.myapp.restapi.researchconference.Restservice.Interface.ReviewRestService;
 import com.myapp.restapi.researchconference.entity.Review.Review;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +25,25 @@ public class ReviewRest {
         this.reviewRestService = reviewRestService;
     }
 
-
-
     @GetMapping("reviews/myreviews/{reviewerID}")
     public List<ReviewDTO> findMyReviews(@PathVariable int reviewerID){
         return reviewRestService.findMyReviews(reviewerID);
     }
-    @GetMapping("reviews/{reviewID}")
-    public Review findReviewByID(@PathVariable int reviewID) {
-        Optional<Review> optionalReview = reviewRestService.findReviewByID(reviewID);
-        if (optionalReview.isPresent()){
-            return optionalReview.get();
-        }else
+    @GetMapping("reviews/{reviewID}/{reviewerID}")
+    public ReviewDTO findReviewByID(@PathVariable int reviewID,@PathVariable int reviewerID ) throws IllegalAccessException {
+        ReviewDTO reviewDTO = reviewRestService.findReviewByID(reviewID, reviewerID);
+        if (reviewDTO == null)
             return null;
+        return reviewDTO;
+    }
+
+    @GetMapping ("reviews/{paperID}/by/{authorID}")
+    public List<ReviewDTO> findReviewsByPaperID(@PathVariable @Min(1) int paperID, @PathVariable @Min(1) int authorID) throws IllegalAccessException {
+        List<ReviewDTO> reviewDTOList = reviewRestService.findReviewsByPaperID(paperID, authorID);
+        if (reviewDTOList == null){
+            throw new NoDataFoundException("No Reviews Found");
+        }
+        return reviewDTOList;
     }
 
 

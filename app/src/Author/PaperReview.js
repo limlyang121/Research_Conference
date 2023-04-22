@@ -1,26 +1,32 @@
 // @flow strict
 
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardBody, CardFooter, CardHeader, Container } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import AuthorSecurity from './AuthorSecurity';
 import { getPaperReviewsAPI } from './Axios';
+import { displayErrorMessage } from '../General/GeneralFunction';
 
 function PaperReview() {
 
     const [paperReview, setPaperReviews] = React.useState([]);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         const fetchReview = async (id) => {
-            let response = await getPaperReviewsAPI(id);
-            setPaperReviews(response);
+            try{
+                let response = await getPaperReviewsAPI(id);
+                setPaperReviews(response);
+            }catch(error){
+                displayErrorMessage(error, navigate, -1)
+            }
         }
 
         fetchReview(id)
 
-    }, [])
+    }, [id, navigate])
 
     const getFullName = (review) => {
         return (

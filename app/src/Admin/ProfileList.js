@@ -10,7 +10,6 @@ import AdminSecurity from './AdminSecurity';
 
 function ProfileList() {
     const [role, setRoles] = React.useState([]);
-    const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
         const fetchRole = async () => {
@@ -18,7 +17,6 @@ function ProfileList() {
             setRoles(response)
         }
 
-        setLoading(false)
         fetchRole()
     }, [setRoles])
 
@@ -59,7 +57,7 @@ function ProfileList() {
                     <Button color="success" tag={Link} to="/admin/roles/form/new">Add Profile</Button>
                 </div>
                 <h3>My Profile</h3>
-                <Table className="mt-4">
+                <Table striped bordered hover className="mt-4">
                     <thead>
                         <tr>
                             <th width="20%" className='col-sm 4'>Role Name</th>

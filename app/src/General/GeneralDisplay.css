@@ -1,0 +1,24 @@
+
+.noData {
+    text-align: center;
+    min-width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 2rem);
+    font-size: large;
+    margin-top: -50px;
+  }
+
+  
+.noData p{
+    display: flex;
+    font-size: large;
+    border: 1px solid black;
+    min-width: 500px;
+    min-height: 100px;
+    align-items: center;
+    justify-content: center;
+
+
+  }

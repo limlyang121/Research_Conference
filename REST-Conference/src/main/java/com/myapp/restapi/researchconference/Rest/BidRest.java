@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.rest;
+package com.myapp.restapi.researchconference.Rest;
 
 import com.myapp.restapi.researchconference.DTO.BidDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.BidRestService;

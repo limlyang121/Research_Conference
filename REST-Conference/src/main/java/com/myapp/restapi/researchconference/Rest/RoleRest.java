@@ -1,4 +1,4 @@
-package com.myapp.restapi.researchconference.rest;
+package com.myapp.restapi.researchconference.Rest;
 
 import com.myapp.restapi.researchconference.Restservice.Impl.RoleRestServiceImpl;
 import com.myapp.restapi.researchconference.Restservice.Interface.RoleRestService;

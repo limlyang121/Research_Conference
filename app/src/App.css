@@ -45,3 +45,8 @@
 .red {
   color: red;
 }
+
+thead{
+  background-color: #006DCC;
+  color: white;
+}

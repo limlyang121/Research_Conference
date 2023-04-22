@@ -44,15 +44,12 @@ export const getMyPapers = async (id) => {
     return response.data;
 }
 
-export const getPaperByID = async (id, authorID) => {
+export const getPaperByID = async (id) => {
+    const authorID = sessionStorage.getItem('id')
     let response = await api.get(`papers/${id}/${authorID}`)
     return response.data;
 }
 
-export const getPaperReviewsAPI = async (id) => {
-    let response = await api.get(`papers/${id}/review`)
-    return response.data;
-}
 
 export const addPapers = async (data) => {
     let response = await upload.post("papers", data)
@@ -72,5 +69,11 @@ export const deletePapers = async (id) => {
 export const downloadPapers = async (id) => {
     let response = await download.get(`papers/download/${id}`)
     return response
+}
+
+export const getPaperReviewsAPI = async (id) => {
+    const authorID = sessionStorage.getItem('id')
+    let response = await api.get(`reviews/${id}/by/${authorID}`)
+    return response.data;
 }
 

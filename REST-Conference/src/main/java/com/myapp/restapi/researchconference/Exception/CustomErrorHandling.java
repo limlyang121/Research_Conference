@@ -31,6 +31,14 @@ public class CustomErrorHandling  {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler
+    public final ResponseEntity<ExceptionResponse> PrivilegesUsers(NoDataFoundException ex) {
+        ExceptionResponse errorResponse = new ExceptionResponse(ex.getMessage());
+        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        errorResponse.setTimeStamp(System.currentTimeMillis());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex) {
         ExceptionResponse errorResponse = new ExceptionResponse(ex.getMessage());

@@ -7,6 +7,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import { deleteFromBidAPI, getBidByStatus } from './Axios';
 import ReviewerSecurity from './ReviewerSecurity';
 import { downloadFile } from '../General/GeneralFunction';
+import { NoDataToDisplay } from '../General/GeneralDisplay';
 
 function ReviewerBidStatus() {
 
@@ -85,12 +86,12 @@ function ReviewerBidStatus() {
                 </ButtonGroup>
 
                 {myBid.length === 0 &&
-                    <h3 style={{ textAlign: "center" }}> Currently No Paper to Bid</h3>
+                    <NoDataToDisplay />
                 }
 
                 {myBid.length !== 0 && (
 
-                    <Table className="mt-4">
+                    <Table striped bordered hover className="mt-4">
                         <thead>
                             <tr>
                                 <th style={{ width: "10%" }} >Bid Status </th>

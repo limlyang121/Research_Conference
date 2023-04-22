@@ -70,7 +70,8 @@ export const getMyReviewsAPI = async (id) => {
 }
 
 export const getOneReviewsAPI = async (id) => {
-    let response = await api.get(`reviews/${id}`)
+    const authorID = sessionStorage.getItem("id");
+    let response = await api.get(`reviews/${id}/${authorID}`)
     return response.data;
 }
 
