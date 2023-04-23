@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { FileUploader } from "react-drag-drop-files";
 import './GoogleDriveUpload.css'
+import { addPapersTest } from "../Axios";
 
 const fileTypes = ["PDF"]
 
@@ -13,26 +14,14 @@ function GoogleDriveUpload() {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
-      const formData = new FormData();
-      formData.append("file", file);
+      const formData = new FormData()
+      formData.append("file", file)
 
-      alert("ok")
-  
-    //   try {
-    //     const response = await fetch("https://your-backend-api.com/upload", {
-    //       method: "POST",
-    //       body: formData,
-    //     });
-  
-    //     if (response.ok) {
-    //       console.log("File uploaded successfully");
-    //     } else {
-    //       console.log("File upload failed");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error uploading file:", error);
-    //   }
+
+
+      let response = await addPapersTest(formData);
+      // alert(response)
+
     };
   
     return (

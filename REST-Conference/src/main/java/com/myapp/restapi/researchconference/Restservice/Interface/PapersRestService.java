@@ -4,7 +4,9 @@ import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PapersRestService {
@@ -26,6 +28,8 @@ public interface PapersRestService {
 
 
     Paper add(Paper paper);
+
+    Paper addTest(Paper paper, MultipartFile file) throws IOException;
     Paper update(Paper paper, int paperID);
     PaperDTO downloadPdf(int paperID);
     boolean deletePaper(int paperID);

@@ -6,6 +6,7 @@ import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.Exception.IllegalAccessException;
+import com.myapp.restapi.researchconference.Restservice.Google.GoogleDriveService;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
 import com.myapp.restapi.researchconference.entity.Paper.File;
@@ -14,7 +15,9 @@ import com.myapp.restapi.researchconference.entity.Review.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,12 +31,14 @@ public class PapersRestServiceImpl implements PapersRestService {
     private final PaperDAO paperDAO;
     private final UserRepo userRepo;
     private final ReviewDAO reviewDAO;
+    private final GoogleDriveService googleDriveService;
 
     @Autowired
-    public PapersRestServiceImpl(PaperDAO paperDAO, UserRepo userRepo, ReviewDAO reviewDAO) {
+    public PapersRestServiceImpl(PaperDAO paperDAO, UserRepo userRepo, ReviewDAO reviewDAO, GoogleDriveService googleDriveService) {
         this.paperDAO = paperDAO;
         this.userRepo = userRepo;
         this.reviewDAO = reviewDAO;
+        this.googleDriveService = googleDriveService;
     }
 
     @Override
@@ -117,6 +122,21 @@ public class PapersRestServiceImpl implements PapersRestService {
 
         return paperDAO.add(paper);
     }
+
+    @Override
+    @Transactional
+    public Paper addTest(Paper paper, MultipartFile file) throws IOException {
+        if (googleDriveService.isAuthenticated()){
+            googleDriveService.createRandomFolder();
+//            System.out.println("YES");
+//            googleDriveService.uploadFile(file, "");
+
+        }
+        System.out.println("NO");
+
+        return null;
+    }
+
     @Override
     @Transactional
     public Paper update(Paper paper, int paperID){

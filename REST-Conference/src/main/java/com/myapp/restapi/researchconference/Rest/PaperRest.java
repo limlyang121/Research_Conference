@@ -127,4 +127,17 @@ public class PaperRest {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No paper found with the ID");
     }
 
+    @PostMapping(value = "papers/testOnly", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> testAdd(@RequestParam MultipartFile file) throws IOException {
+        System.out.println(file.getOriginalFilename());
+        System.out.println(file.getResource());
+
+        Paper tempPaper = papersRestService.addTest(null, file);
+        if (tempPaper != null)
+            return ResponseEntity.ok("Successfully Added the Paper");
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error have occur");
+
+    }
+
 }
