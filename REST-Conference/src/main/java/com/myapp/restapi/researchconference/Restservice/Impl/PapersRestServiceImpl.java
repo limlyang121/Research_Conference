@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -125,14 +126,25 @@ public class PapersRestServiceImpl implements PapersRestService {
 
     @Override
     @Transactional
-    public Paper addTest(Paper paper, MultipartFile file) throws IOException {
+    public Paper addTest(Paper paper, MultipartFile file) throws IOException, GeneralSecurityException {
         if (googleDriveService.isAuthenticated()){
-            googleDriveService.createRandomFolder();
+//            googleDriveService.createRandomFolder();
 //            System.out.println("YES");
-//            googleDriveService.uploadFile(file, "");
+//            googleDriveService.uploadFile(file);
+            googleDriveService.downloadFile();
 
         }
         System.out.println("NO");
+
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public byte[] addTestDownload() throws GeneralSecurityException, IOException {
+        if (googleDriveService.isAuthenticated()){
+            return googleDriveService.downloadFile();
+        }
 
         return null;
     }

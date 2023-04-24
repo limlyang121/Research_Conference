@@ -82,3 +82,10 @@ export const addPapersTest = async (data) => {
     return response.data;
 }
 
+
+export const addPapersTestDownload = async () => {
+    let response = await download.get("papers/testOnly/Download")
+    return response;
+}
+
+

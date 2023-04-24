@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -128,7 +129,7 @@ public class PaperRest {
     }
 
     @PostMapping(value = "papers/testOnly", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> testAdd(@RequestParam MultipartFile file) throws IOException {
+    public ResponseEntity<String> testAdd(@RequestParam MultipartFile file) throws IOException, GeneralSecurityException {
         System.out.println(file.getOriginalFilename());
         System.out.println(file.getResource());
 
@@ -138,6 +139,22 @@ public class PaperRest {
         else
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error have occur");
 
+    }
+
+    @GetMapping(value = "papers/testOnly/Download")
+    public ResponseEntity<byte[]> testAddDownload() throws IOException, GeneralSecurityException {
+        byte[] test = papersRestService.addTestDownload();
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition
+                .builder("attachment")
+                .filename("TestOnly")
+                .build());
+        headers.setContentLength(test.length);
+
+        return ResponseEntity.ok().headers(headers).body(test);
     }
 
 }
