@@ -17,28 +17,27 @@ function ReviewerReviewList() {
     const [bids, setBids] = React.useState([])
     const [reviews, setReviews] = React.useState([])
 
-    const id = sessionStorage.getItem("id")
 
     const changeList = React.useCallback((stat) => {
         setStatus(stat);
     }, [setStatus])
 
     React.useEffect(() => {
-        const fetchAcceptedData = async (id) => {
-            let response = await getAcceptedBidAPI(id)
+        const fetchAcceptedData = async () => {
+            let response = await getAcceptedBidAPI()
             setBids(response)
         }
 
-        const fetchCompletedData = async (id) => {
-            let response = await getMyReviewsAPI(id)
+        const fetchCompletedData = async () => {
+            let response = await getMyReviewsAPI()
             setReviews(response)
         }
 
-        fetchAcceptedData(id);
-        fetchCompletedData(id);
+        fetchAcceptedData();
+        fetchCompletedData();
 
 
-    }, [id])
+    }, [])
 
 
     const displayBidStatusHeader = () => {

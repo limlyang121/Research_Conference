@@ -2,7 +2,9 @@ package com.myapp.restapi.researchconference.Rest;
 
 import com.myapp.restapi.researchconference.DTO.BidDTO;
 import com.myapp.restapi.researchconference.Restservice.Interface.BidRestService;
+import com.myapp.restapi.researchconference.Util.GetDataFromJWT;
 import com.myapp.restapi.researchconference.entity.Bid.Bid;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class BidRest {
     private final BidRestService bidRestService;
+    private final GetDataFromJWT getDataFromJWT;
 
     @Autowired
-    public BidRest(BidRestService bidRestService) {
+    public BidRest(BidRestService bidRestService, GetDataFromJWT getDataFromJWT) {
         this.bidRestService = bidRestService;
+        this.getDataFromJWT = getDataFromJWT;
     }
 
     @GetMapping("bids/{status}")
@@ -26,14 +30,15 @@ public class BidRest {
         return bidRestService.findAllBidByStatus(status);
     }
 
-    @GetMapping("bids/accepted/{reviewerID}")
-    public List<BidDTO> findMyAcceptedBids(@PathVariable int reviewerID){
+    @GetMapping("bids/accepted")
+    public List<BidDTO> findMyAcceptedBids(HttpServletRequest request){
+        int reviewerID = getDataFromJWT.getID(request);
         return bidRestService.findMyAcceptedBid(reviewerID);
     }
 
-    @GetMapping("bids/completed/{reviewerID}")
-    public List<BidDTO> findMyCompletedBids(@PathVariable int reviewerID){
-        List<BidDTO> test = bidRestService.findMyAcceptedBid(reviewerID);
+    @GetMapping("bids/completed")
+    public List<BidDTO> findMyCompletedBids(HttpServletRequest request){
+        int reviewerID = getDataFromJWT.getID(request);
         return bidRestService.findMyAcceptedBid(reviewerID);
     }
 

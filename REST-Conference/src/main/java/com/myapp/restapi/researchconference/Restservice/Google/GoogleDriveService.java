@@ -8,10 +8,8 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
-import com.google.api.services.drive.model.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -19,7 +17,6 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Service
 public class GoogleDriveService {
@@ -27,6 +24,7 @@ public class GoogleDriveService {
     private static final String SERVICE_ACCOUNT_EMAIL = "service-account@valencia-384403.iam.gserviceaccount.com";
     private static final String SERVICE_ACCOUNT_JSON_FILE_PATH = "classpath:/serviceAccount.json";
 
+    private static final String parentFolderId = "1aFIZ3sw9h159h8A46CwsKW1DG3OA7_8k";
     private final HttpTransport httpTransport;
     private final JsonFactory jsonFactory;
     private final Drive drive;
@@ -68,25 +66,29 @@ public class GoogleDriveService {
     }
 
 
-    public String uploadFile(MultipartFile multipartFile) throws IOException {
-        String folderId = "1aFIZ3sw9h159h8A46CwsKW1DG3OA7_8k";
-        java.io.File myFile = convertMultipartFileToFile(multipartFile);
-        System.out.println("File exists: " + myFile.exists());
+    public String uploadFile(MultipartFile multipartFile, int userID) {
+        try{
+            java.io.File myFile = convertMultipartFileToFile(multipartFile);
 
-        // Create the subfolder
-        String subFolderName = "TestID";
-        String subFolderId = createSubFolder(folderId, subFolderName);
+            // Create the subfolder
+            String subFolderName = "User "+userID;
+            String subFolderId = createSubFolder(parentFolderId, subFolderName);
 
-        // Upload the file to the subfolder
-        File fileMetadata = new File();
-        fileMetadata.setName(myFile.getName());
-        fileMetadata.setParents(Collections.singletonList(subFolderId));
+            // Upload the file to the subfolder
+            File fileMetadata = new File();
+            fileMetadata.setName(myFile.getName());
+            fileMetadata.setParents(Collections.singletonList(subFolderId));
 
-        FileContent mediaContent = new FileContent(null, myFile);
-        File uploadedFile = drive.files().create(fileMetadata, mediaContent)
-                .setFields("id")
-                .execute();
-        return uploadedFile.getId();
+            FileContent mediaContent = new FileContent(null, myFile);
+            File uploadedFile = drive.files().create(fileMetadata, mediaContent)
+                    .setFields("id")
+                    .execute();
+            return uploadedFile.getId();
+
+        }catch (Exception e){
+            return null;
+        }
+
     }
 
     private String createSubFolder(String folderId, String subFolderName) throws IOException {
@@ -111,16 +113,16 @@ public class GoogleDriveService {
         return subFolderId;
     }
 
-    public String createRandomFolder() throws IOException {
-        String folderName = "TestID";
-        String parentFolderId = "1aFIZ3sw9h159h8A46CwsKW1DG3OA7_8k"; // Replace with the ID of your "ResearchData" folder
-        File fileMetadata = new File();
-        fileMetadata.setName(folderName);
-        fileMetadata.setParents(Collections.singletonList(parentFolderId));
-        fileMetadata.setMimeType("application/vnd.google-apps.folder");
-        File folder = drive.files().create(fileMetadata).setFields("id").execute();
-        return folder.getId();
-    }
+//    public String createRandomFolder() throws IOException {
+//        String folderName = "TestID";
+//        String parentFolderId = "1aFIZ3sw9h159h8A46CwsKW1DG3OA7_8k"; // Replace with the ID of your "ResearchData" folder
+//        File fileMetadata = new File();
+//        fileMetadata.setName(folderName);
+//        fileMetadata.setParents(Collections.singletonList(parentFolderId));
+//        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+//        File folder = drive.files().create(fileMetadata).setFields("id").execute();
+//        return folder.getId();
+//    }
     private String getFolderId(String folderName, String parentFolderId) throws IOException {
         String query = "mimeType='application/vnd.google-apps.folder' and trashed=false and name='" + folderName + "' and '" + parentFolderId + "' in parents";
         FileList result = drive.files().list().setQ(query).setSpaces("drive").execute();
@@ -132,12 +134,23 @@ public class GoogleDriveService {
         }
     }
 
-    public byte[] downloadFile() throws IOException, GeneralSecurityException {
-        String fileID = "1iqwZX715IQDn3SEEOJ-P6T8NVcNVnOaB";
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        drive.files().get(fileID).executeMediaAndDownloadTo(outputStream);
-        return outputStream.toByteArray();
+    public byte[] downloadFile(String itemId) {
+        try{
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            drive.files().get(itemId).executeMediaAndDownloadTo(outputStream);
+            return outputStream.toByteArray();
+        }catch (IOException exception){
+            return null;
+        }
     }
 
+    public boolean deleteFile(String fileId) {
+        try{
+            drive.files().delete(fileId).execute();
+            return true;
+        }catch (IOException e){
+            return false;
+        }
+    }
 
 }

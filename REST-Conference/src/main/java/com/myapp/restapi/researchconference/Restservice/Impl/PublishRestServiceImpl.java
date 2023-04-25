@@ -56,6 +56,8 @@ public class PublishRestServiceImpl implements PublishRestService {
         return paperDAO.readyPaper(paperID);
     }
 
+
+
     @Override
     @Transactional
     public boolean acceptPaper(int paperID) {

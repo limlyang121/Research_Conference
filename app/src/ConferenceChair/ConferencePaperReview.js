@@ -1,8 +1,8 @@
 // @flow strict
 
 import * as React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Form, Table } from 'reactstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Form } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
 import { acceptPaperToPublishAPI, getPaperReviewsAPI, rejectPaperToPublishAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
@@ -61,22 +61,22 @@ function ConferencePaperReview() {
     }
 
 
-    const acceptPaperToPublish = async(id) => {
-        if (window.confirm("Are you sure want to Publish this Paper?")){
+    const acceptPaperToPublish = async (id) => {
+        if (window.confirm("Are you sure want to Publish this Paper?")) {
 
             await acceptPaperToPublishAPI(id).then((response) => {
                 alert(response);
-                
+
                 navigate("/home")
             })
         }
     }
 
-    const rejectPaperToPublish = async(id) => {
-        if (window.confirm("Are you sure want to Reject this Paper?")){
+    const rejectPaperToPublish = async (id) => {
+        if (window.confirm("Are you sure want to Reject this Paper?")) {
             await rejectPaperToPublishAPI(id).then((response) => {
                 alert(response);
-                
+
                 navigate("/home")
             })
         }
@@ -95,9 +95,9 @@ function ConferencePaperReview() {
                 Average is : {average}
 
                 <Form>
-                    <ButtonGroup style={{gap:"10px"}}>
-                        <Button color='primary'  onClick={async() => acceptPaperToPublish(id)}> Accept</Button>
-                        <Button color='danger'  onClick={async() => rejectPaperToPublish(id)}>  Reject</Button>
+                    <ButtonGroup style={{ gap: "10px" }}>
+                        <Button color='primary' onClick={async () => acceptPaperToPublish(id)}> Accept</Button>
+                        <Button color='danger' onClick={async () => rejectPaperToPublish(id)}>  Reject</Button>
                     </ButtonGroup>
                 </Form>
 

@@ -4,7 +4,9 @@ import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.Exception.IllegalAccessException;
 import com.myapp.restapi.researchconference.Exception.NoDataFoundException;
 import com.myapp.restapi.researchconference.Restservice.Interface.ReviewRestService;
+import com.myapp.restapi.researchconference.Util.GetDataFromJWT;
 import com.myapp.restapi.researchconference.entity.Review.Review;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,28 +21,33 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 public class ReviewRest {
     private final ReviewRestService reviewRestService;
+    private final GetDataFromJWT getDataFromJWT;
 
     @Autowired
-    public ReviewRest(ReviewRestService reviewRestService) {
+    public ReviewRest(ReviewRestService reviewRestService, GetDataFromJWT getDataFromJWT) {
         this.reviewRestService = reviewRestService;
+        this.getDataFromJWT = getDataFromJWT;
     }
 
-    @GetMapping("reviews/myreviews/{reviewerID}")
-    public List<ReviewDTO> findMyReviews(@PathVariable int reviewerID){
+    @GetMapping("reviews/myReviews")
+    public List<ReviewDTO> findMyReviews(HttpServletRequest request){
+        int reviewerID = getDataFromJWT.getID(request);
         return reviewRestService.findMyReviews(reviewerID);
     }
-    @GetMapping("reviews/{reviewID}/{reviewerID}")
-    public ReviewDTO findReviewByID(@PathVariable int reviewID,@PathVariable int reviewerID ) throws IllegalAccessException {
+    @GetMapping("reviews/{reviewID}")
+    public ReviewDTO findReviewByID(@PathVariable int reviewID, HttpServletRequest request) throws IllegalAccessException {
+        int reviewerID = getDataFromJWT.getID(request);
         ReviewDTO reviewDTO = reviewRestService.findReviewByID(reviewID, reviewerID);
         if (reviewDTO == null)
             return null;
         return reviewDTO;
     }
 
-    @GetMapping ("reviews/{paperID}/by/{authorID}")
-    public List<ReviewDTO> findReviewsByPaperID(@PathVariable @Min(1) int paperID, @PathVariable @Min(1) int authorID) throws IllegalAccessException {
+    @GetMapping("reviews/{paperID}/show")
+    public List<ReviewDTO> findReviewsByPaperID(@PathVariable @Min(1) int paperID, HttpServletRequest request) throws IllegalAccessException {
+        int authorID = getDataFromJWT.getID(request);
         List<ReviewDTO> reviewDTOList = reviewRestService.findReviewsByPaperID(paperID, authorID);
-        if (reviewDTOList == null){
+        if (reviewDTOList == null) {
             throw new NoDataFoundException("No Reviews Found");
         }
         return reviewDTOList;

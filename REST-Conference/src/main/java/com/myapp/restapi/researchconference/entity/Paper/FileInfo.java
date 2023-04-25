@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Blob;
 import java.util.Arrays;
 
 @Data
@@ -15,14 +14,13 @@ import java.util.Arrays;
 @AllArgsConstructor
 @Entity
 @Table(name = "file", schema = "public")
-public class File {
+public class FileInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fileID;
 
-    @Lob
-    @Column(name = "file_data")
-    private byte[] fileData;
+    @Column(name = "file_data_id")
+    private String fileDataId;
 
     @Column(name = "file_type")
     private String fileType;
@@ -31,7 +29,7 @@ public class File {
     public String toString() {
         return "File{" +
                 "fileID=" + fileID +
-                ", fileData=" + Arrays.toString(fileData) +
+                ", fileData=" + fileDataId +
                 ", fileType='" + fileType + '\'' +
                 '}';
     }

@@ -1,7 +1,6 @@
 package com.myapp.restapi.researchconference.DAO.Impl;
 
 import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
-import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
@@ -59,10 +58,9 @@ public class PaperDAOImpl implements PaperDAO {
     public List<Paper> findMyPaper(int userID) {
         Session session = entityManager.unwrap(Session.class);
         try{
-            Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperID = pi.paperID" +
+            Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperInfo.id = pi.paperID" +
                     " where pi.authorID.id = :userID", Paper.class);
             paperQuery.setParameter("userID", userID);
-            List<Paper> a = paperQuery.getResultList();
             return paperQuery.getResultList();
         }catch (Exception e){
             System.out.println(e);
@@ -96,6 +94,14 @@ public class PaperDAOImpl implements PaperDAO {
         Session session = entityManager.unwrap(Session.class);
 
         Query<Paper> paperQuery = session.createQuery("from Paper where status = 'Ready'", Paper.class);
+        return paperQuery.getResultList();
+    }
+
+    @Override
+    public List<Paper> findCompletedPapers() {
+        Session session = entityManager.unwrap(Session.class);
+
+        Query<Paper> paperQuery = session.createQuery("from Paper where status = 'Accept' or status = 'Reject'", Paper.class);
         return paperQuery.getResultList();
     }
 

@@ -3,8 +3,12 @@ package com.myapp.restapi.researchconference.Rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
+import com.myapp.restapi.researchconference.Exception.IllegalAccessException;
+import com.myapp.restapi.researchconference.Restservice.Interface.FileRestService;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
+import com.myapp.restapi.researchconference.Util.GetDataFromJWT;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -20,10 +24,13 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class PaperRest {
     private final PapersRestService papersRestService;
-
+    private final FileRestService fileRestService;
+    private final GetDataFromJWT getDataFromJWT;
     @Autowired
-    public PaperRest(PapersRestService papersRestService) {
+    public PaperRest(PapersRestService papersRestService, FileRestService fileRestService, GetDataFromJWT getDataFromJWT) {
         this.papersRestService = papersRestService;
+        this.fileRestService = fileRestService;
+        this.getDataFromJWT = getDataFromJWT;
     }
 
     @GetMapping("papers")
@@ -31,8 +38,9 @@ public class PaperRest {
         return papersRestService.findAll();
     }
 
-    @GetMapping("papers/mypapers/{myID}")
-    public List<PaperDTO> findMyPapers(@PathVariable int myID){
+    @GetMapping("papers/myPapers")
+    public List<PaperDTO> findMyPapers(HttpServletRequest request){
+        int myID = getDataFromJWT.getID(request);
         List<PaperDTO> a = papersRestService.findMyPaper(myID);
         return papersRestService.findMyPaper(myID);
     }
@@ -42,19 +50,28 @@ public class PaperRest {
         return papersRestService.findPapersReviews(paperID) ;
     }
 
-    @GetMapping("papers/{paperID}/{authorID}")
-    public PaperDTO findPaperByID(@PathVariable int paperID, @PathVariable @Min(1) int authorID) throws IllegalAccessException {
+    @GetMapping("papers/{paperID}")
+    public PaperDTO findPaperByID(@PathVariable int paperID, HttpServletRequest request) throws IllegalAccessException {
+        int authorID = getDataFromJWT.getID(request);
         PaperDTO paperDTO = papersRestService.findPaperByID(paperID, authorID);
         return  paperDTO;
     }
-    @GetMapping("papers/bid/{reviewerID}")
-    public List<PaperDTO> findBidPapers(@PathVariable int reviewerID){
+
+    @GetMapping("papers/bid")
+    public List<PaperDTO> findBidPapers(HttpServletRequest request) {
+        int reviewerID = getDataFromJWT.getID(request);
         return papersRestService.findBidPapers(reviewerID);
     }
 
-    @GetMapping("papers/ban/{reviewerID}")
-    public List<PaperDTO> findBanPapers(@PathVariable int reviewerID){
+    @GetMapping("papers/ban")
+    public List<PaperDTO> findBanPapers(HttpServletRequest request){
+        int reviewerID = getDataFromJWT.getID(request);
         return papersRestService.findBanPapers(reviewerID);
+    }
+
+    @GetMapping("papers/complete")
+    public List<PaperDTO> findReadyToPublishOrRejectPapers(){
+        return papersRestService.findCompletedPapers();
     }
 
     @GetMapping("papers/pending")
@@ -62,27 +79,12 @@ public class PaperRest {
         return papersRestService.findPapersThatReviewed();
     }
 
-    @GetMapping("papers/ready")
-    public List<PaperDTO> findPapersByStatus(){
-        return papersRestService.findReadyPapers();
-    }
-
-    @GetMapping("papers/readyToPublishOrReject")
-    public List<PaperDTO> findPapersThatReadyToPublishOrReject(){
-        return papersRestService.findPapersReadyToPublishOrReject();
-    }
-
-
     @PostMapping(value = "papers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> add(@RequestParam MultipartFile file, @RequestParam String paperData) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getResource());
         Paper paper = objectMapper.readValue(paperData, Paper.class);
-        paper.getFile().setFileData(file.getBytes());
-        paper.getFile().setFileType(file.getContentType());
 
-        Paper tempPaper = papersRestService.add(paper);
+        Paper tempPaper = papersRestService.add(file, paper);
         if (tempPaper != null)
             return ResponseEntity.ok("Successfully Added the Paper");
         else
@@ -107,6 +109,8 @@ public class PaperRest {
             throw new RuntimeException("Paper not found");
         }
 
+        byte[] fileData = fileRestService.getFileData(temp.getFile().getFileData());
+
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.APPLICATION_PDF);
@@ -114,16 +118,18 @@ public class PaperRest {
                 .builder("attachment")
                 .filename(temp.getPaperInfo().getFilename().replaceAll(" ", "_"))
                 .build());
-        headers.setContentLength(temp.getFile().getFileData().length);
+        headers.setContentLength(fileData.length);
 
-        return ResponseEntity.ok().headers(headers).body(temp.getFile().getFileData());
+        return ResponseEntity.ok().headers(headers).body(fileData);
     }
 
     @DeleteMapping("papers/delete/{paperID}")
-    public ResponseEntity<String> removePapers(@PathVariable int paperID){
-        boolean deleted = papersRestService.deletePaper(paperID);
-        if (deleted)
+    public ResponseEntity<String> removePapers(@PathVariable int paperID, HttpServletRequest request) throws IllegalAccessException {
+        int userID = getDataFromJWT.getID(request);
+        boolean deleted = papersRestService.deletePaper(paperID, userID);
+        if (deleted){
             return ResponseEntity.ok("Successfully Deleted");
+        }
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No paper found with the ID");
     }

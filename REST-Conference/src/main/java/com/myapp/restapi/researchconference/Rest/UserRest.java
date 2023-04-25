@@ -6,6 +6,7 @@ import com.myapp.restapi.researchconference.entity.Admin.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("api")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class UserRest {
 
     private final UserRestService userRestService;

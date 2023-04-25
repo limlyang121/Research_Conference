@@ -12,8 +12,8 @@ import AuthorSecurity from './AuthorSecurity';
 function PaperEdit() {
     const paperFormState = {
         paperID: "",
-        file: {
-            fileData: null,
+        fileInfo: {
+            fileDataId: null,
             fileType: ""
         },
         status: "",
@@ -54,7 +54,7 @@ function PaperEdit() {
         const myID = sessionStorage.getItem("id")
         myPaper.paperInfo.authorID.id = myID;
 
-    }, [])
+    }, [id])
 
     const handleChange = (event) => {
         const { name, value } = event.target;

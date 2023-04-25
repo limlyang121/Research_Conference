@@ -9,14 +9,14 @@ DROP TABLE IF EXISTS "blacklist_paper" CASCADE;
 DROP TABLE IF EXISTS "bid" CASCADE;
 DROP TABLE IF EXISTS "review" CASCADE;
 
-CREATE SEQUENCE IF NOT EXISTS user_details_id_seq;
-CREATE SEQUENCE IF NOT EXISTS user_id_seq;
-CREATE SEQUENCE IF NOT EXISTS paper_info_id_seq;
-CREATE SEQUENCE IF NOT EXISTS file_id_seq;
-CREATE SEQUENCE IF NOT EXISTS paper_id_seq;
-CREATE SEQUENCE IF NOT EXISTS reviewer_id_seq;
-CREATE SEQUENCE IF NOT EXISTS bid_id_seq;
-CREATE SEQUENCE IF NOT EXISTS review_id_seq;
+CREATE SEQUENCE IF NOT EXISTS user_details_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS user_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS paper_info_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS file_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS paper_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS reviewer_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS bid_id_seq START 1;
+CREATE SEQUENCE IF NOT EXISTS review_id_seq START 1;
 
 
 CREATE TABLE user_details (
@@ -33,7 +33,6 @@ CREATE TABLE roles (
     roles VARCHAR(50) PRIMARY KEY,
     Description VARCHAR(50)
 );
-
 
 CREATE TABLE "user" (
     id INTEGER PRIMARY KEY DEFAULT nextval('user_id_seq'),
@@ -61,7 +60,7 @@ CREATE TABLE paper_info (
 
 CREATE TABLE "file" (
     fileID  INTEGER PRIMARY KEY DEFAULT nextval('file_id_seq'),
-    file_data OID,
+    file_data_id Varchar(50),
     file_type VARCHAR(50)
 );
 

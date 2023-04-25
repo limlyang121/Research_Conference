@@ -4,6 +4,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import { Link } from 'react-router-dom';
 import { deactivationAccount, getAllNonActiveUsers, getAllUsers, activateAccountAPI } from './adminAxios';
 import AdminSecurity from './AdminSecurity';
+import { NoDataToDisplay } from '../General/GeneralDisplay';
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -46,7 +47,7 @@ const UserList = () => {
         let updatedGroups = [...users].filter(i => i.id !== id);
         setUsers(updatedGroups);
       } catch (error) {
-        alert(JSON.stringify (error.response.data.message))
+        alert(JSON.stringify(error.response.data.message))
       }
     }
   }
@@ -117,24 +118,32 @@ const UserList = () => {
           <Button color="success" tag={Link} to="/admin/users/form/new">Add User</Button>
         </div>
         <h3>My Users</h3>
+
         <ButtonGroup style={{ gap: "10px" }}>
           <Button color='primary' onClick={() => changeList("active")} >Show Active</Button>
           <Button color='danger' onClick={() => changeList("nonactive")}>Show Deactive</Button>
         </ButtonGroup>
 
-        <Table striped bordered hover className="mt-4">
-          <thead>
-            <tr>
-              <th width="20%">First Name</th>
-              <th width="20%">Last  Name</th>
-              <th width="20%">UserName</th>
-              <th width="10%">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        {groupList.length === 0 ? (
+          <NoDataToDisplay />
+        ) : (
+
+          <Table striped bordered hover className="mt-4">
+            <thead>
+              <tr>
+                <th width="20%">First Name</th>
+                <th width="20%">Last  Name</th>
+                <th width="20%">UserName</th>
+                <th width="10%">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
               {groupList}
-          </tbody>
-        </Table>
+            </tbody>
+          </Table>
+        )}
+
+
       </Container>
     </div>
   );

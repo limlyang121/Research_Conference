@@ -39,14 +39,13 @@ export const getAllPapers = async () => {
 
 }
 
-export const getMyPapers = async (id) => {
-    let response = await api.get(`papers/mypapers/${id}`)
+export const getMyPapers = async () => {
+    let response = await api.get(`papers/myPapers`)
     return response.data;
 }
 
 export const getPaperByID = async (id) => {
-    const authorID = sessionStorage.getItem('id')
-    let response = await api.get(`papers/${id}/${authorID}`)
+    let response = await api.get(`papers/${id}`)
     return response.data;
 }
 
@@ -61,19 +60,18 @@ export const updatePaper = async (data) => {
     return response.data
 }
 
-export const deletePapers = async (id) => {
-    let response = await api.delete(`papers/delete/${id}`)
+export const deletePapers = async (paperid) => {
+    let response = await api.delete(`papers/delete/${paperid}`)
     return response.data
 }
 
-export const downloadPapers = async (id) => {
-    let response = await download.get(`papers/download/${id}`)
+export const downloadPapers = async (paperid) => {
+    let response = await download.get(`papers/download/${paperid}`)
     return response
 }
 
-export const getPaperReviewsAPI = async (id) => {
-    const authorID = sessionStorage.getItem('id')
-    let response = await api.get(`reviews/${id}/by/${authorID}`)
+export const getPaperReviewsAPI = async (paperid) => {
+    let response = await api.get(`reviews/${paperid}/show`)
     return response.data;
 }
 

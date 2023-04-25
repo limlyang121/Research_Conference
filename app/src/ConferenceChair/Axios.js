@@ -49,6 +49,11 @@ export const fetchPendingPaperAPI = async () => {
     return response.data;
 }
 
+export const fetchCompletedPapersAPI = async () => {
+    let response = await api.get(`papers/complete`)
+    return response.data;
+}
+
 export const fetchAllReviewsByPaperIDAPI = async (paperID) => {
     let response = await api.get(`reviews/ready/${paperID}`)
     return response.data;

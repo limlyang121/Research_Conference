@@ -37,6 +37,7 @@ public class WebSecurityConfig {
         httpSecurity.authorizeHttpRequests((request) ->
                         request.requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/").permitAll()
+                                .requestMatchers("/api/users/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated())
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
@@ -77,7 +78,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Content-Disposition", "Access-Control-Expose-Headers"));
         configuration.setExposedHeaders(Arrays.asList("Content-Disposition"));

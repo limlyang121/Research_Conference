@@ -6,10 +6,10 @@ import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
 import com.myapp.restapi.researchconference.DTO.PaperDTO;
 import com.myapp.restapi.researchconference.DTO.ReviewDTO;
 import com.myapp.restapi.researchconference.Exception.IllegalAccessException;
+import com.myapp.restapi.researchconference.Exception.NoDataFoundException;
 import com.myapp.restapi.researchconference.Restservice.Google.GoogleDriveService;
 import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestService;
 import com.myapp.restapi.researchconference.entity.Admin.Userdetails;
-import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import com.myapp.restapi.researchconference.entity.Review.Review;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import static com.myapp.restapi.researchconference.DTO.PaperDTO.convertToDTO;
 
 @Service
 public class PapersRestServiceImpl implements PapersRestService {
@@ -100,24 +96,36 @@ public class PapersRestServiceImpl implements PapersRestService {
 
     @Override
     @Transactional
-    public List<PaperDTO> findReadyPapers() {
-        List<Paper> paperList = paperDAO.findReadyPapers();
+    public List<PaperDTO> findCompletedPapers() {
+        List<Paper> paperList = paperDAO.findCompletedPapers();
         return PaperDTO.convertToDTO(paperList);
     }
 
-    @Override
-    @Transactional
-    public List<PaperDTO> findPapersReadyToPublishOrReject() {
-        List<Paper> paperList = paperDAO.findPapersReadyToPublishOrReject();
-        return PaperDTO.convertToDTO(paperList);
-    }
+//    @Override
+//    @Transactional
+//    public Paper add(Paper paper) {
+//        Date currentTime = new Date();
+//        paper.getPaperInfo().setUpload(currentTime);
+//        paper.setStatus("Pending");
+//        Userdetails userdetails= userRepo.findByID(paper.getPaperInfo().getAuthorID().getId()).getUserdetails();
+//        paper.getPaperInfo().setAuthorID(userdetails);
+//
+//        return paperDAO.add(paper);
+//    }
 
     @Override
     @Transactional
-    public Paper add(Paper paper) {
+    public Paper add(MultipartFile file,Paper paper)  {
+        String fileID = googleDriveService.uploadFile(file, paper.getPaperInfo().getAuthorID().getId());
+        if (fileID == null){
+            return null;
+        }
+
         Date currentTime = new Date();
         paper.getPaperInfo().setUpload(currentTime);
         paper.setStatus("Pending");
+        paper.getFileInfo().setFileDataId(fileID);
+        paper.getFileInfo().setFileType(file.getContentType());
         Userdetails userdetails= userRepo.findByID(paper.getPaperInfo().getAuthorID().getId()).getUserdetails();
         paper.getPaperInfo().setAuthorID(userdetails);
 
@@ -131,7 +139,7 @@ public class PapersRestServiceImpl implements PapersRestService {
 //            googleDriveService.createRandomFolder();
 //            System.out.println("YES");
 //            googleDriveService.uploadFile(file);
-            googleDriveService.downloadFile();
+//            googleDriveService.downloadFile();
 
         }
         System.out.println("NO");
@@ -143,7 +151,7 @@ public class PapersRestServiceImpl implements PapersRestService {
     @Override
     public byte[] addTestDownload() throws GeneralSecurityException, IOException {
         if (googleDriveService.isAuthenticated()){
-            return googleDriveService.downloadFile();
+//            return googleDriveService.downloadFile();
         }
 
         return null;
@@ -176,7 +184,24 @@ public class PapersRestServiceImpl implements PapersRestService {
 
     @Override
     @Transactional
-    public boolean deletePaper(int paperID) {
-        return paperDAO.deletePaper(paperID);
+    public boolean deletePaper(int paperID, int userID) {
+        Optional<Paper> paperOptional = paperDAO.findPaperByID(paperID);
+        if (!(paperOptional.isPresent())){
+            throw new NoDataFoundException("Invalid PaperID");
+        }
+
+        Paper paper = paperOptional.get();
+        if (paper.getPaperInfo().getAuthorID().getId() != userID){
+            return  false;
+        }
+        String fileID = paper.getFileInfo().getFileDataId();
+        boolean success = paperDAO.deletePaper(paperID);
+        if (success){
+            googleDriveService.deleteFile(fileID);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 }

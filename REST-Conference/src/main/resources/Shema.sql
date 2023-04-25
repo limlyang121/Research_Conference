@@ -64,7 +64,7 @@
 --                             CONSTRAINT fk_authorID FOREIGN KEY (authorID) REFERENCES "user" (id)
 -- );
 --
--- CREATE TABLE "file" (
+-- CREATE TABLE "fileInfo" (
 --                         fileID SERIAL PRIMARY KEY,
 --                         file_data BYTEA,
 --                         file_type VARCHAR(50)
@@ -77,7 +77,7 @@
 --                        paper_info_ID INT,
 --                        reviewed_time INT DEFAULT 0,
 --                        CONSTRAINT fk_paperID FOREIGN KEY (paper_info_ID) REFERENCES paper_info (paperID),
---                        CONSTRAINT fk_fileID FOREIGN KEY (file_info_ID) REFERENCES "file" (fileID)
+--                        CONSTRAINT fk_fileID FOREIGN KEY (file_info_ID) REFERENCES "fileInfo" (fileID)
 -- );
 --
 -- CREATE TABLE reviewer (

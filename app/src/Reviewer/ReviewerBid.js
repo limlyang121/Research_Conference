@@ -9,8 +9,8 @@ import { NoDataToDisplay } from '../General/GeneralDisplay';
 function ReviewerBid() {
 
     const [displayPapers, setDisplayPaper] = React.useState([])
-    const id = sessionStorage.getItem("id")
     const [status, setStatus] = React.useState("bid");
+    const id = sessionStorage.getItem("id")
 
     const changeStatus = React.useCallback((stat) => {
         setStatus(stat)
@@ -18,23 +18,23 @@ function ReviewerBid() {
 
 
     React.useEffect(() => {
-        const fetchBidData = async (id) => {
-            let response = await getPendingPapers(id);
+        const fetchBidData = async () => {
+            let response = await getPendingPapers();
             setDisplayPaper(response)
         }
-        const fetchBanData = async (id) => {
-            let response = await getBanPapers(id);
+        const fetchBanData = async () => {
+            let response = await getBanPapers();
             setDisplayPaper(response)
         }
 
         if (status === "bid") {
-            fetchBidData(id)
+            fetchBidData()
         } else {
-            fetchBanData(id)
+            fetchBanData()
         }
 
 
-    }, [id ,status, changeStatus])
+    }, [status, changeStatus])
 
     const addToBlackList = async (event) => {
         event.preventDefault();
@@ -86,7 +86,6 @@ function ReviewerBid() {
         event.preventDefault();
 
         if (window.confirm("Bid the papers?")) {
-
             const form = event.target;
             const formData = new FormData(form);
             const bid = {

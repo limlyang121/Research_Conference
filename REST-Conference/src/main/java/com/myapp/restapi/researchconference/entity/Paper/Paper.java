@@ -1,13 +1,10 @@
 package com.myapp.restapi.researchconference.entity.Paper;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.myapp.restapi.researchconference.entity.Review.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Table (name = "paper", schema = "public")
 @Entity
@@ -25,8 +22,8 @@ public class Paper {
         CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE
     })
     @JsonIgnore
-    @JoinColumn(name = "file_info_ID")
-    private File file;
+    @JoinColumn(name = "file_info_id", referencedColumnName = "fileID")
+    private FileInfo fileInfo;
     @Column(name = "status")
     private String status;
 
@@ -38,7 +35,7 @@ public class Paper {
     private int reviewedTimes;
 
     public Paper() {
-        file  = new File();
+        fileInfo = new FileInfo();
         paperInfo = new PaperInfo();
     }
 }

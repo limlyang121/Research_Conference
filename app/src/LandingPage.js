@@ -60,14 +60,34 @@ const LandingPage = () => {
 
         </fieldset>
 
-        <br style={{marginBottom:"10em"}} />
+        <fieldset style={{ border: "1px black" }}>
+          <legend style={{ textAlign: "center", marginBottom: "50px" }}>
+            <h1>
+              Register And Edit User
+            </h1>
+          </legend>
+
+          <Container style={{ width: "70%" }}  >
+            <h2 style={{ textAlign: "center" }}>
+              1. Only Admin can Register a new User <br/>
+              2. Only Admin can Edit other user Profile
+            </h2>
+
+          </Container>
+
+          <hr />
 
 
-        <div style={{textAlign:"center"}}>
+        </fieldset>
+
+
+        <div style={{ textAlign: "center" }}>
 
           <Button color='primary' tag={Link} to="/login" >Try the System</Button>
         </div>
-        {/* <Button  color="link"><Link to="/login">Login</Link></Button> */}
+
+        <br style={{ marginBottom: "10px" }} />
+
 
       </Container>
     </div>

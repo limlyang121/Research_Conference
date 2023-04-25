@@ -77,7 +77,7 @@ function ConferenceCheckReviewerBidProcess() {
 
                 </Table>
                 {bidList.every(item => item.status === "Complete")
-                    ? <Button color='primary' tag={Link} to={`/conference/papers/` + id + `/reviews`} > Accept/Reject </Button>
+                    ? <Button color='primary' tag={Link} to={`/conference/papers/` + id + `/reviews/Ready`} > Accept/Reject </Button>
                     : <Button color='secondary' disabled > Accept/Reject </Button>
                 }
             </Container>

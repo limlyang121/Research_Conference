@@ -24,7 +24,7 @@ import ReviewerReviewForm from './Reviewer/ReviewerReviewForm';
 import PaperReview from './Author/PaperReview';
 import ConferencePaperList from './ConferenceChair/ConferencePaperList';
 import ConferenceCheckReviewerBidProcess from './ConferenceChair/ConferenceCheckReviewerBidProcess';
-import ConferenceAllReviewerBid from './ConferenceChair/ConferenceAllPaperReviews';
+import ConferenceAllReviewerReviews from './ConferenceChair/ConferenceAllReviewerReviews';
 import GoogleDriveUpload from './Author/Test/GoogleDriveUpload';
 
 
@@ -70,7 +70,7 @@ const App = () => {
             {/* Conference Chaiar */}
             <Route path='/conference/bids' exact={true} element={<ConferenceReviewerBid />} />
             <Route path='/conference/papers/ready' exact={true} element={<ConferencePaperList />} />
-            <Route path='/conference/papers/:id/reviews' exact={true} element={<ConferenceAllReviewerBid />} />
+            <Route path='/conference/papers/:id/reviews/:status' exact={true} element={<ConferenceAllReviewerReviews />} />
             <Route path='/conference/papers/:id/bids' exact={true} element={<ConferenceCheckReviewerBidProcess />} />
 
 

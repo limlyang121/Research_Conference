@@ -1,6 +1,5 @@
 package com.myapp.restapi.researchconference.DAO.Interface;
 
-import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 
 import java.sql.SQLException;
@@ -20,6 +19,8 @@ public interface PaperDAO {
 
     List<Paper> findPapersThatReviewed();
     List<Paper> findReadyPapers();
+
+    List<Paper> findCompletedPapers();
 
     List<Paper> findPapersReadyToPublishOrReject();
 

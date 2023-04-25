@@ -3,11 +3,12 @@
 import * as React from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from '../Navbar/AppNavbar';
-import { closeBidToReadyPapersAPI, fetchPendingPaperAPI, fetchReadytoBePublishOrRejectAPI } from './Axios';
+import { closeBidToReadyPapersAPI, fetchCompletedPapersAPI, fetchPendingPaperAPI, fetchReadytoBePublishOrRejectAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
 import BidData from './Component/BidData';
 import PaperData from './Component/PaperData';
 import { NoDataToDisplay } from '../General/GeneralDisplay';
+import HistoryData from './Component/HistoryData';
 
 
 function ConferencePaperList() {
@@ -24,17 +25,31 @@ function ConferencePaperList() {
         const fetchPendingData = async () => {
             let response = await fetchPendingPaperAPI()
             setPaperList(response);
+            setBidList([])
         }
 
         const fetchReadytoBePublishOrReject = async () => {
             let response = await fetchReadytoBePublishOrRejectAPI();
             setBidList(response);
+            setPaperList([])
         }
+
+        const fetchCompletedPapers = async () => {
+            let response = await fetchCompletedPapersAPI();
+            setPaperList(response)
+            setBidList([])
+
+        }
+
 
         if (status === "Pending") {
             fetchPendingData();
-        } else
+        } else if (status === "Ready") {
             fetchReadytoBePublishOrReject();
+        }
+        else {
+            fetchCompletedPapers();
+        }
 
 
     }, [status, changeStatus])
@@ -66,26 +81,34 @@ function ConferencePaperList() {
 
                 {status === "Pending" && paperList.length === 0 ? <NoDataToDisplay /> : null}
                 {status === "Ready" && bidList.length === 0 ? <NoDataToDisplay /> : null}
+                {status === "History" && paperList.length === 0 ? <NoDataToDisplay /> : null}
 
-                <Table striped bordered hover className="mt-4">
-                    <thead>
-                        <tr>
-                            <th style={{ width: "20%" }} > Paper Title </th>
-                            <th style={{ width: "20%" }} > Paper Upload Date </th>
-                            <th style={{ width: "20%" }} > Author Name </th>
-                            {status === "Pending" &&
-                                <th style={{ width: "20%" }} > Reviewed times </th>
-                            }
-                            <th colSpan={3} >Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                {(paperList.length !== 0 || bidList.length !== 0) &&
+                    <Table striped bordered hover className="mt-4">
+                        <thead>
+                            <tr>
+                                <th style={{ width: "20%" }} > Paper Title </th>
+                                <th style={{ width: "20%" }} > Paper Upload Date </th>
+                                <th style={{ width: "20%" }} > Author Name </th>
+                                {status === "Pending" &&
+                                    <th style={{ width: "20%" }} > Reviewed times </th>
+                                }
+                                {status === "History" &&
+                                    <th style={{ width: "10%" }} > Status </th>
+                                }
+                                <th colSpan={3} >Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                        {status === "Pending" && <PaperData paperList={paperList} closeBidding={closeBidding} />}
-                        {status === "Ready" && <BidData paperList={bidList} />}
-                    </tbody>
+                            {status === "Pending" && <PaperData paperList={paperList} closeBidding={closeBidding} />}
+                            {status === "Ready" && <BidData paperList={bidList} />}
+                            {status === "History" && <HistoryData paperList={paperList} />}
 
-                </Table>
+                        </tbody>
+
+                    </Table>
+                }
 
             </Container>
 

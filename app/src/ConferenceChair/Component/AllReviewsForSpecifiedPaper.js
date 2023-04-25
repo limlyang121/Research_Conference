@@ -1,55 +1,77 @@
-import React, { useState } from "react";
-import { format } from "date-fns"
-import { Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Table } from 'reactstrap';
+import React from "react";
+import { Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader } from 'reactstrap';
+import { acceptPaperToPublishAPI, rejectPaperToPublishAPI } from "../Axios";
+import { useNavigate } from "react-router-dom";
 
 
-export default function AllReviewsForSpecifiedPaper({ reviewList, Action }) {
+export default function AllReviewsForSpecifiedPaper({ reviewList, paperID, status }) {
+    const navigate = useNavigate();
+
+
+    const AcceptRejectPaper = async (action) => {
+        if (window.confirm("Are you sure ? ")) {
+
+            let response;
+            if (action === "Accept") {
+                response = await acceptPaperToPublishAPI(paperID);
+            } else if (action === "Reject") {
+                response = await rejectPaperToPublishAPI(paperID);
+            }
+
+            alert(response)
+            navigate("/home")
+        }
+    }
+
     const sum = reviewList.reduce((ave, reviewList) => ave += reviewList.rate, 0);
-    const ave = sum / reviewList.length;
+    const ave = (sum / reviewList.length).toFixed(2);
 
     const fullName = (reviewer) => {
         return reviewer.userdetails.firstName + " " + reviewer.userdetails.lastName
     }
 
-    const dateFormat = (date) => {
-        const dateType = new Date(date)
-
-        return (format(dateType, "dd/MM/yyyy"))
-    }
 
     return (
         <div>
-            {Array.isArray(reviewList) && reviewList.map((review) => {
-                return (
-                    <div key={review.reviewID}>
-                        <Card>
-                            <CardHeader>
-                                Reviewer Name : {fullName(review.bid.reviewer)}
-                            </CardHeader>
+            {status !== "Unknown" ? (
+                <div>
+                    {Array.isArray(reviewList) && reviewList.map((review) => {
+                        return (
+                            <div key={review.reviewID}>
+                                <Card>
+                                    <CardHeader>
+                                        Reviewer Name: {fullName(review.bid.reviewer)}
+                                    </CardHeader>
+                                    <CardBody>
+                                        Comment: {review.comment}
+                                    </CardBody>
+                                    <CardFooter>
+                                        Rating: {review.rate}
+                                    </CardFooter>
+                                </Card>
+                                <br />
+                            </div>
+                        );
+                    })}
+                    <h4> Average Rating: {ave} </h4>
+                    {status === "Ready" && (
+                        <ButtonGroup style={{ gap: "10px" }}>
+                            <Button color="primary" onClick={async () => AcceptRejectPaper("Accept")}> Accept</Button>
+                            <Button color="danger" onClick={async () => AcceptRejectPaper("Reject")}> Reject</Button>
+                        </ButtonGroup>
+                    )}
+                </div>
+            ) : (
+                <div>
+                    {alert("Illegal Modify of parameter")}
+                    {navigate(-1)}
+                </div>
 
-                            <CardBody>
-                                Comment: {review.comment}
-                            </CardBody>
-                            <CardFooter>
-                                Rating : {review.rate}
-                            </CardFooter>
+            )}
 
-                        </Card>
-                        <br />
-                    </div>
+            <br style={{marginBottom:"10px"}} />
 
-                )
-            })}
-
-            <h4> Average Rating : {ave} </h4>
-
-            <ButtonGroup style={{gap:"10px"}}>
-                <Button color="primary" onClick={async() => Action("Accept")}> Accept</Button>
-                <Button color="danger" onClick={async() => Action("Reject")} > Reject</Button>
-            </ButtonGroup>
-
-
-        </div>
+        </div >
     )
 
 }

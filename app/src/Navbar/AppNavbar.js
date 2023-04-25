@@ -9,7 +9,6 @@ import SessionCheck from '../Security/SessionCheck';
 const AppNavbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState()
   const [myRole, setRoles] = useState([])
 
 
@@ -18,9 +17,7 @@ const AppNavbar = () => {
 
   useEffect(() => {
     const fetchMyData = async () => {
-      let username = sessionStorage.getItem("id")
       let roleName = sessionStorage.getItem("myRole")
-      setUser(username)
       setRoles(roleName)
 
     }
@@ -154,13 +151,13 @@ const AppNavbar = () => {
 
 
             <Nav className="justify-content-end" style={{ width: "100%", gap: "10px" }} navbar>
-              <NavItem>
+              {/* <NavItem>
                 <Button>
                   <Link to={"/users"} style={{ textDecoration: "none" }}>
                     <NavbarText>My Profile</NavbarText>
                   </Link>
                 </Button>
-              </NavItem>
+              </NavItem> */}
 
               <NavItem>
                 <Form onSubmit={logoutButton} method="post">

@@ -1,9 +1,7 @@
 package com.myapp.restapi.researchconference.DTO;
 
-import com.myapp.restapi.researchconference.entity.Paper.File;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import com.myapp.restapi.researchconference.entity.Paper.PaperInfo;
-import com.myapp.restapi.researchconference.entity.Review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -56,7 +54,7 @@ public class PaperDTO {
 
     public static PaperDTO convertToDTODownload(Paper paper){
         PaperDTO paperDTO = new PaperDTO();
-        paperDTO.setFile(FileDTO.DTOSingle(paper.getFile()));
+        paperDTO.setFile(FileDTO.DTOSingle(paper.getFileInfo()));
         paperDTO.setPaperInfo(paper.getPaperInfo());
         return paperDTO;
     }

@@ -17,18 +17,18 @@ api.interceptors.request.use(async (config) => {
     return config
 })
 
-export const getMyReviewerDataAPI = async (id) => {
-    let response = await api.get(`reviewer/${id}`)
+export const getMyReviewerDataAPI = async () => {
+    let response = await api.get(`reviewer`)
     return response.data;
 }
 
-export const getPendingPapers = async (id) => {
-    let response = await api.get(`papers/bid/${id}`)
+export const getPendingPapers = async () => {
+    let response = await api.get(`papers/bid`)
     return response.data;
 }
 
-export const getBanPapers = async (id) => {
-    let response = await api.get(`papers/ban/${id}`)
+export const getBanPapers = async () => {
+    let response = await api.get(`papers/ban`)
     return response.data;
 }
 
@@ -59,19 +59,18 @@ export const deleteFromBidAPI = async (id) => {
 }
 
 
-export const getAcceptedBidAPI = async (id) => {
-    let response = await api.get(`bids/accepted/${id}`)
+export const getAcceptedBidAPI = async () => {
+    let response = await api.get(`bids/accepted`)
     return response.data;
 }
 
-export const getMyReviewsAPI = async (id) => {
-    let response = await api.get(`reviews/myreviews/${id}`)
+export const getMyReviewsAPI = async () => {
+    let response = await api.get(`reviews/myReviews`)
     return response.data;
 }
 
-export const getOneReviewsAPI = async (id) => {
-    const authorID = sessionStorage.getItem("id");
-    let response = await api.get(`reviews/${id}/${authorID}`)
+export const getOneReviewsAPI = async (reviewid) => {
+    let response = await api.get(`reviews/${reviewid}`)
     return response.data;
 }
 
