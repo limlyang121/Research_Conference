@@ -64,5 +64,5 @@ needs of conference organizers and attendees alike.
 
 
 **Install**  
-1. Java just run Maven with //./mvnw spring-boot:run//  
-2. For React.js, Run //npm install// then //npm start//  
+1. Java just run Maven with ```./mvnw spring-boot:run```  
+2. For React.js, Run ```npm install``` then ```npm start``` 
