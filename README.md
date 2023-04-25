@@ -23,7 +23,7 @@ Hosting
 7. Etc (Some minor Stuff)    
 
 **Technologies Used:**  
-[Spring, React.js, MySQL, RESTful API]  
+[Spring, React.js, PostGreSQL, RESTful API]  
 Security:  
 [Spring Security, Json Web Token, RBAC, Bcrypt]  
 Server:  
