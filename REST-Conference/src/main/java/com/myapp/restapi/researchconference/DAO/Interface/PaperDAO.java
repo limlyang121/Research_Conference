@@ -2,7 +2,6 @@ package com.myapp.restapi.researchconference.DAO.Interface;
 
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,17 +17,14 @@ public interface PaperDAO {
     List<Paper> findBanPapers(int reviewerID);
 
     List<Paper> findPapersThatReviewed();
+
     List<Paper> findReadyPapers();
 
     List<Paper> findCompletedPapers();
 
-    List<Paper> findPapersReadyToPublishOrReject();
-
-
     Paper add(Paper paper);
-    void increaseReviewTimes(int paperID);
 
-    Paper downloadPaper(int paperID) throws SQLException;
+    void increaseReviewTimes(int paperID);
 
     boolean deletePaper(int paperID);
 
@@ -37,5 +33,10 @@ public interface PaperDAO {
     boolean readyPaper(int paperID);
 
     boolean acceptPaper(int paperID);
+
     boolean rejectPaper(int paperID);
+
+    boolean hidePaper(int paperID);
+    boolean showPaper(int paperID);
+
 }

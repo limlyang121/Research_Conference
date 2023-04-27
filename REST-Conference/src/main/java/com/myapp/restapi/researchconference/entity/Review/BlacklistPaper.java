@@ -4,6 +4,8 @@ import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
@@ -23,6 +25,7 @@ public class BlacklistPaper{
             CascadeType.DETACH,
             CascadeType.PERSIST
     })
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "paperID", referencedColumnName = "paperID", insertable = false, updatable = false)
     private Paper paper;
 

@@ -9,14 +9,12 @@ import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestServ
 import com.myapp.restapi.researchconference.Util.GetDataFromJWT;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -41,7 +39,6 @@ public class PaperRest {
     @GetMapping("papers/myPapers")
     public List<PaperDTO> findMyPapers(HttpServletRequest request){
         int myID = getDataFromJWT.getID(request);
-        List<PaperDTO> a = papersRestService.findMyPaper(myID);
         return papersRestService.findMyPaper(myID);
     }
 
@@ -53,8 +50,7 @@ public class PaperRest {
     @GetMapping("papers/{paperID}")
     public PaperDTO findPaperByID(@PathVariable int paperID, HttpServletRequest request) throws IllegalAccessException {
         int authorID = getDataFromJWT.getID(request);
-        PaperDTO paperDTO = papersRestService.findPaperByID(paperID, authorID);
-        return  paperDTO;
+        return papersRestService.findPaperByID(paperID, authorID);
     }
 
     @GetMapping("papers/bid")
@@ -80,9 +76,11 @@ public class PaperRest {
     }
 
     @PostMapping(value = "papers", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> add(@RequestParam MultipartFile file, @RequestParam String paperData) throws IOException {
+    public ResponseEntity<String> add(@RequestParam MultipartFile file, @RequestParam String paperData, HttpServletRequest request) throws IOException {
+        int authorID = getDataFromJWT.getID(request);
         ObjectMapper objectMapper = new ObjectMapper();
         Paper paper = objectMapper.readValue(paperData, Paper.class);
+        paper.getPaperInfo().getAuthorID().setId(authorID);
 
         Paper tempPaper = papersRestService.add(file, paper);
         if (tempPaper != null)
@@ -134,33 +132,26 @@ public class PaperRest {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No paper found with the ID");
     }
 
-    @PostMapping(value = "papers/testOnly", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> testAdd(@RequestParam MultipartFile file) throws IOException, GeneralSecurityException {
-        System.out.println(file.getOriginalFilename());
-        System.out.println(file.getResource());
-
-        Paper tempPaper = papersRestService.addTest(null, file);
-        if (tempPaper != null)
-            return ResponseEntity.ok("Successfully Added the Paper");
-        else
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error have occur");
-
+    @PatchMapping("papers/hide/{paperID}")
+    public ResponseEntity<String> hidePaper(@PathVariable int paperID, HttpServletRequest request){
+        int userID = getDataFromJWT.getID(request);
+        boolean success = papersRestService.hidePaper(paperID, userID);
+        if (success){
+            return ResponseEntity.ok("Successfully hide the Paper");
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Hide the Paper");
+        }
     }
 
-    @GetMapping(value = "papers/testOnly/Download")
-    public ResponseEntity<byte[]> testAddDownload() throws IOException, GeneralSecurityException {
-        byte[] test = papersRestService.addTestDownload();
-
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition
-                .builder("attachment")
-                .filename("TestOnly")
-                .build());
-        headers.setContentLength(test.length);
-
-        return ResponseEntity.ok().headers(headers).body(test);
+    @PatchMapping("papers/show/{paperID}")
+    public ResponseEntity<String> showPaper(@PathVariable int paperID, HttpServletRequest request){
+        int userID = getDataFromJWT.getID(request);
+        boolean success = papersRestService.showPaper(paperID, userID);
+        if (success){
+            return ResponseEntity.ok("Successfully hide the Paper");
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Hide the Paper");
+        }
     }
 
 }

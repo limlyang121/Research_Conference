@@ -7,6 +7,8 @@ import { Container, Input, Button, Form } from 'reactstrap';
 import { addPapers } from './Axios';
 import { getPaperByID, updatePaper } from './Axios';
 import AuthorSecurity from './AuthorSecurity';
+import { displayErrorMessage } from '../General/GeneralFunction';
+import { CircularProgress } from "@material-ui/core";
 
 
 function PaperEdit() {
@@ -33,6 +35,7 @@ function PaperEdit() {
 
     }
 
+    const [isLoading, setIsLoading] = React.useState(false);
     const [myFile, setFile] = React.useState(null);
     const [myPaper, setPaper] = React.useState(paperFormState)
     const { id } = useParams();
@@ -43,18 +46,21 @@ function PaperEdit() {
 
         const loadData = async () => {
             //Get Data
-            let response = await getPaperByID(id)
-            setPaper(response)
+            try {
+                let response = await getPaperByID(id)
+                setPaper(response)
+            } catch (error) {
+                displayErrorMessage(error, navigate, -1)
+            }
+
 
         }
         if (id !== 'new') {
             loadData()
         }
 
-        const myID = sessionStorage.getItem("id")
-        myPaper.paperInfo.authorID.id = myID;
 
-    }, [id])
+    }, [id, navigate])
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -86,7 +92,7 @@ function PaperEdit() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true);
         if (id !== "new") {
             let response = await updatePaper(myPaper);
             alert(response)
@@ -105,6 +111,7 @@ function PaperEdit() {
                 navigate("/home")
             } catch (error) {
                 alert(error)
+                setIsLoading(false)
             }
         }
 
@@ -157,7 +164,12 @@ function PaperEdit() {
 
                     <br />
 
-                    <Button type='submit' color='primary'>Submit</Button>
+                    {isLoading ? (
+                        <CircularProgress />
+                    ) : (
+                        <Button type='submit' color='primary'>Submit</Button>
+                    )}
+
 
 
 

@@ -49,7 +49,13 @@ function PaperList() {
                     <ButtonGroup style={{ gap: "10px" }}>
                         <Button size="sm" color="info" tag={Link} to={"/author/papers/read/" + paper.paperID}>Read</Button>
                         <Button size="sm" color="primary" tag={Link} to={"/author/papers/form/" + paper.paperID}>Edit</Button>
-                        <Button size="sm" color="danger" onClick={() => remove(paper.paperID)}>Delete</Button>
+                        {paper.status === "Accept" || paper.status === "Reject"  ? (
+                            <Button size="sm" color="warning" onClick={() => remove(paper.paperID)}>Thinking</Button>
+                        ) : paper.status === "Pending" ? (
+                            <Button size="sm" color="danger" onClick={() => remove(paper.paperID)}>Delete</Button>
+                        ) : (
+                            <Button size="sm" color="secondary" onClick={() => alert("Can't delete paper because Bidding is close") }>Delete</Button>
+                        )}
                         <Button size="sm" color="primary" onClick={async () => downloadFile(paper.paperID)} >Download</Button>
 
                     </ButtonGroup>

@@ -46,8 +46,6 @@ CREATE TABLE "user" (
 );
 
 
-
-
 CREATE TABLE paper_info (
     paperID INTEGER PRIMARY KEY DEFAULT nextval('paper_info_id_seq'),
     title VARCHAR(50),
@@ -57,6 +55,7 @@ CREATE TABLE paper_info (
     description VARCHAR(50),
     CONSTRAINT fk_authorID FOREIGN KEY (authorID) REFERENCES "user" (id)
 );
+
 
 CREATE TABLE "file" (
     fileID  INTEGER PRIMARY KEY DEFAULT nextval('file_id_seq'),
@@ -88,7 +87,7 @@ CREATE TABLE "blacklist_paper" (
   paperID integer not null,
   CONSTRAINT "pk_blacklist_paper" PRIMARY KEY (reviewerID, paperID),
   CONSTRAINT "fk_blacklist_reviewer" FOREIGN KEY (reviewerID) REFERENCES reviewer (reviewerID),
-  CONSTRAINT "fk_blacklist_paper" FOREIGN KEY (paperID) REFERENCES paper (paperID)
+  CONSTRAINT "fk_blacklist_paper" FOREIGN KEY (paperID) REFERENCES paper (paperID) ON DELETE CASCADE
 );
 
 
@@ -108,7 +107,7 @@ CREATE TABLE "review" (
     rate INTEGER,
     "comment" Varchar(50),
     review_date Date,
-CONSTRAINT "fk_bid_idxx" FOREIGN KEY (bidID) REFERENCES bid (bidID)
+CONSTRAINT "fk_bid_idxx" FOREIGN KEY (bidID) REFERENCES bid (bidID) ON DELETE CASCADE
 );
 
 

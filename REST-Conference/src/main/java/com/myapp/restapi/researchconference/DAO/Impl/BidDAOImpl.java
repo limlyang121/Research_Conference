@@ -34,7 +34,7 @@ public class BidDAOImpl implements BidDAO {
         Session session = entityManager.unwrap(Session.class);
 
         Query<Bid> query = session.createQuery("From Bid where reviewer.reviewerID = :reviewerID " +
-                "and status = :status");
+                "and status = :status", Bid.class);
 
         query.setParameter("reviewerID", reviewerID);
         query.setParameter("status", status);
@@ -122,6 +122,19 @@ public class BidDAOImpl implements BidDAO {
             session.remove(bid);
             return true;
         }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteBidAssociatedWithThisPaperID(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Query query = session.createQuery("Delete from Bid where paper.id = :paperID");
+            query.setParameter("paperID", paperID);
+            query.executeUpdate();
+            return true;
+        }catch (Exception exception){
             return false;
         }
     }

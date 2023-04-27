@@ -63,7 +63,6 @@ public class PaperDAOImpl implements PaperDAO {
             paperQuery.setParameter("userID", userID);
             return paperQuery.getResultList();
         }catch (Exception e){
-            System.out.println(e);
             return null;
         }
     }
@@ -75,10 +74,9 @@ public class PaperDAOImpl implements PaperDAO {
         Query<Paper> query = session.createQuery("From Paper " +
                 "where  paperID = :paperID", Paper.class);
         query.setParameter("paperID", paperID);
-        Optional<Paper> paper = query.uniqueResultOptional();
 
 
-        return paper;
+        return query.uniqueResultOptional();
     }
 
     @Override
@@ -105,15 +103,7 @@ public class PaperDAOImpl implements PaperDAO {
         return paperQuery.getResultList();
     }
 
-    @Override
-    public List<Paper> findPapersReadyToPublishOrReject() {
-        Session session = entityManager.unwrap(Session.class);
 
-        Query<Paper> paperQuery = session.createQuery("from Paper as p inner join Bid as b " +
-                "on p.id = b.paper.id where " +
-                "p.status = 'Ready' and b.status = 'Complete'", Paper.class);
-        return paperQuery.getResultList();
-    }
 
     @Override
     public Paper add(Paper paper) {
@@ -129,7 +119,6 @@ public class PaperDAOImpl implements PaperDAO {
 
             return paper;
         }catch (Exception e){
-            System.err.println(e);
             return null;
         }
     }
@@ -141,17 +130,6 @@ public class PaperDAOImpl implements PaperDAO {
         Paper paper = session.get(Paper.class, paperID);
         paper.setReviewedTimes(paper.getReviewedTimes() + 1);
         session.merge(paper);
-    }
-
-    @Override
-    public Paper downloadPaper(int paperID) {
-        Session session = entityManager.unwrap(Session.class);
-
-        Paper paper = session.get(Paper.class, paperID);
-        if (paper != null){
-            return paper;
-        }
-        return null;
     }
 
     @Override
@@ -203,6 +181,30 @@ public class PaperDAOImpl implements PaperDAO {
             return false;
 
         paper.setStatus("Reject");
+        session.merge(paper);
+        return true;
+    }
+
+    @Override
+    public boolean hidePaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        Paper paper = session.get(Paper.class, paperID);
+        if (paper == null)
+            return false;
+
+        paper.setIsHidden(1);
+        session.merge(paper);
+        return true;
+    }
+
+    @Override
+    public boolean showPaper(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        Paper paper = session.get(Paper.class, paperID);
+        if (paper == null)
+            return false;
+
+        paper.setIsHidden(0);
         session.merge(paper);
         return true;
     }

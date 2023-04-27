@@ -26,6 +26,7 @@ public interface BidDAO {
     Bid addBid(Bid bid);
 
     boolean deleteBid(int bidID);
+    boolean deleteBidAssociatedWithThisPaperID(int paperID);
 
     boolean acceptBid(int bidID);
     boolean rejectBid(int bidID);

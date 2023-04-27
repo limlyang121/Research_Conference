@@ -75,7 +75,7 @@ public class ReviewRestServiceImpl implements ReviewRestService {
             List<Review> reviewList = reviewDAO.findReviewsByPaperID(paperID);
             return ReviewDTO.DTOList(reviewList);
         }
-        return null;
+        throw new NoDataFoundException("Paper not exist");
     }
 
     @Override

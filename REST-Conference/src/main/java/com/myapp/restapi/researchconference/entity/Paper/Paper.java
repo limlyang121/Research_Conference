@@ -34,6 +34,9 @@ public class Paper {
     @Column(name = "reviewed_time")
     private int reviewedTimes;
 
+    @Column(name = "is_hidden")
+    private int isHidden;
+
     public Paper() {
         fileInfo = new FileInfo();
         paperInfo = new PaperInfo();

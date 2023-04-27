@@ -1,5 +1,6 @@
 package com.myapp.restapi.researchconference.Restservice.Impl;
 
+import com.myapp.restapi.researchconference.DAO.Interface.BidDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.PaperDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.ReviewDAO;
 import com.myapp.restapi.researchconference.DAO.Interface.UserRepo;
@@ -17,8 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,21 +27,23 @@ public class PapersRestServiceImpl implements PapersRestService {
     private final PaperDAO paperDAO;
     private final UserRepo userRepo;
     private final ReviewDAO reviewDAO;
+    private final BidDAO bidDAO;
+
     private final GoogleDriveService googleDriveService;
 
     @Autowired
-    public PapersRestServiceImpl(PaperDAO paperDAO, UserRepo userRepo, ReviewDAO reviewDAO, GoogleDriveService googleDriveService) {
+    public PapersRestServiceImpl(PaperDAO paperDAO, UserRepo userRepo, ReviewDAO reviewDAO, BidDAO bidDAO, GoogleDriveService googleDriveService) {
         this.paperDAO = paperDAO;
         this.userRepo = userRepo;
         this.reviewDAO = reviewDAO;
+        this.bidDAO = bidDAO;
         this.googleDriveService = googleDriveService;
     }
 
     @Override
     @Transactional
     public List<PaperDTO> findAll() {
-        List<PaperDTO> paperDTO = PaperDTO.convertToDTO(paperDAO.findAll());
-        return paperDTO;
+        return PaperDTO.convertToDTO(paperDAO.findAll());
     }
 
     @Override
@@ -56,14 +57,14 @@ public class PapersRestServiceImpl implements PapersRestService {
     @Override
     @Transactional
     public PaperDTO findPaperByID(int paperID, int authorID) throws IllegalAccessException {
-        Optional<Paper>  paper = paperDAO.findPaperByID(paperID);
-        if (paper.isPresent()){
-            if (paper.get().getPaperInfo().getAuthorID().getId() == authorID){
+        Optional<Paper> paper = paperDAO.findPaperByID(paperID);
+        if (paper.isPresent()) {
+            if (paper.get().getPaperInfo().getAuthorID().getId() == authorID) {
                 return PaperDTO.convertToDTOSingle(paper.get());
-            }else
-                throw new IllegalAccessException("You can't access other user Papers");
-        }else
-            return null;
+            } else
+                throw new IllegalAccessException("You are not authorized to modify papers that do not belong to you");
+        } else
+            throw new NoDataFoundException("Unknown Paper ID");
     }
 
     @Override
@@ -101,23 +102,11 @@ public class PapersRestServiceImpl implements PapersRestService {
         return PaperDTO.convertToDTO(paperList);
     }
 
-//    @Override
-//    @Transactional
-//    public Paper add(Paper paper) {
-//        Date currentTime = new Date();
-//        paper.getPaperInfo().setUpload(currentTime);
-//        paper.setStatus("Pending");
-//        Userdetails userdetails= userRepo.findByID(paper.getPaperInfo().getAuthorID().getId()).getUserdetails();
-//        paper.getPaperInfo().setAuthorID(userdetails);
-//
-//        return paperDAO.add(paper);
-//    }
-
     @Override
     @Transactional
-    public Paper add(MultipartFile file,Paper paper)  {
+    public Paper add(MultipartFile file, Paper paper) {
         String fileID = googleDriveService.uploadFile(file, paper.getPaperInfo().getAuthorID().getId());
-        if (fileID == null){
+        if (fileID == null) {
             return null;
         }
 
@@ -126,7 +115,7 @@ public class PapersRestServiceImpl implements PapersRestService {
         paper.setStatus("Pending");
         paper.getFileInfo().setFileDataId(fileID);
         paper.getFileInfo().setFileType(file.getContentType());
-        Userdetails userdetails= userRepo.findByID(paper.getPaperInfo().getAuthorID().getId()).getUserdetails();
+        Userdetails userdetails = userRepo.findByID(paper.getPaperInfo().getAuthorID().getId()).getUserdetails();
         paper.getPaperInfo().setAuthorID(userdetails);
 
         return paperDAO.add(paper);
@@ -134,38 +123,13 @@ public class PapersRestServiceImpl implements PapersRestService {
 
     @Override
     @Transactional
-    public Paper addTest(Paper paper, MultipartFile file) throws IOException, GeneralSecurityException {
-        if (googleDriveService.isAuthenticated()){
-//            googleDriveService.createRandomFolder();
-//            System.out.println("YES");
-//            googleDriveService.uploadFile(file);
-//            googleDriveService.downloadFile();
-
-        }
-        System.out.println("NO");
-
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public byte[] addTestDownload() throws GeneralSecurityException, IOException {
-        if (googleDriveService.isAuthenticated()){
-//            return googleDriveService.downloadFile();
-        }
-
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public Paper update(Paper paper, int paperID){
+    public Paper update(Paper paper, int paperID) {
         Optional<Paper> paperOptional = paperDAO.findPaperByID(paperID);
-        if (paperOptional.isPresent()){
+        if (paperOptional.isPresent()) {
             Paper tempPaper = paperOptional.get();
             tempPaper.setPaperInfo(paper.getPaperInfo());
             return paperDAO.updatePaper(tempPaper);
-        }else{
+        } else {
             return null;
         }
 
@@ -175,33 +139,62 @@ public class PapersRestServiceImpl implements PapersRestService {
     @Transactional
     public PaperDTO downloadPdf(int paperID) {
         Optional<Paper> paper = paperDAO.findPaperByID(paperID);
-        if (paper.isPresent()){
-            return PaperDTO.convertToDTODownload(paper.get());
-        }
-        else
-            return  null;
+        return paper.map(PaperDTO::convertToDTODownload).orElse(null);
     }
 
     @Override
     @Transactional
-    public boolean deletePaper(int paperID, int userID) {
+    public boolean deletePaper(int paperID, int userID) throws IllegalAccessException {
         Optional<Paper> paperOptional = paperDAO.findPaperByID(paperID);
-        if (!(paperOptional.isPresent())){
-            throw new NoDataFoundException("Invalid PaperID");
+        if (paperOptional.isPresent()) {
+            Paper paper = paperOptional.get();
+            if (paper.getPaperInfo().getAuthorID().getId() != userID) {
+                throw new IllegalAccessException("Can't delete other user Papers");
+            }
+            boolean success = bidDAO.deleteBidAssociatedWithThisPaperID(paperID);
+            if (success) {
+                googleDriveService.deleteFile(paper.getFileInfo().getFileDataId());
+                paperDAO.deletePaper(paperID);
+                return true;
+            }
+            return false;
         }
+        throw new NoDataFoundException("No Paper found with that ID");
+    }
+
+    @Override
+    @Transactional
+    public boolean hidePaper(int paperID, int userID) {
+        boolean check = securityCheck(paperID, userID);
+        if (check){
+            return paperDAO.hidePaper(paperID);
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean showPaper(int paperID, int userID) {
+        boolean check = securityCheck(paperID, userID);
+        if (check){
+            return paperDAO.showPaper(paperID);
+        }
+        return false;
+    }
+
+    public boolean securityCheck(int paperID, int userID){
+        Optional<Paper> paperOptional = paperDAO.findPaperByID(paperID);
+        if (paperOptional.isEmpty())
+            return false;
 
         Paper paper = paperOptional.get();
-        if (paper.getPaperInfo().getAuthorID().getId() != userID){
-            return  false;
-        }
-        String fileID = paper.getFileInfo().getFileDataId();
-        boolean success = paperDAO.deletePaper(paperID);
-        if (success){
-            googleDriveService.deleteFile(fileID);
-            return true;
-        }else{
+        if (paper.getPaperInfo().getAuthorID().getId() != userID) {
             return false;
         }
 
+        if (!(paper.getStatus().equalsIgnoreCase("Accept") || paper.getStatus().equalsIgnoreCase("Reject")))
+            return false;
+
+        return true;
     }
 }
