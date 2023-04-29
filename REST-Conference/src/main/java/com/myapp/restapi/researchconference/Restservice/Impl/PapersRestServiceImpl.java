@@ -51,7 +51,17 @@ public class PapersRestServiceImpl implements PapersRestService {
     public List<PaperDTO> findMyPaper(int userID) {
         List<Paper> paper = paperDAO.findMyPaper(userID);
         return PaperDTO.convertToDTO(paper);
+    }
 
+    @Override
+    @Transactional
+    public List<PaperDTO> findMyPublishedPapers(String status, int userID) {
+        List<Paper> paperList;
+        if (status.equalsIgnoreCase("ALL"))
+            paperList = paperDAO.findAllMyPublishedPapers(userID);
+        else
+            paperList = paperDAO.findMyPublishedPapersByStatus(status, userID);
+        return PaperDTO.convertToDTO(paperList);
     }
 
     @Override
@@ -162,39 +172,5 @@ public class PapersRestServiceImpl implements PapersRestService {
         throw new NoDataFoundException("No Paper found with that ID");
     }
 
-    @Override
-    @Transactional
-    public boolean hidePaper(int paperID, int userID) {
-        boolean check = securityCheck(paperID, userID);
-        if (check){
-            return paperDAO.hidePaper(paperID);
-        }
-        return false;
-    }
 
-    @Override
-    @Transactional
-    public boolean showPaper(int paperID, int userID) {
-        boolean check = securityCheck(paperID, userID);
-        if (check){
-            return paperDAO.showPaper(paperID);
-        }
-        return false;
-    }
-
-    public boolean securityCheck(int paperID, int userID){
-        Optional<Paper> paperOptional = paperDAO.findPaperByID(paperID);
-        if (paperOptional.isEmpty())
-            return false;
-
-        Paper paper = paperOptional.get();
-        if (paper.getPaperInfo().getAuthorID().getId() != userID) {
-            return false;
-        }
-
-        if (!(paper.getStatus().equalsIgnoreCase("Accept") || paper.getStatus().equalsIgnoreCase("Reject")))
-            return false;
-
-        return true;
-    }
 }

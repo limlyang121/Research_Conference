@@ -80,19 +80,12 @@ const AppNavbar = () => {
 
                 <NavItem>
                   <Button>
-                    <Link tag={Link} to={"/author/papers/form/new"} style={{ textDecoration: "none", color: "white" }}>
-                      Add Paper
+                    <Link tag={Link} to={"/author/papers/publish"} style={{ textDecoration: "none", color: "white" }}>
+                      Publication
                     </Link>
                   </Button>
                 </NavItem>
 
-                <NavItem>
-                  <Button>
-                    <Link tag={Link} to={"/author/test"} style={{ textDecoration: "none", color: "white" }}>
-                      Upload to Google Drive (Test Only)
-                    </Link>
-                  </Button>
-                </NavItem>
               </Nav>
             )}
 

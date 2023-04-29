@@ -14,7 +14,8 @@ import lombok.Data;
 public class Paper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paper_seq")
+    @SequenceGenerator(name = "paper_seq", sequenceName = "paper_id_seq", allocationSize = 1)
     @Column(name = "paperID")
     private int paperID;
 
@@ -33,9 +34,6 @@ public class Paper {
 
     @Column(name = "reviewed_time")
     private int reviewedTimes;
-
-    @Column(name = "is_hidden")
-    private int isHidden;
 
     public Paper() {
         fileInfo = new FileInfo();

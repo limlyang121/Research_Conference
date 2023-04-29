@@ -9,6 +9,7 @@ import com.myapp.restapi.researchconference.Restservice.Interface.PapersRestServ
 import com.myapp.restapi.researchconference.Util.GetDataFromJWT;
 import com.myapp.restapi.researchconference.entity.Paper.Paper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,13 @@ public class PaperRest {
     public List<PaperDTO> findMyPapers(HttpServletRequest request){
         int myID = getDataFromJWT.getID(request);
         return papersRestService.findMyPaper(myID);
+    }
+
+
+    @GetMapping("papers/myPapers/publish/{status}")
+    public List<PaperDTO> findMyPublishedPapers(@PathVariable @NotBlank String status , HttpServletRequest request){
+        int myID = getDataFromJWT.getID(request);
+        return papersRestService.findMyPublishedPapers(status, myID);
     }
 
     @GetMapping("papers/{paperID}/review")
@@ -131,27 +139,4 @@ public class PaperRest {
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No paper found with the ID");
     }
-
-    @PatchMapping("papers/hide/{paperID}")
-    public ResponseEntity<String> hidePaper(@PathVariable int paperID, HttpServletRequest request){
-        int userID = getDataFromJWT.getID(request);
-        boolean success = papersRestService.hidePaper(paperID, userID);
-        if (success){
-            return ResponseEntity.ok("Successfully hide the Paper");
-        }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Hide the Paper");
-        }
-    }
-
-    @PatchMapping("papers/show/{paperID}")
-    public ResponseEntity<String> showPaper(@PathVariable int paperID, HttpServletRequest request){
-        int userID = getDataFromJWT.getID(request);
-        boolean success = papersRestService.showPaper(paperID, userID);
-        if (success){
-            return ResponseEntity.ok("Successfully hide the Paper");
-        }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to Hide the Paper");
-        }
-    }
-
 }

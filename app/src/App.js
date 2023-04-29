@@ -26,6 +26,7 @@ import ConferencePaperList from './ConferenceChair/ConferencePaperList';
 import ConferenceCheckReviewerBidProcess from './ConferenceChair/ConferenceCheckReviewerBidProcess';
 import ConferenceAllReviewerReviews from './ConferenceChair/ConferenceAllReviewerReviews';
 import GoogleDriveUpload from './Author/Test/GoogleDriveUpload';
+import PaperPublishList from './Author/PaperPublishList';
 
 
 const App = () => {
@@ -50,10 +51,14 @@ const App = () => {
 
 
             {/* Auhor */}
-            <Route path='/author/papers/form/:id' exact={true} element={<PaperEdit />} />
             <Route path='/author/papers' exact={true} element={<PaperList />} />
+            <Route path='/author/papers/form/:id' exact={true} element={<PaperEdit />} />
             <Route path='/author/papers/read/:id' exact={true} element={<PaperRead />} />
             <Route path='/author/papers/:id/review' exact={true} element={<PaperReview />} />
+
+            <Route path='/author/papers/publish' exact={true} element={<PaperPublishList />} />
+
+
 
             <Route path='/author/test' exact={true} element={<GoogleDriveUpload />} />
 

@@ -57,7 +57,7 @@ public class ReviewerDAOImpl implements ReviewerDAO {
         Session session = entityManager.unwrap(Session.class);
 
         try{
-            session.persist(reviewer);
+            session.merge(reviewer);
             return reviewer;
         }catch (Exception e){
             return null;

@@ -16,7 +16,8 @@ import java.util.Arrays;
 @Table(name = "file", schema = "public")
 public class FileInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "file_seq")
+    @SequenceGenerator(name = "file_seq", sequenceName = "file_id_seq", allocationSize = 1)
     private int fileID;
 
     @Column(name = "file_data_id")

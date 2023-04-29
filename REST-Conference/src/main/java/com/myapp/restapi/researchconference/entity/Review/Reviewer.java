@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 @Data
 @Builder
@@ -15,11 +16,13 @@ import lombok.NoArgsConstructor;
 public class Reviewer {
     @Id
     @Column(name = "reviewerID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviewer_seq")
+    @SequenceGenerator(name = "reviewer_seq", sequenceName = "reviewer_id_seq", allocationSize = 1)
     private int reviewerID;
     @Column(name = "is_active")
     private int isActive;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private Userdetails userdetails;
 }

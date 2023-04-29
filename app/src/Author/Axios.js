@@ -44,6 +44,12 @@ export const getMyPapers = async () => {
     return response.data;
 }
 
+export const getMyPublishPapersAPI = async (status) => {
+    let response = await api.get(`papers/myPapers/publish/${status}`)
+    return response.data;
+}
+
+
 export const getPaperByID = async (id) => {
     let response = await api.get(`papers/${id}`)
     return response.data;

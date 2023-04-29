@@ -13,6 +13,7 @@ public interface PapersRestService {
     List<PaperDTO> findAll();
 
     List<PaperDTO> findMyPaper(int userID);
+    List<PaperDTO> findMyPublishedPapers(String status, int userID);
 
     PaperDTO findPaperByID(int userID, int authorID) throws IllegalAccessException;
 
@@ -29,6 +30,4 @@ public interface PapersRestService {
     PaperDTO downloadPdf(int paperID);
     boolean deletePaper(int paperID, int userID) throws IllegalAccessException;
 
-    boolean hidePaper(int paperID, int userID);
-    boolean showPaper(int paperID, int userID);
 }

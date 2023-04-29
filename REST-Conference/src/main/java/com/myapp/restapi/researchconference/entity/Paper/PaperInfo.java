@@ -18,7 +18,8 @@ import java.util.Date;
 public class PaperInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paper_info_seq")
+    @SequenceGenerator(name = "paper_info_seq", sequenceName = "paper_info_id_seq", allocationSize = 1)
     @Column(name = "paperID")
     private int paperID;
     private String title;

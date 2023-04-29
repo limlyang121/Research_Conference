@@ -9,6 +9,10 @@ public interface PaperDAO {
     List<Paper> findAll();
 
     List<Paper> findMyPaper(int userID);
+    List<Paper> findAllMyPublishedPapers(int userID);
+
+    List<Paper> findMyPublishedPapersByStatus(String status, int userID);
+
 
     Optional<Paper> findPaperByID(int userID);
 
@@ -19,6 +23,7 @@ public interface PaperDAO {
     List<Paper> findPapersThatReviewed();
 
     List<Paper> findReadyPapers();
+
 
     List<Paper> findCompletedPapers();
 
@@ -35,8 +40,5 @@ public interface PaperDAO {
     boolean acceptPaper(int paperID);
 
     boolean rejectPaper(int paperID);
-
-    boolean hidePaper(int paperID);
-    boolean showPaper(int paperID);
 
 }

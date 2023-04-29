@@ -59,8 +59,36 @@ public class PaperDAOImpl implements PaperDAO {
         Session session = entityManager.unwrap(Session.class);
         try{
             Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperInfo.id = pi.paperID" +
-                    " where pi.authorID.id = :userID", Paper.class);
+                    " where pi.authorID.id = :userID and (p.status = 'Pending' or p.status = 'Ready')", Paper.class);
             paperQuery.setParameter("userID", userID);
+            return paperQuery.getResultList();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public List<Paper> findAllMyPublishedPapers(int userID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperInfo.id = pi.paperID" +
+                    " where pi.authorID.id = :userID and (p.status = 'Accept' or p.status = 'Reject')", Paper.class);
+            paperQuery.setParameter("userID", userID);
+            return paperQuery.getResultList();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public List<Paper> findMyPublishedPapersByStatus(String status, int userID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Query<Paper> paperQuery = session.createQuery("From Paper p inner join PaperInfo pi on p.paperInfo.id = pi.paperID" +
+                    " where pi.authorID.id = :userID and p.status = :status ", Paper.class);
+            paperQuery.setParameter("userID", userID);
+            paperQuery.setParameter("status", status);
+
             return paperQuery.getResultList();
         }catch (Exception e){
             return null;
@@ -185,27 +213,4 @@ public class PaperDAOImpl implements PaperDAO {
         return true;
     }
 
-    @Override
-    public boolean hidePaper(int paperID) {
-        Session session = entityManager.unwrap(Session.class);
-        Paper paper = session.get(Paper.class, paperID);
-        if (paper == null)
-            return false;
-
-        paper.setIsHidden(1);
-        session.merge(paper);
-        return true;
-    }
-
-    @Override
-    public boolean showPaper(int paperID) {
-        Session session = entityManager.unwrap(Session.class);
-        Paper paper = session.get(Paper.class, paperID);
-        if (paper == null)
-            return false;
-
-        paper.setIsHidden(0);
-        session.merge(paper);
-        return true;
-    }
 }

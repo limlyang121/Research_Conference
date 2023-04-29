@@ -140,6 +140,7 @@ public class GoogleDriveService {
             drive.files().get(itemId).executeMediaAndDownloadTo(outputStream);
             return outputStream.toByteArray();
         }catch (IOException exception){
+            System.out.println(exception);
             return null;
         }
     }

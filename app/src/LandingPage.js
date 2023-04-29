@@ -13,8 +13,8 @@ const LandingPage = () => {
         <h2 style={{ textAlign: "center" }}>Note</h2>
         <hr />
 
-        <fieldset style={{ border: "1px black" }}>
-          <legend style={{ textAlign: "center", marginBottom: "50px" }}>
+        <fieldset>
+          <legend className='float-none w-auto'>
             <h1>
               ID
             </h1>
@@ -50,35 +50,80 @@ const LandingPage = () => {
             </Table>
 
           </Container>
-          <h2 style={{ textAlign: "center" }}>
+          <h4 style={{ textAlign: "center" }}>
             Note:  <br />
-            User above can't be modified (Update, Delete)
-          </h2>
+            User above can't be modified (Update, Delete, Reset password)
+          </h4>
 
-          <hr />
 
 
         </fieldset>
 
-        <fieldset style={{ border: "1px black" }}>
-          <legend style={{ textAlign: "center", marginBottom: "50px" }}>
+        <br />
+
+        <fieldset>
+          <legend>
             <h1>
               Register And Edit User
             </h1>
           </legend>
 
           <Container style={{ width: "70%" }}  >
-            <h2 style={{ textAlign: "center" }}>
-              1. Only Admin can Register a new User <br/>
-              2. Only Admin can Edit other user Profile
-            </h2>
+            <h4>
+              <ol style={{ textAlign: "left" }} >
+                <li>Only Admin can Register a new User </li>
+                <li>Only Admin can Edit other user Profile </li>
+              </ol>
+            </h4>
+          </Container>
+
+        </fieldset>
+
+        <br />
+
+        <fieldset>
+          <legend>
+            <h1>
+              How the System Work
+            </h1>
+          </legend>
+
+          <Container style={{ width: "70%" }}  >
+            <h5>
+              <ol style={{ textAlign: "left" }} >
+                <li>Author add a new Papers</li>
+                <li>Reviewers Bid the Papers</li>
+                <li>Conferece Allocate/Allow the Reviewers to Reviews </li>
+                <li>Reviewer review the Paper </li>
+                <li>Once there are more than 5 Review for that paper, Conference can close the Bidding </li>
+                <li>Once all reviewer done review the papers, the conference can accept/reject the paper by see the reviewer review </li>
+                <li>Once Accepted/Rejected, Conference won't be able to Edit it </li>
+              </ol>
+
+
+            </h5>
+
+            <div style={{ textAlign: "left" }}>
+              <h4>Note</h4>
+              <br />
+              <h5>
+
+                <ol>
+                  <li>In step 6, Conference can Unbid the reviewer bid if needed</li>
+                  <li>Author can only delete paper when Bidding still Open. Once close, the author can't delete papers</li>
+
+                </ol>
+              </h5>
+            </div>
 
           </Container>
 
-          <hr />
-
-
         </fieldset>
+
+        <br />
+
+
+
 
 
         <div style={{ textAlign: "center" }}>
