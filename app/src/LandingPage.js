@@ -52,7 +52,9 @@ const LandingPage = () => {
           </Container>
           <h4 style={{ textAlign: "center" }}>
             Note:  <br />
-            User above can't be modified (Update, Delete, Reset password)
+            User above can't be modified (Update, Delete, Reset password) <br />
+            All Password for existing account is 'test123' (can check in postgreSQL which account is premade) <br />
+            the username can be check with Admin - User Account <br />
           </h4>
 
 

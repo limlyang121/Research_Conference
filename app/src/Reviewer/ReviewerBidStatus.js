@@ -57,6 +57,14 @@ function ReviewerBidStatus() {
         )
     }
 
+    const RejectAction = (bid) => {
+        return (
+            <ButtonGroup style={{ gap: "10px" }} >
+                <Button color='danger'  >You been Reject to review this Paper</Button>
+            </ButtonGroup>
+        )
+    }
+
     const displayBidStatus = myBid.map(bid => {
         return (
             <tr key={bid.bidID} >
@@ -66,6 +74,7 @@ function ReviewerBidStatus() {
                 <td>
                     {status === "Pending" && PendingAction(bid)}
                     {status === "Accept" && AcceptAction(bid)}
+                    {status === "Reject" && RejectAction(bid)}
                 </td>
             </tr>
         )
@@ -81,7 +90,7 @@ function ReviewerBidStatus() {
                 <ButtonGroup style={{ gap: "10px" }} >
                     <Button color='secondary' onClick={() => changeList("Pending")}  >Show Pending</Button>
                     <Button color='primary' onClick={() => changeList("Accept")}  >Show Accept</Button>
-                    <Button color='danger' onClick={() => changeList("Reject ")}  >Show Reject</Button>
+                    <Button color='danger' onClick={() => changeList("Reject")}  >Show Reject</Button>
 
                 </ButtonGroup>
 

@@ -16,8 +16,6 @@ import org.hibernate.annotations.Cascade;
 public class Reviewer {
     @Id
     @Column(name = "reviewerID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviewer_seq")
-    @SequenceGenerator(name = "reviewer_seq", sequenceName = "reviewer_id_seq", allocationSize = 1)
     private int reviewerID;
     @Column(name = "is_active")
     private int isActive;

@@ -14,7 +14,6 @@ CREATE SEQUENCE IF NOT EXISTS user_id_seq START 1;
 CREATE SEQUENCE IF NOT EXISTS paper_info_id_seq START 1;
 CREATE SEQUENCE IF NOT EXISTS file_id_seq START 1;
 CREATE SEQUENCE IF NOT EXISTS paper_id_seq START 1;
-CREATE SEQUENCE IF NOT EXISTS reviewer_id_seq START 1;
 CREATE SEQUENCE IF NOT EXISTS bid_id_seq START 1;
 CREATE SEQUENCE IF NOT EXISTS review_id_seq START 1;
 
@@ -74,7 +73,7 @@ CREATE TABLE paper (
 );
 
 CREATE TABLE reviewer (
-    reviewerID INTEGER PRIMARY KEY DEFAULT nextval('reviewer_id_seq'),
+    reviewerID INTEGER PRIMARY KEY,
     is_active SMALLINT NOT NULL DEFAULT 1,
     user_id INT NOT NULL,
   CONSTRAINT fk_reviewer_idxx FOREIGN KEY (user_id) REFERENCES user_details(id)
@@ -169,25 +168,30 @@ VALUES
 (14, 1, 14),
 (15, 1, 15);
 
-INSERT INTO paper_info (paperID, title, filename, upload, authorID )
+INSERT INTO paper_info (paperID, title, filename, upload, authorID, description )
 VALUES
-(1, 'The adventure of my Assignment', 'SIM-A1-CSCI203-2021S3-v1-Question.pdf', '2023-01-23', 2 ),
-(2, 'My Nightmare', 'SIM-A2-CSCI361-2022S3.pdf', '2023-03-23', 2 ),
-(3, 'The Old Resume', 'Edy_kelvianto_Resume.pdf', '2023-04-23', 2 );
+(1, 'The adventure of my Assignment', 'SIM-A1-CSCI203-2021S3-v1-Question.pdf', '2023-01-23', 2, 'I hate my Assignment' ),
+(2, 'My Nightmare', 'SIM-A2-CSCI361-2022S3.pdf', '2023-03-23', 2, 'I still have PTSD when i see this' ),
+(3, 'The Old Resume', 'Edy_kelvianto_Resume.pdf', '2023-04-23', 2 , 'My Old Resume'),
+(4, 'My Old Project', 'Project Specification.pdf', '2023-05-01', 2 , 'My CSIT314 Project');
+
 
 
 INSERT INTO "file" (fileID, file_data_id, file_type)
 VALUES
 (1, '1baj4lJk6QdCpXTaymjPM3wfxdiEAedDh', 'application/pdf' ),
 (2, '1ON5eV0I3hwQe9M3-r3OJFB6ISV6ifz9l', 'application/pdf' ),
-(3, '1YkSz44K2LGjNHCdkSdUihJoxKUCRCdRt', 'application/pdf' );
+(3, '1YkSz44K2LGjNHCdkSdUihJoxKUCRCdRt', 'application/pdf' ),
+(4, '11L6jPqgF0nX_H6te1UyUtWDM8nLGOFe2', 'application/pdf' );
 
 
 INSERT INTO paper (paperID, file_info_ID, status, paper_info_ID, reviewed_time )
 VALUES
 (1, 1, 'Accept', 1, 10),
 (2, 2, 'Reject', 2, 8),
-(3, 3, 'Ready', 3, 5);
+(3, 3, 'Ready', 3, 5),
+(4, 4, 'Pending', 4, 0);
+
 
 
 INSERT INTO "bid" (bidID ,paperID, reviewerID, status, bid_date )
@@ -217,10 +221,10 @@ VALUES
 (21, 3, 6, 'Complete', '2023-04-24'),
 (22, 3, 7, 'Complete', '2023-04-24'),
 (23, 3, 8, 'Complete', '2023-04-24'),
-(24, 3, 15, 'Complete', '2023-04-24');
+(24, 3, 15, 'Complete', '2023-04-24'),
 
 
-
+(25, 4, 4, 'Complete', '2023-05-01');
 
 INSERT INTO "review" (reviewID ,bidID, rate, "comment" , review_date )
 VALUES
@@ -248,31 +252,15 @@ VALUES
 (20, 21, 2, 'Comment Number 20', '2023-04-27'),
 (21, 22, 2, 'Comment Number 21', '2023-04-27'),
 (22, 23, 2, 'Comment Number 22', '2023-04-27'),
-(23, 24, 2, 'Comment Number 23', '2023-04-27');
+(23, 24, 2, 'Comment Number 23', '2023-04-27'),
+
+(24, 25, 4, 'Comment Number 24', '2023-05-01');
 
 
--- INSERT INTO file VALUES
---   (1, io_import('/Desktop/Edy_kelvianto_Resume.pdf'), 'application/pdf'),
---   (2, io_import('/Desktop/a'), 'application/pdf');
-
-
--- INSERT INTO paper_info VALUES
--- (1, "My Paper 1", "Edy_kelvianto_Resume.pdf", now(), 2),
--- (2, "My Paper 1", "a.pdf", now(), 2);
-
-
--- INSERT INTO paper VALUES
--- (1, 1 , "Pending", 1, 0),
--- (2, 2 , "Pending", 2, 0);
-
-
-
-
--- SELECT setval('user_id_seq', (SELECT MAX(id) FROM "user"), true);
--- SELECT setval('user_details_id_seq', (SELECT MAX(id) FROM user_details), true);
--- SELECT setval('paper_id_seq', (SELECT MAX(paperID) FROM paper), true);
--- SELECT setval('paper_info_id_seq', (SELECT MAX(paperID) FROM paper_info), true);
--- SELECT setval('file_id_seq', (SELECT MAX(fileID) FROM "file"), true);
--- SELECT setval('reviewer_id_seq', (SELECT MAX(reviewerID) FROM reviewer), true);
--- SELECT setval('review_id_seq', (SELECT MAX(reviewID) FROM "review"), true);
--- SELECT setval('bid_id_seq', (SELECT MAX(bidID) FROM "bid"), true);
+SELECT setval('user_id_seq', (SELECT MAX(id) FROM "user"), true);
+SELECT setval('user_details_id_seq', (SELECT MAX(id) FROM user_details), true);
+SELECT setval('paper_id_seq', (SELECT MAX(paperID) FROM paper), true);
+SELECT setval('paper_info_id_seq', (SELECT MAX(paperID) FROM paper_info), true);
+SELECT setval('file_id_seq', (SELECT MAX(fileID) FROM "file"), true);
+SELECT setval('review_id_seq', (SELECT MAX(reviewID) FROM "review"), true);
+SELECT setval('bid_id_seq', (SELECT MAX(bidID) FROM "bid"), true);

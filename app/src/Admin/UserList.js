@@ -84,7 +84,7 @@ const UserList = () => {
   const groupList = users.map(user => {
     return (
       <tr key={user.id}>
-        {user.id === myID ? (
+        {user.id === parseInt(myID)  ? (
           <></>
         ) : (
           <>

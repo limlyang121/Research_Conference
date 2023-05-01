@@ -28,6 +28,8 @@ public interface BidDAO {
     boolean deleteBid(int bidID);
     boolean deleteBidAssociatedWithThisPaperID(int paperID);
 
+    boolean deleteRejectedBidOncePaperPublish(int paperID);
+
     boolean acceptBid(int bidID);
     boolean rejectBid(int bidID);
 

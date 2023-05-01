@@ -56,14 +56,13 @@ public class PublishRestServiceImpl implements PublishRestService {
         return paperDAO.readyPaper(paperID);
     }
 
-
-
     @Override
     @Transactional
     public boolean acceptPaper(int paperID) {
         boolean success = paperDAO.acceptPaper(paperID);
         if (success){
-            return blacklistDAO.deleteBlackListAssociatedWithSpecifiedPaperID(paperID);
+            if (blacklistDAO.deleteBlackListAssociatedWithSpecifiedPaperID(paperID))
+                return bidDAO.deleteRejectedBidOncePaperPublish(paperID);
         }
         return false;
     }
@@ -73,7 +72,8 @@ public class PublishRestServiceImpl implements PublishRestService {
     public boolean rejectPaper(int paperID) {
         boolean success = paperDAO.rejectPaper(paperID);
         if (success){
-            return blacklistDAO.deleteBlackListAssociatedWithSpecifiedPaperID(paperID);
+            if  (blacklistDAO.deleteBlackListAssociatedWithSpecifiedPaperID(paperID))
+                return bidDAO.deleteRejectedBidOncePaperPublish(paperID);
         }
         return false;
     }

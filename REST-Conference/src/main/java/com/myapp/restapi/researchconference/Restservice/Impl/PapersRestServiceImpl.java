@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +121,8 @@ public class PapersRestServiceImpl implements PapersRestService {
             return null;
         }
 
+        File tempFile = new File(paper.getPaperInfo().getFilename());
+        tempFile.delete();
         Date currentTime = new Date();
         paper.getPaperInfo().setUpload(currentTime);
         paper.setStatus("Pending");
@@ -128,6 +131,7 @@ public class PapersRestServiceImpl implements PapersRestService {
         Userdetails userdetails = userRepo.findByID(paper.getPaperInfo().getAuthorID().getId()).getUserdetails();
         paper.getPaperInfo().setAuthorID(userdetails);
 
+//        return paper;
         return paperDAO.add(paper);
     }
 

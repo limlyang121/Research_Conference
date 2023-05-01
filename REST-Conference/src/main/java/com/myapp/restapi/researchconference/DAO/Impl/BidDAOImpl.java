@@ -140,6 +140,19 @@ public class BidDAOImpl implements BidDAO {
     }
 
     @Override
+    public boolean deleteRejectedBidOncePaperPublish(int paperID) {
+        Session session = entityManager.unwrap(Session.class);
+        try{
+            Query query = session.createQuery("Delete from Bid where paper.id = :paperID and status = 'Reject'");
+            query.setParameter("paperID", paperID);
+            query.executeUpdate();
+            return true;
+        }catch (Exception exception){
+            return false;
+        }
+    }
+
+    @Override
     public boolean acceptBid(int bidID) {
         Session session = entityManager.unwrap(Session.class);
         try{
