@@ -32,6 +32,10 @@ Server:
 Other:  
 [DTO, Git, Maven]  
 
+
+Google Drive Link :  
+https://drive.google.com/drive/folders/1aFIZ3sw9h159h8A46CwsKW1DG3OA7_8k?usp=share_link  
+
 For PostgreSQL set-up, can skip since i'm already hosting in render    
 but since it a free tier, speed might be slower than Local  
 To setup locally, just need to grab the script in the project and use it.  
