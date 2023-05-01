@@ -6,11 +6,10 @@
 
 Current  
 ---------------------------------------------------------  
-At 95% Completed  
-Some bug fixing and instead of hard delete paper, i will just softdelete paper (since bids and reviews need that)  
+At 99% Completed  
+
 
 **To do:**
-Back-end Security (SecurityFilterChain) <- currently only admin, will update all roles  
 Hosting   
 
 **Completed Feauture:**  
@@ -21,6 +20,8 @@ Hosting
 5. RBAC
 6. Upload And Download Document to server
 7. Etc (Some minor Stuff)    
+8. Back-end Security (SecurityFilterChain and Cors Config)   
+
 
 **Technologies Used:**  
 [Spring, React.js, PostGreSQL, RESTful API]  
@@ -31,35 +32,11 @@ Server:
 Other:  
 [DTO, Git, Maven]  
 
-**Descrition:**
-I am currently working on a research conference management  
-system as a solo project, which will allow papers to be reviewed by a  
-minimum of 5 reviewers before being accepted or rejected for  
-publication. As the sole developer, I am responsible for  
-implementing all key features, including user authentication and  
-authorization, paper submission and review workflows, and search  
-functionality.  
-To accomplish this, I am utilizing my skills in Spring, React.js and  
-MySQL to build a responsive user interface and a robust back-end  
-system that will allow reviewers to bid on papers, and authors to  
-upload and download paper files, and conference chairs to manage  
-the review process. Additionally, I am conducting thorough testing  
-and debugging to ensure that the system functions as intended and  
-meets project requirements.  
-Once completed, the system will allow Admin to CRUD User and  
-Profile, Search for User, and View Active/Non-active User. Authors  
-will be able to CRUD Paper, Upload PDF as the paper, Download the  
-Paper for review, and Read All Reviews for that paper. Reviewers will  
-be able to CRUD Review, Hide/Unhide paper in Pending status,  
-Bid/Unbid paper, View Bid status, and Download the Paper file.  
-Conference Chairs will be able to Accept/Reject Bid, Auto allocation  
-of Bid, Repending the accepted/rejected Bid, Accept/Reject Paper,  
-and View paper by Pending/Accept/Reject.  
-This project has allowed me to showcase my proficiency in full-stack  
-web development and project management.  
-Through my efforts, I am confident that I will be able to deliver a  
-functional and user-friendly software product that will meet the  
-needs of conference organizers and attendees alike.  
+For PostgreSQL set-up, can skip since i'm already hosting in render    
+but since it a free tier, speed might be slower than Local  
+To setup locally, just need to grab the script in the project and use it.  
+and change the datasource url, username and password in application properties  
+![image](https://user-images.githubusercontent.com/103249985/235494341-8a9b3604-01e9-4e89-830d-cce8914eabe0.png)  
 
 
 
