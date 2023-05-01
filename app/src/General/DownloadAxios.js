@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+// const myAPILink = "http://18.181.186.213:8080/api/";
+const myAPILink = "http://localhost:8080/api/";
+
 const download = axios.create({
-    baseURL: "http://localhost:8080/api/",
+    baseURL: myAPILink,
     responseType: "blob",
 });
 

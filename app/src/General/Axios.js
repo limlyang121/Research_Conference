@@ -1,8 +1,13 @@
 import axios from 'axios'
 import jwt_decode from "jwt-decode";
 
+// const myAPILink = "http://18.181.186.213:8080/api/auth/";
+const myAPILink = "http://localhost:8080/api/auth";
+
 const api = axios.create({
-    baseURL : "http://localhost:8080/api/auth/",
+
+
+    baseURL : myAPILink,
     headers:{
         "Content-Type": "application/json   "
     }

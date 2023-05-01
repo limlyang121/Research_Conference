@@ -1,22 +1,24 @@
 import axios from 'axios'
 
+// const myAPILink = "http://18.181.186.213:8080/api/";
+const myAPILink = "http://localhost:8080/api/";
 
 const api = axios.create({
-    baseURL: "http://localhost:8080/api/",
+    baseURL: myAPILink,
     headers: {
         "Content-type": "application/json",
     }
 });
 
 const upload = axios.create({
-    baseURL: "http://localhost:8080/api/",
+    baseURL: myAPILink,
     headers: {
         "Content-type": "multipart/form-data",
     }
 });
 
 const download = axios.create({
-    baseURL: "http://localhost:8080/api/",
+    baseURL: myAPILink,
     responseType: "blob",
 });
 

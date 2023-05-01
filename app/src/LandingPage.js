@@ -30,23 +30,25 @@ const LandingPage = () => {
                   <th> Role </th>
                 </tr>
               </thead>
-              <tr>
-                <td> admin </td>
-                <td rowSpan={4}> test123 </td>
-                <td> Admin </td>
-              </tr>
-              <tr>
-                <td> author </td>
-                <td> Author </td>
-              </tr>
-              <tr>
-                <td> reviewer </td>
-                <td> Reviewer </td>
-              </tr>
-              <tr>
-                <td> conference </td>
-                <td> Conference Chair </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td> admin </td>
+                  <td rowSpan={4}> test123 </td>
+                  <td> Admin </td>
+                </tr>
+                <tr>
+                  <td> author </td>
+                  <td> Author </td>
+                </tr>
+                <tr>
+                  <td> reviewer </td>
+                  <td> Reviewer </td>
+                </tr>
+                <tr>
+                  <td> conference </td>
+                  <td> Conference Chair </td>
+                </tr>
+              </tbody>
             </Table>
 
           </Container>
@@ -122,10 +124,63 @@ const LandingPage = () => {
 
         </fieldset>
 
+        <fieldset>
+          <legend>
+            <h1>
+              How the System Work
+            </h1>
+          </legend>
+
+          <Container style={{ width: "70%" }}  >
+            <h5>
+              <ol style={{ textAlign: "left" }} >
+                <li>Author add a new Papers</li>
+                <li>Reviewers Bid the Papers</li>
+                <li>Conferece Allocate/Allow the Reviewers to Reviews </li>
+                <li>Reviewer review the Paper </li>
+                <li>Once there are more than 5 Review for that paper, Conference can close the Bidding </li>
+                <li>Once all reviewer done review the papers, the conference can accept/reject the paper by see the reviewer review </li>
+                <li>Once Accepted/Rejected, Conference won't be able to Edit it </li>
+              </ol>
+
+
+            </h5>
+
+            <div style={{ textAlign: "left" }}>
+              <h4>Note</h4>
+              <br />
+              <h5>
+
+                <ol>
+                  <li>In step 6, Conference can Unbid the reviewer bid if needed</li>
+                  <li>Author can only delete paper when Bidding still Open. Once close, the author can't delete papers</li>
+
+                </ol>
+              </h5>
+            </div>
+
+          </Container>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            <h1>
+              Final Note
+            </h1>
+          </legend>
+
+          <Container style={{ width: "70%" }}  >
+            <h5>
+              The speed to get Database might have little bit of delay as i using free tier Hosting from Render <br/>
+              if you have any problem, can send a email to  <br />
+              Limlyang121@outlook.com
+            </h5>
+          </Container>
+
+        </fieldset>
+
         <br />
-
-
-
 
 
         <div style={{ textAlign: "center" }}>
