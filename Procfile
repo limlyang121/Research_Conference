@@ -1,0 +1,1 @@
+cd server : cd REST-Conferece && cd target/java -jar researchconference-0.0.1-SNAPSHOT.jar
