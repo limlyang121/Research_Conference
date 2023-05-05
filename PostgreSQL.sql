@@ -182,7 +182,7 @@ VALUES
 (1, '1baj4lJk6QdCpXTaymjPM3wfxdiEAedDh', 'application/pdf' ),
 (2, '1ON5eV0I3hwQe9M3-r3OJFB6ISV6ifz9l', 'application/pdf' ),
 (3, '1YkSz44K2LGjNHCdkSdUihJoxKUCRCdRt', 'application/pdf' ),
-(4, '11L6jPqgF0nX_H6te1UyUtWDM8nLGOFe2', 'application/pdf' );
+(4, '1M-lsEwfbHZgfx_fXiQfNr_KOcxevzraL', 'application/pdf' );
 
 
 INSERT INTO paper (paperID, file_info_ID, status, paper_info_ID, reviewed_time )
