@@ -6,6 +6,7 @@ import { Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container,
 import AppNavbar from '../Navbar/AppNavbar';
 import { acceptPaperToPublishAPI, getPaperReviewsAPI, rejectPaperToPublishAPI } from './Axios';
 import ConferenceSecurity from './ConferenceSecurity';
+import { CircularProgress } from "@material-ui/core";
 
 function ConferencePaperReview() {
 
@@ -13,6 +14,7 @@ function ConferencePaperReview() {
     const [average, setAverage] = React.useState(0);
     const { id } = useParams();
     const navigate = useNavigate();
+    const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
         const fetchReview = async (id) => {
@@ -89,17 +91,26 @@ function ConferencePaperReview() {
             <ConferenceSecurity />
             <Container fluid>
                 <br />
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <div>
+                        {displayReview()}
 
-                {displayReview()}
+                        Average is : {average}
 
-                Average is : {average}
+                        <Form>
+                            <ButtonGroup style={{ gap: "10px" }}>
+                                <Button color='primary' onClick={async () => acceptPaperToPublish(id)}> Accept</Button>
+                                <Button color='danger' onClick={async () => rejectPaperToPublish(id)}>  Reject</Button>
+                            </ButtonGroup>
+                        </Form>
 
-                <Form>
-                    <ButtonGroup style={{ gap: "10px" }}>
-                        <Button color='primary' onClick={async () => acceptPaperToPublish(id)}> Accept</Button>
-                        <Button color='danger' onClick={async () => rejectPaperToPublish(id)}>  Reject</Button>
-                    </ButtonGroup>
-                </Form>
+                    </div>
+
+                )}
 
 
 

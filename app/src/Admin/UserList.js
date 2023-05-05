@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { deactivationAccount, getAllNonActiveUsers, getAllUsers, activateAccountAPI } from './adminAxios';
 import AdminSecurity from './AdminSecurity';
 import { NoDataToDisplay } from '../General/GeneralDisplay';
+import { CircularProgress } from "@material-ui/core";
+
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -20,12 +22,18 @@ const UserList = () => {
     const fecthDataActive = async () => {
       let response = await getAllUsers();
       setUsers(response)
+      setLoading(false)
+
     }
 
     const fecthDataNonActive = async () => {
       let response = await getAllNonActiveUsers()
       setUsers(response)
+      setLoading(false)
+
     }
+
+    setLoading(true)
 
     if (status === "active") {
       fecthDataActive()
@@ -33,22 +41,20 @@ const UserList = () => {
       fecthDataNonActive()
     }
 
-    setLoading(false)
-
 
   }, [status, changeList]);
 
 
+
+
   const deactiveAccount = async (id) => {
     if (window.confirm("Are you sure? ")) {
-      try {
-        const responseData = await deactivationAccount(id);
-        alert(responseData);
-        let updatedGroups = [...users].filter(i => i.id !== id);
-        setUsers(updatedGroups);
-      } catch (error) {
-        alert(JSON.stringify(error.response.data.message))
-      }
+      await deactivationAccount(id)
+        .then((responseData) => {
+          alert(responseData)
+          let updatedGroups = [...users].filter(i => i.id !== id);
+          setUsers(updatedGroups)
+        })
     }
   }
 
@@ -84,7 +90,7 @@ const UserList = () => {
   const groupList = users.map(user => {
     return (
       <tr key={user.id}>
-        {user.id === parseInt(myID)  ? (
+        {user.id === parseInt(myID) ? (
           <></>
         ) : (
           <>
@@ -103,9 +109,6 @@ const UserList = () => {
     )
   });
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
 
   return (
@@ -124,10 +127,13 @@ const UserList = () => {
           <Button color='danger' onClick={() => changeList("nonactive")}>Show Deactive</Button>
         </ButtonGroup>
 
-        {groupList.length === 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', margin: '20px' }}>
+            <CircularProgress color="primary" />
+          </div>
+        ) : groupList.length === 0 ? (
           <NoDataToDisplay />
         ) : (
-
           <Table striped bordered hover className="mt-4">
             <thead>
               <tr>
@@ -142,7 +148,6 @@ const UserList = () => {
             </tbody>
           </Table>
         )}
-
 
       </Container>
     </div>

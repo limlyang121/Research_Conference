@@ -36,6 +36,7 @@ function PaperEdit() {
     }
 
     const [isLoading, setIsLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState();
     const [myFile, setFile] = React.useState(null);
     const [myPaper, setPaper] = React.useState(paperFormState)
     const { id } = useParams();
@@ -51,11 +52,14 @@ function PaperEdit() {
                 setPaper(response)
             } catch (error) {
                 displayErrorMessage(error, navigate, -1)
+            }finally{
+                setLoading(false)
             }
 
 
         }
         if (id !== 'new') {
+            setLoading(true)
             loadData()
         }
 
@@ -127,53 +131,64 @@ function PaperEdit() {
             <AuthorSecurity />
 
             <Container>
-                {title}
 
-                <hr />
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <div>
+                        {title}
 
-                <Form onSubmit={handleSubmit}>
+                        <hr />
 
-                    <Input type={'hidden'} value={myPaper.paperID} name="paperID" />
-                    <Input type={'hidden'} value={myPaper.status} name="status" />
+                        <Form onSubmit={handleSubmit}>
 
-                    <Input type={"text"} value={myPaper.paperInfo.title} placeholder="Title" required
-                        onChange={handleChange} className="form-control" id='paperInfo.title' name='paperInfo.title'
-                        style={{ height: "50px" }} />
+                            <Input type={'hidden'} value={myPaper.paperID} name="paperID" />
+                            <Input type={'hidden'} value={myPaper.status} name="status" />
 
-                    <br />
+                            <Input type={"text"} value={myPaper.paperInfo.title} placeholder="Title" required
+                                onChange={handleChange} className="form-control" id='paperInfo.title' name='paperInfo.title'
+                                style={{ height: "50px" }} />
 
-                    <Input type={"text"} value={myPaper.paperInfo.filename} placeholder="filename" required
-                        onChange={handleChange} className="form-control" readOnly
-                        style={{ height: "50px" }} />
+                            <br />
 
-                    <br />
+                            <Input type={"text"} value={myPaper.paperInfo.filename} placeholder="filename" required
+                                onChange={handleChange} className="form-control" readOnly
+                                style={{ height: "50px" }} />
 
-                    {id === "new" &&
-                        <Input type='file' name='file' id='file' accept='application/pdf' onChange={handleFileUpload} />
+                            <br />
 
-                    }
+                            {id === "new" &&
+                                <Input type='file' name='file' id='file' accept='application/pdf' onChange={handleFileUpload} />
 
-                    <br /> <br />
+                            }
 
-                    <Input type='Date' name='upload' id='upload' hidden />
+                            <br /> <br />
 
-
-
-                    <Input type='textarea' placeholder='description ' style={{ height: "250px" }} name="paperInfo.description" id='paperInfo.description'
-                        onChange={handleChange} value={myPaper.paperInfo.description} />
-
-                    <br />
-
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <Button type='submit' color='primary'>Submit</Button>
-                    )}
+                            <Input type='Date' name='upload' id='upload' hidden />
 
 
 
+                            <Input type='textarea' placeholder='description ' style={{ height: "250px" }} name="paperInfo.description" id='paperInfo.description'
+                                onChange={handleChange} value={myPaper.paperInfo.description} />
 
-                </Form>
+                            <br />
+
+                            {isLoading ? (
+                                <CircularProgress />
+                            ) : (
+                                <Button type='submit' color='primary'>Submit</Button>
+                            )}
+
+
+
+
+                        </Form>
+
+                    </div>
+
+                )}
             </Container>
 
         </div>

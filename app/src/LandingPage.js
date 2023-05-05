@@ -8,10 +8,11 @@ const LandingPage = () => {
 
   return (
     <div>
+      <h2 style={{ textAlign: "center" }}>Note</h2>
+      <hr style={{padding:"10px"}} />
       <Container fluid>
         <br />
-        <h2 style={{ textAlign: "center" }}>Note</h2>
-        <hr />
+
 
         <fieldset>
           <legend className='float-none w-auto'>
@@ -127,52 +128,13 @@ const LandingPage = () => {
         <fieldset>
           <legend>
             <h1>
-              How the System Work
-            </h1>
-          </legend>
-
-          <Container style={{ width: "70%" }}  >
-            <h5>
-              <ol style={{ textAlign: "left" }} >
-                <li>Author add a new Papers</li>
-                <li>Reviewers Bid the Papers</li>
-                <li>Conferece Allocate/Allow the Reviewers to Reviews </li>
-                <li>Reviewer review the Paper </li>
-                <li>Once there are more than 5 Review for that paper, Conference can close the Bidding </li>
-                <li>Once all reviewer done review the papers, the conference can accept/reject the paper by see the reviewer review </li>
-                <li>Once Accepted/Rejected, Conference won't be able to Edit it </li>
-              </ol>
-
-
-            </h5>
-
-            <div style={{ textAlign: "left" }}>
-              <h4>Note</h4>
-              <br />
-              <h5>
-
-                <ol>
-                  <li>In step 6, Conference can Unbid the reviewer bid if needed</li>
-                  <li>Author can only delete paper when Bidding still Open. Once close, the author can't delete papers</li>
-
-                </ol>
-              </h5>
-            </div>
-
-          </Container>
-
-        </fieldset>
-
-        <fieldset>
-          <legend>
-            <h1>
               Final Note
             </h1>
           </legend>
 
           <Container style={{ width: "70%" }}  >
             <h5>
-              The speed to get Database might have little bit of delay as i using free tier Hosting from Render <br/>
+              The speed to get Database might have little bit of delay as i using free tier Hosting from Render <br />
               if you have any problem, can send a email to  <br />
               Limlyang121@outlook.com
             </h5>

@@ -5,12 +5,14 @@ import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
 import { dateFormat, downloadFile, fullName } from '../General/GeneralFunction';
 import { NoDataToDisplay } from '../General/GeneralDisplay';
+import { CircularProgress } from "@material-ui/core";
 
 function ReviewerBid() {
 
     const [displayPapers, setDisplayPaper] = React.useState([])
     const [status, setStatus] = React.useState("bid");
     const id = sessionStorage.getItem("id")
+    const [loading, setLoading] = React.useState(true);
 
     const changeStatus = React.useCallback((stat) => {
         setStatus(stat)
@@ -21,11 +23,15 @@ function ReviewerBid() {
         const fetchBidData = async () => {
             let response = await getPendingPapers();
             setDisplayPaper(response)
+            setLoading(false)
         }
         const fetchBanData = async () => {
             let response = await getBanPapers();
             setDisplayPaper(response)
+            setLoading(false)
         }
+
+        setLoading(true)
 
         if (status === "bid") {
             fetchBidData()
@@ -178,28 +184,38 @@ function ReviewerBid() {
                     <Button color='danger' onClick={() => changeStatus("hide")} >Show Hide</Button>
                 </ButtonGroup>
 
-                {displayPapers.length === 0 &&
-                    <NoDataToDisplay />
-                }
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <div>
+                        {displayPapers.length === 0 &&
+                            <NoDataToDisplay />
+                        }
 
-                {displayPapers.length !== 0 && (
+                        {displayPapers.length !== 0 && (
 
-                    <Table striped bordered hover className="mt-4">
-                        <thead>
-                            <tr>
-                                <th style={{ width: "10%" }} >Paper Title </th>
-                                <th style={{ width: "20%" }}>Paper Upload Date </th>
-                                <th style={{ width: "20%" }}>Author Name </th>
-                                <th colSpan={3}>Action</th>
+                            <Table striped bordered hover className="mt-4">
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: "20%" }} >Paper Title </th>
+                                        <th style={{ width: "20%" }}>Paper Upload Date </th>
+                                        <th style={{ width: "20%" }}>Author Name </th>
+                                        <th width="40%" colSpan={3}>Action</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {displayBidPapers}
-                        </tbody>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {displayBidPapers}
+                                </tbody>
 
-                    </Table>
+                            </Table>
+                        )}
+                    </div>
+
                 )}
+
 
             </Container>
         </div>

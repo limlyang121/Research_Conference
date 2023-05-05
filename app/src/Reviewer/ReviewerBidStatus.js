@@ -9,11 +9,15 @@ import ReviewerSecurity from './ReviewerSecurity';
 import { downloadFile } from '../General/GeneralFunction';
 import { NoDataToDisplay } from '../General/GeneralDisplay';
 
+import { CircularProgress } from "@material-ui/core";
+
+
 function ReviewerBidStatus() {
 
     const [myBid, setBids] = React.useState([]);
     const [status, setStatus] = React.useState("Pending");
     const id = sessionStorage.getItem("id")
+    const [loading, setLoading] = React.useState(true);
 
     const changeList = React.useCallback((stat) => {
         setStatus(stat);
@@ -23,12 +27,14 @@ function ReviewerBidStatus() {
         const fetchBidData = async (id, stat) => {
             let response = await getBidByStatus(id, stat)
             setBids(response)
+            setLoading(false)
         }
 
+        setLoading(true)
         fetchBidData(id, status)
 
 
-    }, [id ,status, changeList])
+    }, [id, status, changeList])
 
     const deleteFromBid = async (id) => {
         if (window.confirm("Unbid the paper?")) {
@@ -43,7 +49,7 @@ function ReviewerBidStatus() {
     const PendingAction = (bid) => {
         return (
             <ButtonGroup style={{ gap: "10px" }} >
-                <Button color='primary'onClick={async() => downloadFile(bid.paper.paperID)} > Download</Button>
+                <Button color='primary' onClick={async () => downloadFile(bid.paper.paperID)} > Download</Button>
                 <Button color="warning" onClick={async () => deleteFromBid(bid.bidID)} > Unbid</Button>
             </ButtonGroup>
         )
@@ -87,32 +93,43 @@ function ReviewerBidStatus() {
             <ReviewerSecurity />
             <Container fluid>
                 <h3>Bid Status</h3>
-                <ButtonGroup style={{ gap: "10px" }} >
-                    <Button color='secondary' onClick={() => changeList("Pending")}  >Show Pending</Button>
-                    <Button color='primary' onClick={() => changeList("Accept")}  >Show Accept</Button>
-                    <Button color='danger' onClick={() => changeList("Reject")}  >Show Reject</Button>
 
-                </ButtonGroup>
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <div>
+                        <ButtonGroup style={{ gap: "10px" }} >
+                            <Button color='secondary' onClick={() => changeList("Pending")}  >Show Pending</Button>
+                            <Button color='primary' onClick={() => changeList("Accept")}  >Show Accept</Button>
+                            <Button color='danger' onClick={() => changeList("Reject")}  >Show Reject</Button>
 
-                {myBid.length === 0 &&
-                    <NoDataToDisplay />
-                }
+                        </ButtonGroup>
 
-                {myBid.length !== 0 && (
+                        {myBid.length === 0 &&
+                            <NoDataToDisplay />
+                        }
 
-                    <Table striped bordered hover className="mt-4">
-                        <thead>
-                            <tr>
-                                <th style={{ width: "10%" }} >Bid Status </th>
-                                <th style={{ width: "20%" }} >Paper Title </th>
-                                <th style={{ width: "20%" }} >FileName </th>
-                                <th colSpan={3}>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {displayBidStatus}
-                        </tbody>
-                    </Table>
+                        {myBid.length !== 0 && (
+
+                            <Table striped bordered hover className="mt-4">
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: "10%" }} >Bid Status </th>
+                                        <th style={{ width: "20%" }} >Paper Title </th>
+                                        <th style={{ width: "20%" }} >FileName </th>
+                                        <th colSpan={3}>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {displayBidStatus}
+                                </tbody>
+                            </Table>
+
+                        )}
+
+                    </div>
 
                 )}
 

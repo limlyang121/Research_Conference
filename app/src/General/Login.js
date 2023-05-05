@@ -24,6 +24,7 @@ function Login() {
       storeTokenData(tokenData)
       navigate("/home")
     } catch (error) {
+      alert (JSON.stringify(error))
       const errorMessage = error.response.data.message
       setErrorMessages(errorMessage)
     }

@@ -190,7 +190,7 @@ VALUES
 (1, 1, 'Accept', 1, 10),
 (2, 2, 'Reject', 2, 8),
 (3, 3, 'Ready', 3, 5),
-(4, 4, 'Pending', 4, 0);
+(4, 4, 'Pending', 4, 1);
 
 
 

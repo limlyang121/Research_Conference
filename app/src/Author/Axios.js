@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const myAPILink = "http://18.181.186.213:8080/api/";
-const myAPILink = "http://localhost:8080/api/";
+const myAPILink =   "https://safe-fjord-90688.herokuapp.com/api/"
+// const myAPILink = "http://localhost:8080/api/";
 
 const api = axios.create({
     baseURL: myAPILink,
@@ -46,8 +46,8 @@ export const getMyPapers = async () => {
     return response.data;
 }
 
-export const getMyPublishPapersAPI = async (status) => {
-    let response = await api.get(`papers/myPapers/publish/${status}`)
+export const getMyPublishPapersAPI = async () => {
+    let response = await api.get(`papers/myPapers/publish`)
     return response.data;
 }
 

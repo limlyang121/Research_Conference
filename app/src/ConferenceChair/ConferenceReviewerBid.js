@@ -9,6 +9,7 @@ import ConferenceSecurity from './ConferenceSecurity';
 import { FaCheck, FaRegTimesCircle } from 'react-icons/fa';
 import { MdRestore } from 'react-icons/md';
 import { NoDataToDisplay } from '../General/GeneralDisplay';
+import { CircularProgress } from "@material-ui/core";
 
 
 function ConferenceReviewerBid() {
@@ -17,6 +18,7 @@ function ConferenceReviewerBid() {
     const [bids, setBids] = React.useState([])
     const [status, setStatus] = React.useState("Pending")
     const [sort, setSort] = React.useState("id")
+    const [loading, setLoading] = React.useState(true);
 
     const changeBidsStatus = React.useCallback((stat) => {
         setStatus(stat)
@@ -27,11 +29,12 @@ function ConferenceReviewerBid() {
         const fetchBidsByStatus = async (stat) => {
             let response = await fetchPendingBidsAPI(stat);
             setBids(response)
+            setLoading(false)
         }
-        // alert(JSON.stringify(bids))
+
+        setLoading(true)
+
         fetchBidsByStatus(status);
-
-
 
     }, [status, changeBidsStatus])
 
@@ -142,43 +145,55 @@ function ConferenceReviewerBid() {
             <Container fluid>
                 <h3>Reviewer Bid</h3>
 
-                <ButtonGroup style={{ gap: "10px" }}>
-                    <Button color='secondary' onClick={() => changeBidsStatus("Pending")} >Show Pending</Button>
-                    <Button color='success' onClick={() => changeBidsStatus("Accept")}>Show Accept</Button>
-                    <Button color='danger' onClick={() => changeBidsStatus("Reject")}>Show Reject</Button>
-                </ButtonGroup>
 
-                {bidsList.length === 0 && <NoDataToDisplay />}
-
-                {bidsList.length !== 0 && (
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
                     <div>
-                        <br />
-                        <label style={{marginRight:"10px"}}>
-                            <input type="radio" onClick={() => sortListByID()}  checked={sort === "id"} />
-                            Sort by Date
-                        </label>
+                        <ButtonGroup style={{ gap: "10px" }}>
+                            <Button color='secondary' onClick={() => changeBidsStatus("Pending")} >Show Pending</Button>
+                            <Button color='success' onClick={() => changeBidsStatus("Accept")}>Show Accept</Button>
+                            <Button color='danger' onClick={() => changeBidsStatus("Reject")}>Show Reject</Button>
+                        </ButtonGroup>
 
-                        <label>
-                            <input type="radio" onClick={() => sortListByTitle()} checked={sort === "title"} />
-                            Sort by Title
-                        </label>
+                        
+                        {bidsList.length === 0 && <NoDataToDisplay />}
+
+                        {bidsList.length !== 0 && (
+                            <div>
+                                <br />
+                                <label style={{ marginRight: "10px" }}>
+                                    <input type="radio" onClick={() => sortListByID()} checked={sort === "id"} />
+                                    Sort by Date
+                                </label>
+
+                                <label>
+                                    <input type="radio" onClick={() => sortListByTitle()} checked={sort === "title"} />
+                                    Sort by Title
+                                </label>
 
 
-                        <Table striped bordered hover className="mt-4">
-                            <thead>
-                                <tr>
-                                    <th width="20%">Author Name</th>
-                                    <th width="20%">Reviewe Name</th>
-                                    <th width="20%">Title</th>
-                                    <th >Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {bidsList}
-                            </tbody>
-                        </Table>
+                                <Table striped bordered hover className="mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th width="20%">Author Name</th>
+                                            <th width="20%">Reviewe Name</th>
+                                            <th width="20%">Title</th>
+                                            <th >Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {bidsList}
+                                    </tbody>
+                                </Table>
+                            </div>
+                        )}
+
                     </div>
                 )}
+
             </Container>
         </div>
     );

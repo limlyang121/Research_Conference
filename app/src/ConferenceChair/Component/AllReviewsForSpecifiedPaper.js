@@ -62,11 +62,7 @@ export default function AllReviewsForSpecifiedPaper({ reviewList, paperID, statu
                     )}
                 </div>
             ) : (
-                <div>
-                    {alert("Illegal Modify of parameter")}
-                    {navigate(-1)}
-                </div>
-
+                null
             )}
 
             <br style={{marginBottom:"10px"}} />

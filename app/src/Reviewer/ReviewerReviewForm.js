@@ -7,6 +7,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import ReviewerSecurity from './ReviewerSecurity';
 import { getOneReviewsAPI, SubmitReviewAPI, UpdateReviewAPI } from './Axios';
 import { displayErrorMessage } from '../General/GeneralFunction';
+import { CircularProgress } from "@material-ui/core";
 
 function ReviewerReviewForm() {
 
@@ -31,6 +32,7 @@ function ReviewerReviewForm() {
     const { id } = useParams();
     const { status } = useParams()
     const [reviews, setReviews] = React.useState(reviewsForm)
+    const [loading, setLoading] = React.useState(true);
     const navigate = useNavigate()
 
 
@@ -41,13 +43,18 @@ function ReviewerReviewForm() {
                 setReviews(response)
             } catch (error) {
                 displayErrorMessage(error, navigate, -1);
+            } finally {
+                setLoading(false)
             }
         }
+
 
         if (status === "new") {
             setReviews(prevState => ({
                 ...prevState, bid: { ...prevState.bid, bidID: id }
             }));
+            setLoading(false)
+
         } else {
             fetchData(id)
         }
@@ -103,36 +110,45 @@ function ReviewerReviewForm() {
             <ReviewerSecurity />
 
             <Container fluid>
-                {title}
-                <hr />
-                <Form onSubmit={handleSubmit}>
-                    <Input type='hidden' name='reviewID' id='reviewID' value={reviews.reviewID}></Input>
-                    <Input type='hidden' name='bid.bidID' id='bid.bidID' value={reviews.bid.bidID}></Input>
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <div>
+                        {title}
+                        <hr />
+                        <Form onSubmit={handleSubmit}>
+                            <Input type='hidden' name='reviewID' id='reviewID' value={reviews.reviewID}></Input>
+                            <Input type='hidden' name='bid.bidID' id='bid.bidID' value={reviews.bid.bidID}></Input>
 
-                    <FormGroup>
-                        <Label for="rate">Rating</Label>
-                        <Input type='select' name='rate' id='rate' value={reviews.rate} onChange={handleChange}>
-                            {options.map((optionChoice) => (
-                                <option key={optionChoice.value} value={optionChoice.value} selected={reviews.rate === optionChoice.value}>
-                                    {optionChoice.label}
-                                </option>
-                            ))}
-                        </Input>
-                    </FormGroup>
+                            <FormGroup>
+                                <Label for="rate">Rating</Label>
+                                <Input type='select' name='rate' id='rate' value={reviews.rate} onChange={handleChange}>
+                                    {options.map((optionChoice) => (
+                                        <option key={optionChoice.value} value={optionChoice.value} selected={reviews.rate === optionChoice.value}>
+                                            {optionChoice.label}
+                                        </option>
+                                    ))}
+                                </Input>
+                            </FormGroup>
 
 
-                    <br />
+                            <br />
 
-                    <FormGroup>
-                        <Label for="comment">Comment</Label>
-                        <Input type="textarea" value={reviews.comment} name="comment" id='comment' onChange={handleChange} />
-                    </FormGroup>
+                            <FormGroup>
+                                <Label for="comment">Comment</Label>
+                                <Input type="textarea" value={reviews.comment} name="comment" id='comment' onChange={handleChange} />
+                            </FormGroup>
 
-                    <br />
+                            <br />
 
-                    <Button type='submit' color='primary'>Submit Review  </Button>
+                            <Button type='submit' color='primary'>Submit Review  </Button>
 
-                </Form>
+                        </Form>
+                    </div>
+                )}
+
             </Container>
         </div>
     );

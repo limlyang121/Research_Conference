@@ -8,19 +8,21 @@ import { getMyPapers, deletePapers } from './Axios';
 import AuthorSecurity from './AuthorSecurity';
 import { dateFormat, downloadFile } from '../General/GeneralFunction';
 import { NoDataToDisplay } from '../General/GeneralDisplay';
+import { CircularProgress } from '@material-ui/core';
 
 
 function PaperList() {
-
     const [myPapers, setPapers] = React.useState([])
-
+    const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
+        setLoading(true);
         <AuthorSecurity />
 
         const fetchData = async () => {
             let response = await getMyPapers()
             setPapers(response)
+            setLoading(false)
         }
         fetchData();
 
@@ -41,7 +43,6 @@ function PaperList() {
         return (
             <tr key={paper.paperID}>
                 <td style={{ whiteSpace: "nowrap" }}
-                // className={paper.status === "Accept" ? "green" : paper.status === "Reject" ? "red" : ""}
                 > {paper.paperInfo.title}  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {paper.paperInfo.filename}  </td>
                 <td style={{ whiteSpace: "nowrap" }} > {dateFormat(paper.paperInfo.upload)}  </td>
@@ -52,7 +53,7 @@ function PaperList() {
                         {paper.status === "Pending" ? (
                             <Button size="sm" color="danger" onClick={() => remove(paper.paperID)}>Delete</Button>
                         ) : (
-                            <Button size="sm" color="secondary" onClick={() => alert("Can't delete paper because Bidding is close") }>Delete</Button>
+                            <Button size="sm" color="secondary" onClick={() => alert("Can't delete paper because Bidding is close")}>Delete</Button>
                         )}
                         <Button size="sm" color="primary" onClick={async () => downloadFile(paper.paperID)} >Download</Button>
 
@@ -74,20 +75,29 @@ function PaperList() {
 
                 <h3>My Papers</h3>
 
-                {myPapers.length === 0 ? (<NoDataToDisplay />) : (
-                    <Table striped bordered hover className="mt-4">
-                        <thead>
-                            <tr>
-                                <th>Paper Title </th>
-                                <th>Paper filename </th>
-                                <th>Upload At </th>
-                                <th colSpan={4}>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {myPapersData}
-                        </tbody>
-                    </Table>
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <div>
+                        {myPapers.length === 0 ? (<NoDataToDisplay />) : (
+                            <Table striped bordered hover className="mt-4">
+                                <thead>
+                                    <tr>
+                                        <th width="20%" >Paper Title </th>
+                                        <th width="20%"> Paper filename </th>
+                                        <th width="20%">Upload At </th>
+                                        <th width="40%" colSpan={4}>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {myPapersData}
+                                </tbody>
+                            </Table>
+                        )}
+                    </div>
+
                 )}
 
             </Container>

@@ -8,6 +8,7 @@ import { getAcceptedBidAPI, getMyReviewsAPI } from './Axios';
 import ReviewerSecurity from './ReviewerSecurity';
 import { dateFormat, downloadFile } from '../General/GeneralFunction';
 import { NoDataToDisplay } from '../General/GeneralDisplay';
+import { CircularProgress } from "@material-ui/core";
 
 
 
@@ -16,6 +17,7 @@ function ReviewerReviewList() {
     const [status, setStatus] = React.useState("Pending")
     const [bids, setBids] = React.useState([])
     const [reviews, setReviews] = React.useState([])
+    const [loading, setLoading] = React.useState(true);
 
 
     const changeList = React.useCallback((stat) => {
@@ -31,10 +33,13 @@ function ReviewerReviewList() {
         const fetchCompletedData = async () => {
             let response = await getMyReviewsAPI()
             setReviews(response)
+            setLoading(false)
+
         }
 
         fetchAcceptedData();
         fetchCompletedData();
+
 
 
     }, [])
@@ -106,31 +111,42 @@ function ReviewerReviewList() {
             <AppNavbar />
             <ReviewerSecurity />
             <Container fluid>
-                <h3>Bid Status</h3>
-                <ButtonGroup style={{ gap: "10px" }} >
-                    <Button color='secondary' onClick={() => changeList("Pending")} > Show Pending</Button>
-                    <Button color='primary' onClick={() => changeList("Complete")}> Show Reviewed</Button>
+                <h3>Review List</h3>
 
-                </ButtonGroup>
+                {loading ? (
+                    <div style={{ textAlign: 'center', margin: '20px' }}>
+                        <CircularProgress color="primary" />
+                    </div>
+                ) : (
+                    <div>
+                        <ButtonGroup style={{ gap: "10px" }} >
+                            <Button color='secondary' onClick={() => changeList("Pending")} > Show Pending</Button>
+                            <Button color='primary' onClick={() => changeList("Complete")}> Show Reviewed</Button>
 
-                {status === "Pending" && bids.length === 0 && (
-                    <NoDataToDisplay />
+                        </ButtonGroup>
+
+                        {status === "Pending" && bids.length === 0 && (
+                            <NoDataToDisplay />
+                        )}
+
+                        {status === "Complete" && reviews.length === 0 && (
+                            <NoDataToDisplay />
+                        )}
+
+                        <Table striped bordered hover className="mt-4">
+                            <thead>
+                                {status === "Pending" && bids.length !== 0 && displayBidStatusHeader()}
+                                {status === "Complete" && reviews.length !== 0 && displayReviewStatusHeader()}
+                            </thead>
+                            <tbody>
+                                {status === "Pending" && bids.length !== 0 && displayBidStatus()}
+                                {status === "Complete" && reviews.length !== 0 && displayReviewStatus()}
+                            </tbody>
+                        </Table>
+
+                    </div>
+
                 )}
-
-                {status === "Complete" && reviews.length === 0 && (
-                    <NoDataToDisplay />
-                )}
-
-                <Table striped bordered hover className="mt-4">
-                    <thead>
-                        {status === "Pending" && bids.length !== 0 && displayBidStatusHeader()}
-                        {status === "Complete" && reviews.length !== 0 && displayReviewStatusHeader()}
-                    </thead>
-                    <tbody>
-                        {status === "Pending" && bids.length !== 0 && displayBidStatus()}
-                        {status === "Complete" && reviews.length !== 0 && displayReviewStatus()}
-                    </tbody>
-                </Table>
             </Container>
         </div>
     );
