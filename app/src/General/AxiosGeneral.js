@@ -1,10 +1,9 @@
 import axios from 'axios'
+import { getAxiosLink } from '../AxiosUrl';
 
-const myAPILink =   "https://safe-fjord-90688.herokuapp.com/api/"
-// const myAPILink = "http://localhost:8080/api/";
 
 const api = axios.create({
-    baseURL: myAPILink,
+    baseURL: getAxiosLink(),
     headers: {
         "Content-type": "application/json",
     }

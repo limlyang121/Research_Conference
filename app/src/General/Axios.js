@@ -1,11 +1,10 @@
 import axios from 'axios'
 import jwt_decode from "jwt-decode";
+import { getAxiosLink } from '../AxiosUrl';
 
-const myAPILink =   "https://safe-fjord-90688.herokuapp.com/api/auth"
-// const myAPILink = "http://localhost:8080/api/auth";
 
 const api = axios.create({
-    baseURL : myAPILink,
+    baseURL : getAxiosLink()  +  "/auth"  ,
     headers:{
         "Content-Type": "application/json   "
     }
