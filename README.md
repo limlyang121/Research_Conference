@@ -49,7 +49,7 @@ and change the datasource url, username and password in application properties
 2. For React.js, Run ```npm install``` then ```npm start```   
 
 
-**Note **   
+**Note**   
 to change to Local Back-end, just switch the url in the ```AxiosUrl.js```   
 ![image](https://user-images.githubusercontent.com/103249985/236638817-7d4d666b-bbc0-47a7-b2a8-c5f2d415f0a6.png)   
 
