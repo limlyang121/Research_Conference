@@ -46,4 +46,10 @@ and change the datasource url, username and password in application properties
 
 **Install**  
 1. Java just run Maven with ```./mvnw spring-boot:run```  
-2. For React.js, Run ```npm install``` then ```npm start``` 
+2. For React.js, Run ```npm install``` then ```npm start```   
+
+
+**Note **   
+to change to Local Back-end, just switch the url in the ```AxiosUrl.js```   
+![image](https://user-images.githubusercontent.com/103249985/236638817-7d4d666b-bbc0-47a7-b2a8-c5f2d415f0a6.png)   
+
