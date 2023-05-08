@@ -41,7 +41,7 @@ const AppNavbar = () => {
       <Navbar color="dark" dark expand="md">
         <Container fluid>
 
-          <NavbarBrand tag={Link} to="/home"><h2>Home</h2></NavbarBrand>
+          <NavbarBrand tag={Link} to="/home" ><h2>Home</h2></NavbarBrand>
 
           <NavbarToggler onClick={() => { setIsOpen(!isOpen) }} />
           <Collapse isOpen={isOpen} navbar>
