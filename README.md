@@ -1,16 +1,9 @@
-***Will Host the project once it 100% complete***  
-
 # MyProject
  Practicing Coding (Full Stack).
 
 
-Current  
----------------------------------------------------------  
-At 99% Completed  
-
-
 **To do:**
-Hosting   
+Fix some Bug (Some Alert not working in deploy and Navbar have larger height compared to localhost)      
 
 **Completed Feauture:**  
 1. Using Google Cloud Console-Google Drive as Server  
@@ -31,10 +24,21 @@ Server:
 [Google Cloud Console -Google Drive]  
 Other:  
 [DTO, Git, Maven]  
+Hosting:
+[Heroku, Render]
 
 
 Google Drive Link :  
 https://drive.google.com/drive/folders/1aFIZ3sw9h159h8A46CwsKW1DG3OA7_8k?usp=share_link  
+
+**Install**  
+1. Java just run Maven with ```./mvnw spring-boot:run```  
+2. For React.js, Run   
+```npm install``` lastly, run with  ```npm start```   
+Run this line if material/ui is causing problem   
+```npm config set legacy-peer-deps true``` then do   
+```npm install``` lastly, run with  ```npm start```   
+
 
 For PostgreSQL set-up, can skip since i'm already hosting in render    
 but since it a free tier, speed might be slower than Local  
@@ -44,14 +48,7 @@ and change the datasource url, username and password in application properties
 
 
 
-**Install**  
-1. Java just run Maven with ```./mvnw spring-boot:run```  
-2. For React.js, Run   
-```npm config set legacy-peer-deps true``` then   
-```npm install``` lastly, run with  ```npm start```   
-
-
-**Note**   
+**Note: To use localhost instead of Host**   
 to change to Local Back-end, just switch the url in the ```AxiosUrl.js```   
 ![image](https://user-images.githubusercontent.com/103249985/236638817-7d4d666b-bbc0-47a7-b2a8-c5f2d415f0a6.png)   
 
