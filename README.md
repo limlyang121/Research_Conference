@@ -42,7 +42,7 @@ Run this line if material/ui is causing problem
 
 For PostgreSQL set-up, can skip since i'm already hosting in render    
 but since it a free tier, speed might be slower than Local  
-To setup locally, just need to grab the script in the project and use it.  
+To setup locally, just need to grab the script name ```postgreSQL.sql``` in the project and use it.     
 and change the datasource url, username and password in application properties  
 ![image](https://user-images.githubusercontent.com/103249985/235494341-8a9b3604-01e9-4e89-830d-cce8914eabe0.png)  
 
