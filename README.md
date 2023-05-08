@@ -46,7 +46,9 @@ and change the datasource url, username and password in application properties
 
 **Install**  
 1. Java just run Maven with ```./mvnw spring-boot:run```  
-2. For React.js, Run ```npm install``` then ```npm start```   
+2. For React.js, Run   
+```npm config set legacy-peer-deps true``` then   
+```npm install``` lastly, run with  ```npm start```   
 
 
 **Note**   
