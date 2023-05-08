@@ -40,6 +40,8 @@ Run this line if material/ui is causing problem
 ```npm install``` lastly, run with  ```npm start```   
 
 
+***Set up***   
+
 For PostgreSQL set-up, can skip since i'm already hosting in render    
 but since it a free tier, speed might be slower than Local  
 To setup locally, just need to grab the script name ```postgreSQL.sql``` in the project and use it.     
@@ -48,7 +50,6 @@ and change the datasource url, username and password in application properties
 
 
 
-**Note: To use localhost instead of Host**   
 to change to Local Back-end, just switch the url in the ```AxiosUrl.js```   
 ![image](https://user-images.githubusercontent.com/103249985/236638817-7d4d666b-bbc0-47a7-b2a8-c5f2d415f0a6.png)   
 
