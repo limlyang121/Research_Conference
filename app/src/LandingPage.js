@@ -9,7 +9,7 @@ const LandingPage = () => {
   return (
     <div>
       <h2 style={{ textAlign: "center" }}>Note</h2>
-      <hr style={{padding:"10px"}} />
+      <hr style={{height:"20px" }} />
       <Container fluid>
         <br />
 
@@ -136,7 +136,7 @@ const LandingPage = () => {
             <h5>
               The speed to get Database might have little bit of delay as i using free tier Hosting from Render <br />
               Backend and Frontend will using heroku, Since heroku support auto-deploy, it will be easier to fix bug <br />
-              if you have any problem, can send a email to  <br />
+              if you have encounter any bug, can send a email to  <br />
               Limlyang121@outlook.com
             </h5>
           </Container>
