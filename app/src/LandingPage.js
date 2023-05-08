@@ -135,8 +135,27 @@ const LandingPage = () => {
           <Container style={{ width: "70%" }}  >
             <h5>
               The speed to get Database might have little bit of delay as i using free tier Hosting from Render <br />
+              Backend and Frontend will using heroku, Since heroku support auto-deploy, it will be easier to fix bug <br />
               if you have any problem, can send a email to  <br />
               Limlyang121@outlook.com
+            </h5>
+          </Container>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            <h1>
+              Possible Bug
+            </h1>
+          </legend>
+
+          <Container style={{ width: "70%" }}  >
+            <h5>
+              Because i design this project with internal use, so a conference chair will be able to view and allocate all Bids  <br /> 
+              and manage all publication  of all papers. since i host the project to showcase. <br/>
+              if by any chance, two people testing same function it might cause some confusion such as paper suddenly gone <br/>
+              because it was accepted/reject by other conference.
             </h5>
           </Container>
 
