@@ -27,6 +27,7 @@ import ConferenceCheckReviewerBidProcess from './ConferenceChair/ConferenceCheck
 import ConferenceAllReviewerReviews from './ConferenceChair/ConferenceAllReviewerReviews';
 import GoogleDriveUpload from './Author/Test/GoogleDriveUpload';
 import PaperPublishList from './Author/PaperPublishList';
+import ProfileUpdate from './General/ProfileUpdate';
 
 
 const App = () => {
@@ -40,6 +41,10 @@ const App = () => {
 
             {/* Login */}
             <Route path='/home' exact={true} element={<Home />} />
+            
+            {/* General */}
+            <Route path='/profile' exact={true} element={<ProfileUpdate />} />
+
 
             {/* Admin */}
             <Route path='/admin/users' exact={true} element={<UserList />} />
@@ -55,14 +60,8 @@ const App = () => {
             <Route path='/author/papers/form/:id' exact={true} element={<PaperEdit />} />
             <Route path='/author/papers/read/:id' exact={true} element={<PaperRead />} />
             <Route path='/author/papers/:id/review' exact={true} element={<PaperReview />} />
-
             <Route path='/author/papers/publish' exact={true} element={<PaperPublishList />} />
-
-
-
             <Route path='/author/test' exact={true} element={<GoogleDriveUpload />} />
-
-
 
 
             {/* Reviewer */}

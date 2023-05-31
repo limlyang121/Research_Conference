@@ -51,15 +51,14 @@ const LandingPage = () => {
                 </tr>
               </tbody>
             </Table>
-
+            <h4>
+              <ol style={{ textAlign: "left" }} >
+                <li> User above can't be modified (Update, Delete, Reset password) </li>
+                <li> All Password for existing account is 'test123' (can check in postgreSQL which account is premade) </li>
+                <li> the username can be check with Admin - User Account</li>
+              </ol>
+            </h4>
           </Container>
-          <h4 style={{ textAlign: "center" }}>
-            Note:  <br />
-            User above can't be modified (Update, Delete, Reset password) <br />
-            All Password for existing account is 'test123' (can check in postgreSQL which account is premade) <br />
-            the username can be check with Admin - User Account <br />
-          </h4>
-
 
 
         </fieldset>
@@ -77,7 +76,6 @@ const LandingPage = () => {
             <h4>
               <ol style={{ textAlign: "left" }} >
                 <li>Only Admin can Register a new User </li>
-                <li>Only Admin can Edit other user Profile </li>
               </ol>
             </h4>
           </Container>
@@ -136,13 +134,13 @@ const LandingPage = () => {
             <h5>
               <ol style={{ textAlign: "left" }} >
                 <li>
-                  The speed to get Database might have little bit of delay as i using free tier Hosting from Render 
+                  The speed to get Database might have little bit of delay as i using free tier Hosting from Render
                 </li>
                 <li>
                   Backend and Frontend will using heroku, Since heroku support auto-deploy, it will be easier to fix bug <br />
                 </li>
                 <li>
-                if you have encounter any bug, can send a email to
+                  if you have encounter any bug, can send a email to
                   Limlyang121@outlook.com
                 </li>
               </ol>
@@ -162,16 +160,12 @@ const LandingPage = () => {
             <h5>
               <ol style={{ textAlign: "left" }} >
                 <li>
-                  Because i design this project with internal company use, so a conference chair will be able to view and allocate all Bids  <br />
-                  and manage all publication  of all papers. since i host the project to showcase. <br />
-                  if by any chance, two people testing same function it might cause some confusion such as paper suddenly gone <br />
-                  because it was accepted/reject by other conference.
-                </li>
-                <li>
-                  Navbar, The size is different from when i run localhost ( Will fix in next update)
-                </li>
-                <li>
-                  Some Alert Not showing when it work in local Host (Will fix in next update)
+                  <p style={{textAlign:"justify"}}>
+                    Because i design this project with internal company use, so a conference chair will be able to view and allocate all Bids  
+                    and manage all publication  of all papers. since i host the project to showcase. 
+                    if by any chance, two people testing same function it might cause some confusion such as paper suddenly gone 
+                    because it was accepted/reject by other conference.
+                  </p>
                 </li>
 
               </ol>

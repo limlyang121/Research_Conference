@@ -36,7 +36,7 @@ export const displayErrorMessage = (error, navigate, link) => {
         alert(error.response.data.message)
 
     } else if (error.response.status === 500)
-        alert(error.response.data)
+        alert(error.response.data.message)
 
     else if (error.response.status === 404)
         alert(error.response.data.message)

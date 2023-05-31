@@ -33,6 +33,7 @@ function ReviewerReviewForm() {
     const { status } = useParams()
     const [reviews, setReviews] = React.useState(reviewsForm)
     const [loading, setLoading] = React.useState(true);
+    const [buttonLoading, setButtonLoading] = React.useState(false)
     const navigate = useNavigate()
 
 
@@ -83,6 +84,7 @@ function ReviewerReviewForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setButtonLoading(true)
         try {
             if (status === 'new') {
                 await SubmitReviewAPI(reviews).then((response) => {
@@ -94,10 +96,11 @@ function ReviewerReviewForm() {
                 })
 
             }
-
             navigate('/reviewer/reviews');
-        } catch {
-            alert("Username existed")
+        } catch (error) {
+            displayErrorMessage(error, navigate, null);
+        } finally {
+            setButtonLoading(false)
         }
     }
 
@@ -143,7 +146,13 @@ function ReviewerReviewForm() {
 
                             <br />
 
-                            <Button type='submit' color='primary'>Submit Review  </Button>
+                            {buttonLoading ? (
+                                <CircularProgress />
+                            ) : (
+                                <Button type='submit' color='primary'>Submit Review  </Button>
+                            )}
+
+
 
                         </Form>
                     </div>

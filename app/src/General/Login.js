@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { LoginUser } from "./Axios";
 import { storeTokenData } from "./Axios";
+import { CircularProgress } from "@material-ui/core";
 
 
 import "./Login.css";
@@ -10,11 +11,14 @@ import LoginSessionCheck from "./LoginSessionCheck";
 function Login() {
   // React States
   const [errorMessages, setErrorMessages] = useState("");
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     //Prevent page reload
     event.preventDefault();
+    setErrorMessages("")
+    setLoading(true)
 
     const formData = new FormData(event.target)
     const data = Object.fromEntries(formData.entries())
@@ -24,9 +28,10 @@ function Login() {
       storeTokenData(tokenData)
       navigate("/home")
     } catch (error) {
-      alert (JSON.stringify(error))
       const errorMessage = error.response.data.message
       setErrorMessages(errorMessage)
+    } finally {
+      setLoading(false);
     }
 
   };
@@ -38,6 +43,8 @@ function Login() {
       </div>
     );
   };
+
+
   // JSX code for login form
   const renderForm = (
     <div className="form">
@@ -55,8 +62,14 @@ function Login() {
         </div>
 
         <div className="button-container">
-          <input type="submit" />
+
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <input type="submit" value="Login"  />
+          )}
         </div>
+
 
       </form>
     </div>

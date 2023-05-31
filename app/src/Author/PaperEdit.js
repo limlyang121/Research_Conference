@@ -130,7 +130,7 @@ function PaperEdit() {
             <AppNavbar />
             <AuthorSecurity />
 
-            <Container>
+            <Container fluid>
 
                 {loading ? (
                     <div style={{ textAlign: 'center', margin: '20px' }}>
@@ -180,10 +180,6 @@ function PaperEdit() {
                             ) : (
                                 <Button type='submit' color='primary'>Submit</Button>
                             )}
-
-
-
-
                         </Form>
 
                     </div>

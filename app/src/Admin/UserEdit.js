@@ -5,6 +5,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import { updateUser, addUser, getUserByID, getAllRoles } from './adminAxios';
 import AdminSecurity from './AdminSecurity';
 import { displayErrorMessage } from '../General/GeneralFunction';
+import { CircularProgress } from '@material-ui/core';
 
 
 const UserEdit = () => {
@@ -28,7 +29,8 @@ const UserEdit = () => {
 
     const [user, setUser] = useState(initialFormState);
     const [myRole, setRole] = useState([]);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [loadingAnimation, setLoadingAnimation] = useState(false);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -87,6 +89,7 @@ const UserEdit = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoadingAnimation (true)
         try{
             if (id === 'new') {
                 await addUser(user)
@@ -94,10 +97,10 @@ const UserEdit = () => {
             } else {
                 await updateUser(user)
             }
-
             setUser(initialFormState);
             navigate('/admin/users');
         }catch(error){
+            setLoadingAnimation(false)
             displayErrorMessage(error, navigate, null)
         }
     }
@@ -118,7 +121,7 @@ const UserEdit = () => {
 
             <Container>
                 {title}
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} style={{fontSize:'1.2rem', fontWeight:'bold'}}>
 
                     <FormGroup>
                         <Label for="id"></Label>
@@ -127,7 +130,7 @@ const UserEdit = () => {
                     </FormGroup>
                     <FormGroup>
                         <Label for="userName">Username</Label>
-                        <Input type="text" name="userName" id="userName" value={user.userName}
+                        <Input type="text" name="userName" id="userName" value={user.userName} size='lg'
                             onChange={handleChange} autoComplete="userName" required minLength={5}
                              />
                     </FormGroup>
@@ -136,7 +139,7 @@ const UserEdit = () => {
 
                     <FormGroup>
                         <Label for="role">Role</Label>
-                        <Input type="select" name="role.role" value={user.role.role} id="role.role" onChange={handleChange} >
+                        <Input type="select" name="role.role" value={user.role.role} id="role.role" onChange={handleChange}  >
                             {myRole.map((role, index) => (
                                 <option key={index} value={role.role}>
                                     {role.role}
@@ -155,13 +158,13 @@ const UserEdit = () => {
                     <FormGroup>
                         <Label for="userdetails.firstName">First Name</Label>
                         <Input type="text" name="userdetails.firstName" id="userdetails.firstName" value={user.userdetails.firstName}
-                            onChange={handleChange} autoComplete="userdetails.firstName" />
+                            onChange={handleChange} autoComplete="userdetails.firstName" size='lg' />
                     </FormGroup>
 
                     <FormGroup>
                         <Label for="userdetails.lastName">Last Name</Label>
                         <Input type="text" name="userdetails.lastName" id="userdetails.lastName" value={user.userdetails.lastName}
-                            onChange={handleChange} autoComplete="userdetails.lastName" />
+                            onChange={handleChange} autoComplete="userdetails.lastName" size='lg' />
                     </FormGroup>
 
                     <FormGroup>
@@ -169,7 +172,7 @@ const UserEdit = () => {
                         <Input type="text" name="userdetails.email" id="userdetails.email" value={user.userdetails.email}
                             onChange={handleChange} autoComplete="userdetails.email"
                             pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
-                            title='Please enter valid Email'
+                            title='Please enter valid Email' size='lg'
                             required
                             />
                     </FormGroup>
@@ -178,7 +181,7 @@ const UserEdit = () => {
                         <Label for="userdetails.height">Height</Label>
                         <Input type="text" name="userdetails.height" id="userdetails.height" value={user.userdetails.height}
                             onChange={handleChange} autoComplete="userdetails.height" 
-                            pattern="[0-9]+" title="Please enter only numbers"
+                            pattern="[0-9]+" title="Please enter only numbers" size='lg'
                             />
                     </FormGroup>
 
@@ -186,7 +189,7 @@ const UserEdit = () => {
                         <Label for="userdetails.weight">Weight </Label>
                         <Input type="text" name="userdetails.weight" id="userdetails.weight" value={user.userdetails.weight}
                             onChange={handleChange} autoComplete="userdetails.weight" 
-                            pattern="[0-9]+" title="Please enter only numbers"
+                            pattern="[0-9]+" title="Please enter only numbers" size='lg'
                             />
                     </FormGroup>
 
@@ -194,9 +197,15 @@ const UserEdit = () => {
 
 
                     <FormGroup>
-                        <Button color="primary" type="submit">Save</Button>{' '}
-                        <Button color="secondary" tag={Link} to="/admin/users">Cancel</Button>
-                    </FormGroup>
+                            {loadingAnimation ? (
+                                <CircularProgress />
+                            ) : (
+                                <div>
+                                    <Button color="primary" type="submit">Save</Button>{' '}
+                                    <Button color="secondary" tag={Link} to="/admin/users">Cancel</Button>
+                                </div>
+                            )}
+                        </FormGroup>
                 </Form>
             </Container>
         </div>

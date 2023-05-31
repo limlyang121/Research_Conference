@@ -23,4 +23,12 @@ export const getUserByID = async (id) => {
     return response.data
 }
 
+export const updateMyProfile = async(data) =>{
+    let response = await api.post(`profile`, data)
+    return response.data;
+}
 
+export const getMyProfile = async() =>{
+    let response = await api.get(`profile`)
+    return response.data;
+}

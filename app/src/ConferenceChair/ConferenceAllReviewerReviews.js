@@ -40,7 +40,7 @@ function ConferenceAllReviewerReviews() {
 
         fetchAllReviewsByPaperID(id);
 
-    }, [id, status])
+    }, [id, status, navigate])
 
     return (
         <div>

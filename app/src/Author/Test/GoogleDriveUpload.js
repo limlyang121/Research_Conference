@@ -24,7 +24,7 @@ function GoogleDriveUpload() {
 
       let response = await addPapersTest(formData);
 
-      // alert(response)
+      alert(response)
 
     };
 

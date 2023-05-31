@@ -31,7 +31,7 @@ function ProfileEdit() {
         }
 
 
-    }, [])
+    }, [name])
 
     const handleChange = (event) => {
         const { name, value } = event.target;
